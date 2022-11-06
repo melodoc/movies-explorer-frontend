@@ -11,7 +11,7 @@ import './Main.css';
 
 export function Main() {
   return (
-    <>
+    <div className='main'>
       <Header/>
       <Promo/>
       <NavTab/>
@@ -20,6 +20,6 @@ export function Main() {
       <AboutMe/>
       <Portfolio/>
       <Footer/>
-    </>
+    </div>
   );
 }

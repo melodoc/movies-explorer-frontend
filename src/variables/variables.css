@@ -1,4 +1,11 @@
 :root {
   --black: #202020;
+  --total-black: #000000;
+  --pearl-opal: #073042;
+  --green: #3ddc84;
   --white: #FFFFFF;
+  --hover-opacity: 0.6;
+  --offset: 70px;
+  --offset-s: 30px;
+  --offset-xs: 14px;
 }

@@ -1,9 +1,12 @@
 :root {
   --black: #202020;
+  --semi-black: #303030;
   --total-black: #000000;
   --pearl-opal: #073042;
   --green: #3ddc84;
-  --white: #FFFFFF;
+  --gray: #dadada;
+  --gray-1: #8B8B8B;
+  --white: #ffffff;
   --hover-opacity: 0.6;
   --offset: 70px;
   --offset-s: 30px;

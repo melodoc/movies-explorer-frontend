@@ -9,6 +9,7 @@ import menu from '../../images/menu.svg';
 import './Header.css';
 
 export function Header() {
+  // FIXME: Разделить на компонентны 
   const isLoggedIn = false;
   const isDesktop = DocumentBreakpoints.getIsDesktop();
 

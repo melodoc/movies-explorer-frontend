@@ -1,0 +1,118 @@
+.techs {
+  padding: 105px var(--offset);
+  background-color: var(--gray-2);
+}
+
+.techs__headline {
+  margin: 0;
+  margin-top: 90px;
+  margin-bottom: 26px;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  text-align: center;
+  letter-spacing: -0.04em;
+}
+
+.techs__description {
+  margin: 0 auto;
+  padding: 0;
+  max-width: 460px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: -0.04em;
+}
+
+.techs__list {
+  margin: 0;
+  padding: 0;
+  margin-top: 100px;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.tech_list-item {
+  padding: 21px 0px;
+  background-color: var(--semi-black);
+  border-radius: 10px;
+  text-align: center;
+  min-width: 90px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  letter-spacing: -0.04em;
+}
+
+@media screen and (max-width: 1023px) {
+  .techs {
+    padding: 95px 50px 92px 50px;
+  }
+
+  .techs__headline {
+    margin-top: 83px;
+    margin-bottom: 20px;
+  }
+
+  .techs__description {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    letter-spacing: -0.04em;
+  }
+
+  .tech_list-item {
+    min-width: 84px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .techs__list {
+    margin-top: 83px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .techs {
+    padding: 70px 18px;
+    background-color: var(--black);
+  }
+
+  .techs__headline {
+    margin-top: 60px;
+    margin-bottom: 25px;
+    font-size: 30px;
+    line-height: 36px;
+    text-align: center;
+    letter-spacing: -0.04em;
+  }
+
+  .techs__description {
+    font-size: 11px;
+    line-height: 16px;
+    text-align: center;
+    letter-spacing: -0.04em;
+  }
+
+  .techs__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    gap: 10px;
+    margin: 50px 60px 70px 60px;
+    max-width: 188px;
+  }
+
+  .tech_list-item {
+    max-width: 84px;
+  }
+}

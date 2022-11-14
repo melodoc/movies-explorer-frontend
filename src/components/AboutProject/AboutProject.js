@@ -1,9 +1,11 @@
+import { Headline } from '../../shared-components/headline/Headline';
+
 import './AboutProject.css';
 
 export function AboutProject() {
   return (
     <section className="about">
-      <h2 className="about__headline">О проекте</h2>
+      <Headline text="О проекте" />
       <ul className="about__list about__steps">
         <li className="about__item">
           <h3 className="about__title">
@@ -26,7 +28,9 @@ export function AboutProject() {
       </ul>
       <ul className="about__list about__time">
         <li className="about__time-item">
-          <p className="about__time-period about__time-period-bright">1 неделя</p>
+          <p className="about__time-period about__time-period-bright">
+            1 неделя
+          </p>
           <p className="about__time-description">Back-end</p>
         </li>
         <li className="about__time-item">

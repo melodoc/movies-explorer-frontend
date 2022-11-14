@@ -1,9 +1,33 @@
+import { Headline } from '../../shared-components/headline/Headline';
+
 import './Techs.css';
 
 export function Techs() {
+  const techs = [
+    'HTML',
+    'CSS',
+    'JS',
+    'React',
+    'Git',
+    'Express.js',
+    'mongoDB'
+  ];
+
   return (
-    <div className="techs">
-        компонент с использованными технологиями
-    </div>
+    <section className="techs">
+      <Headline text="Технологии" />
+      <h3 className="techs__headline">7 технологий</h3>
+      <p className="techs__description">
+        На курсе веб-разработки мы освоили технологии, которые
+        применили в дипломном проекте.
+      </p>
+      <ul className="techs__list">
+        {techs.map((tech, index) => (
+          <li className="tech_list-item" key={`${tech}${index}`}>
+            {tech}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

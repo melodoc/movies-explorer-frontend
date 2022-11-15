@@ -10,7 +10,7 @@ import './Main.css';
 
 export function Main() {
   return (
-    <div className='main'>
+    <>
       <Header/>
       <Promo/>
       <AboutProject/>
@@ -18,6 +18,6 @@ export function Main() {
       <AboutMe/>
       <Portfolio/>
       <Footer/>
-    </div>
+    </>
   );
 }

@@ -24,12 +24,18 @@ export function AboutMe() {
           <a
             className="about-me__link"
             href="https://github.com/melodoc/"
+            target="_blank"
+            rel="noreferrer"
           >
             Github
           </a>
         </li>
         <li className="about-me__list-item">
-          <img className="about-me__image" src={profile} alt="profile" />
+          <img
+            className="about-me__image"
+            src={profile}
+            alt="profile"
+          />
         </li>
       </ul>
     </section>

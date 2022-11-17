@@ -6,15 +6,17 @@ import profile from '../../images/profile.svg';
 import close from '../../images/close.svg';
 import menu from '../../images/menu.svg';
 
+import { HeaderHelper } from '../../utils/headerHelper';
+
 import './Header.css';
 
-export function Header() {
-  // FIXME: Разделить на компонентны 
-  const isLoggedIn = false;
+export function Header({ isLoggedIn, type }) {
+  // FIXME: Разделить на компонентны
   const isDesktop = DocumentBreakpoints.getIsDesktop();
 
   const [isMobileMenuPopupOpen, setIsMobileMenuPopupOpen] =
     useState(isDesktop);
+  const [isLoggedInMock, setIsLoggedInMock] = useState(isLoggedIn);
 
   const handleMobileMenuClick = (e) => {
     e.preventDefault();
@@ -26,20 +28,28 @@ export function Header() {
     setIsMobileMenuPopupOpen(false);
   };
 
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    setIsLoggedInMock(!isLoggedInMock);
+  };
+
   return (
     <header
       className={
-        'header ' + (!isLoggedIn ? 'header-banner' : 'header-main')
+        'header ' +
+        (HeaderHelper.isBanner(type)
+          ? 'header-banner'
+          : 'header-main')
       }
     >
       <nav className="header__nav">
         <a className="header__link" href="/">
           <img src={logo} alt="logo" />
         </a>
-        {isLoggedIn ? (
+        {isLoggedInMock ? (
           <>
             {isMobileMenuPopupOpen && (
-              <div className="header__list header__list-type_narrow">
+              <div className="header__list">
                 <ul className="header__links">
                   {!isDesktop && (
                     <li>
@@ -67,16 +77,18 @@ export function Header() {
                       Сохранённые фильмы
                     </a>
                   </li>
+                  <li>
+                    <a
+                      className="header__link header__link-type_label header__link-type_account"
+                      href="."
+                    >
+                      <span className="header__link-account-text">
+                        Аккаунт
+                      </span>
+                      <img src={profile} alt="profile" />
+                    </a>
+                  </li>
                 </ul>
-                <a
-                  className="header__link header__link-type_label header__link-type_account"
-                  href="."
-                >
-                  <span className="header__link-account-text">
-                    Аккаунт
-                  </span>
-                  <img src={profile} alt="profile" />
-                </a>
                 {!isDesktop && (
                   <button
                     className="header__list-menu_mobile-button"
@@ -113,6 +125,7 @@ export function Header() {
               <a
                 className="header__link header__link--button"
                 href="."
+                onClick={handleSignUp}
               >
                 Войти
               </a>

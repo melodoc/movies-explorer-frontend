@@ -1,3 +1,5 @@
+// TODO: Добавить resizeObserver для определения размеров при ресайзе
+
 export class DocumentBreakpoints {
   static mobileBreakpoint = 360;
   static tabletBreakpoint = 767;

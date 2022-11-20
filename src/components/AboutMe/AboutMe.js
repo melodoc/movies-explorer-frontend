@@ -1,4 +1,4 @@
-import { Headline } from '../../shared-components/headline/Headline';
+import { UIHeadline } from '../../shared-components/ui-headline/UIHeadline';
 import profile from '../../images/pic.png';
 
 import './AboutMe.css';
@@ -6,7 +6,7 @@ import './AboutMe.css';
 export function AboutMe() {
   return (
     <section className="about-me">
-      <Headline text="Студент" />
+      <UIHeadline text="Студент" />
       <ul className="about-me__list">
         <li className="about-me__list-item">
           <p className="about-me__title">Виталий</p>

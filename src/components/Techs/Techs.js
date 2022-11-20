@@ -1,4 +1,4 @@
-import { Headline } from '../../shared-components/headline/Headline';
+import { UIHeadline } from '../../shared-components/ui-headline/UIHeadline';
 
 import './Techs.css';
 
@@ -15,7 +15,7 @@ export function Techs() {
 
   return (
     <section className="techs">
-      <Headline text="Технологии" />
+      <UIHeadline text="Технологии" />
       <h3 className="techs__headline">7 технологий</h3>
       <p className="techs__description">
         На курсе веб-разработки мы освоили технологии, которые

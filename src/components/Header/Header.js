@@ -1,31 +1,26 @@
 import { useState } from 'react';
 import { DocumentBreakpoints } from '../../utils/documentBreakpoints';
-
-import logo from '../../images/logo.svg';
-import profile from '../../images/profile.svg';
-import close from '../../images/close.svg';
-import menu from '../../images/menu.svg';
-
 import { HeaderHelper } from '../../utils/headerHelper';
+import { UILink } from '../../shared-components/ul-link/UILink';
+import { UIButton } from '../../shared-components/ui-button/UIButton';
+import { Portal } from '../../components/Portal/Portal';
+import { PopUp } from '../../components/PopUp/PopUp';
+import { iconType } from '../../constants/iconType';
+import logo from '../../images/logo.svg';
+import menu from '../../images/menu.svg';
 
 import './Header.css';
 
 export function Header({ isLoggedIn, type }) {
-  // FIXME: Разделить на компонентны
+  const [isMobileMenuPopupOpen, setIsMobileMenuPopupOpen] =
+    useState(false);
+
+  const [isLoggedInMock, setIsLoggedInMock] = useState(isLoggedIn);
   const isDesktop = DocumentBreakpoints.getIsDesktop();
 
-  const [isMobileMenuPopupOpen, setIsMobileMenuPopupOpen] =
-    useState(isDesktop);
-  const [isLoggedInMock, setIsLoggedInMock] = useState(isLoggedIn);
-
-  const handleMobileMenuClick = (e) => {
+  const handleMobileMenuPopup = (e) => {
     e.preventDefault();
     setIsMobileMenuPopupOpen(!isMobileMenuPopupOpen);
-  };
-
-  const handleMobileMenuClose = (e) => {
-    e.preventDefault();
-    setIsMobileMenuPopupOpen(false);
   };
 
   const handleSignUp = (e) => {
@@ -35,12 +30,9 @@ export function Header({ isLoggedIn, type }) {
 
   return (
     <header
-      className={
-        'header ' +
-        (HeaderHelper.isBanner(type)
-          ? 'header-banner'
-          : 'header-main')
-      }
+      className={`header ${
+        HeaderHelper.isBanner(type) ? 'header-banner' : 'header-main'
+      }`}
     >
       <nav className="header__nav">
         <a className="header__link" href="/">
@@ -48,88 +40,60 @@ export function Header({ isLoggedIn, type }) {
         </a>
         {isLoggedInMock ? (
           <>
-            {isMobileMenuPopupOpen && (
+            {isDesktop ? (
               <div className="header__list">
                 <ul className="header__links">
-                  {!isDesktop && (
-                    <li>
-                      <a
-                        className="header__link header__link-type_label header__link-account-link"
-                        href="."
-                      >
-                        Главная
-                      </a>
-                    </li>
-                  )}
-                  <li>
-                    <a
-                      className="header__link header__link-type_label header__link-account-link"
-                      href="."
-                    >
-                      Фильмы
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="header__link header__link-type_label header__link-account-link"
-                      href="."
-                    >
-                      Сохранённые фильмы
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="header__link header__link-type_label header__link-type_account"
-                      href="."
-                    >
-                      <span className="header__link-account-text">
-                        Аккаунт
-                      </span>
-                      <img src={profile} alt="profile" />
-                    </a>
-                  </li>
+                  <UILink label="Фильмы" link="." />
+                  <UILink
+                    label="Сохранённые фильмы"
+                    link="."
+                    font={{ weight: 400 }}
+                  />
+                  <div className="header__link--wrapper">
+                    <UILink
+                      label="Аккаунт"
+                      link="."
+                      isWithIcon
+                      iconType={iconType.Profile}
+                    />
+                  </div>
                 </ul>
-                {!isDesktop && (
-                  <button
-                    className="header__list-menu_mobile-button"
-                    onClick={handleMobileMenuClose}
-                  >
-                    <img src={close} alt="close" />
-                  </button>
-                )}
               </div>
-            )}
-            <a
-              className="header__list-menu_mobile"
-              href="."
-              onClick={handleMobileMenuClick}
-            >
-              <img
+            ) : (
+              <a
                 className="header__list-menu_mobile"
-                src={menu}
-                alt="menu"
-              />
-            </a>
+                href="."
+                onClick={handleMobileMenuPopup}
+              >
+                <img
+                  className="header__list-menu_mobile"
+                  src={menu}
+                  alt="menu"
+                />
+              </a>
+            )}
+            {isMobileMenuPopupOpen && (
+              <Portal>
+                <PopUp
+                  isLoggedIn={isLoggedInMock}
+                  onToggleMobileMenu={handleMobileMenuPopup}
+                  onSignUp={handleSignUp}
+                />
+              </Portal>
+            )}
           </>
         ) : (
           <ul className="header__list">
-            <li>
-              <a
-                className="header__link header__link-type_label"
-                href="."
-              >
-                Регистрация
-              </a>
-            </li>
-            <li>
-              <a
-                className="header__link header__link--button"
-                href="."
-                onClick={handleSignUp}
-              >
-                Войти
-              </a>
-            </li>
+            <UILink
+              label="Регистрация"
+              link="."
+              font={{ size: '12px', lineHeight: '16px' }}
+            />
+            <UIButton
+              label="Войти"
+              link="."
+              handleClick={handleSignUp}
+            />
           </ul>
         )}
       </nav>

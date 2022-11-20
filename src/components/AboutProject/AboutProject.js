@@ -1,11 +1,11 @@
-import { Headline } from '../../shared-components/headline/Headline';
+import { UIHeadline } from '../../shared-components/ui-headline/UIHeadline';
 
 import './AboutProject.css';
 
 export function AboutProject() {
   return (
     <section className="about">
-      <Headline text="О проекте" />
+      <UIHeadline text="О проекте" />
       <ul className="about__list about__steps">
         <li className="about__item">
           <h3 className="about__title">

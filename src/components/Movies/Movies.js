@@ -1,9 +1,14 @@
+import { SearchForm } from '../SearchForm/SearchForm';
+import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
+
 import './Movies.css';
 
 export function Movies() {
   return (
-    <div className="movies">
-        компонент страницы с поиском по фильмам
-    </div>
+    <>
+      <SearchForm onSubmitSearch={() => {}} />
+      <br />
+      <MoviesCardList />
+    </>
   );
 }

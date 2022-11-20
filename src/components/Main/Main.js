@@ -5,17 +5,16 @@ import { Techs } from '../Techs/Techs';
 import { AboutMe } from '../AboutMe/AboutMe';
 import { Portfolio } from '../Portfolio/Portfolio';
 import { Footer } from '../Footer/Footer';
-import { SearchForm } from '../SearchForm/SearchForm';
 import { Movies } from '../Movies/Movies';
 import { headerType } from '../../constants/headerType';
 import './Main.css';
 
 export function Main() {
-  const isBanner = true;
+  const isBanner = false;
 
   return isBanner ? (
     <>
-    {/* FIXME:  Задавать header в зависимости от роута*/}
+      {/* FIXME:  Задавать header в зависимости от роута*/}
       <Header type={headerType.Banner} />
       <Promo />
       <AboutProject />
@@ -27,8 +26,8 @@ export function Main() {
   ) : (
     <>
       <Header type={headerType.Main} isLoggedIn={true} />
-      <SearchForm />
       <Movies />
+      <br />
       <Footer />
     </>
   );

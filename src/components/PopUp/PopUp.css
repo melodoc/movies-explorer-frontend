@@ -39,7 +39,7 @@
 
 @media screen and (max-width: 767px) {
   .popup__list {
-    min-width: 100vw;
+    min-width: 102vw;
     width: 100%;
     padding-top: 144px;
     padding-bottom: 50px;

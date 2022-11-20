@@ -8,6 +8,7 @@ import { PopUp } from '../../components/PopUp/PopUp';
 import { iconType } from '../../constants/iconType';
 import logo from '../../images/logo.svg';
 import menu from '../../images/menu.svg';
+import menu_mobile from '../../images/menu_mobile.svg';
 
 import './Header.css';
 
@@ -17,6 +18,9 @@ export function Header({ isLoggedIn, type }) {
 
   const [isLoggedInMock, setIsLoggedInMock] = useState(isLoggedIn);
   const isDesktop = DocumentBreakpoints.getIsDesktop();
+  const menuSrc = DocumentBreakpoints.getIsMobile
+    ? menu_mobile
+    : menu;
 
   const handleMobileMenuPopup = (e) => {
     e.preventDefault();
@@ -67,7 +71,7 @@ export function Header({ isLoggedIn, type }) {
               >
                 <img
                   className="header__list-menu_mobile"
-                  src={menu}
+                  src={menuSrc}
                   alt="menu"
                 />
               </a>

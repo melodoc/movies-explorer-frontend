@@ -1,9 +1,24 @@
+import { CardButtonHelper } from '../../utils/cardButtonHelper';
+
 import './MoviesCard.css';
 
-export function MoviesCard() {
+export function MoviesCard({
+  src,
+  label,
+  duration,
+  isSaved,
+  hasDeleteBtn
+}) {
+  const btn = CardButtonHelper.getButton(isSaved, hasDeleteBtn);
+  console.info(btn);
   return (
-    <div className="moviesCard">
-        компонент одной карточки фильма.
-    </div>
+    <figure className="card">
+      <button className={btn.style}>{btn.label ?? ''}</button>
+      <img className="card__image" src={src} alt="label" />
+      <figcaption className="card__caption">
+        <p className="card__label">{label ?? '-'}</p>
+        <p className="card__duration">{duration ?? '-'}</p>
+      </figcaption>
+    </figure>
   );
 }

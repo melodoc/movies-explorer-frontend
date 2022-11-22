@@ -27,7 +27,6 @@ export function Main() {
     <>
       <Header type={headerType.Main} isLoggedIn={true} />
       <Movies />
-      <br />
       <Footer />
     </>
   );

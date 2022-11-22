@@ -1,12 +1,24 @@
 import { MoviesCard } from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 
-export function MoviesCardList() {
+export function MoviesCardList({ cards }) {
   return (
-    <div className="moviesCardList">
-      компонент, который управляет отрисовкой карточек фильмов на
-      страницу и их количеством
-      <MoviesCard />
-    </div>
+    <section className="cards">
+      <div className="cards__container">
+        {cards.map((card, key) => {
+          return (
+            <MoviesCard
+              key={key}
+              src={card?.src}
+              label={card?.label}
+              duration={card?.duration}
+              isSaved={card?.isSaved}
+              hasDeleteBtn={card?.hasDeleteBtn}
+            />
+          );
+        })}
+      </div>
+      <button>Еще</button>
+    </section>
   );
 }

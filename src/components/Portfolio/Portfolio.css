@@ -1,5 +1,5 @@
 .portfolio {
-  padding: 0 var(--offset);
+  padding: 0 var(--offset) 24px;
 }
 
 .portfolio__headline {

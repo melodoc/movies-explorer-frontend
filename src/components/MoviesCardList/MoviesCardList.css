@@ -9,5 +9,63 @@
   grid-gap: 30px;
   list-style: none;
   margin: 0;
-  padding: 78px 0 0;
+  padding: 78px 0 60px;
+}
+
+.cards__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: var(--white);
+  background: none;
+  padding: 10px 60px;
+  border: 1px solid var(--gray-3);
+  border-radius: 6px;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1023px) {
+  .cards {
+    max-width: 708px;
+  }
+
+  .cards__container {
+    grid-template-columns: repeat(auto-fill, minmax(339px, 1fr));
+    grid-gap: 40px 30px;
+  }
+
+  .cards__button {
+    margin-bottom: 7px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .cards {
+    margin: 0 auto;
+    max-width: 300px;
+  }
+
+  .cards__container {
+    grid-template-columns: minmax(300px, 1fr);
+    grid-gap: 30px;
+    padding: 47px 0 58px;
+  }
+
+  .cards__button {
+    max-width: 240px;
+    margin-bottom: 28px;
+  }
+
+  .card__label {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+  }
 }

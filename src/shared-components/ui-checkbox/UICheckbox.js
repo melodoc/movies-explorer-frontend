@@ -2,19 +2,19 @@ import './UICheckbox.css';
 
 export function UICheckbox({ onSubmit, label }) {
   return (
-    <div class="checkbox__wrapper">
-      <div class="checkbox">
+    <div className="checkbox__wrapper">
+      <div className="checkbox">
         <input
-          class="checkbox__input"
+          className="checkbox__input"
           type="checkbox"
           id="custom-checkbox"
           tabIndex="1"
         />
-        <label class="checkbox__label" for="custom-checkbox">
+        <label className="checkbox__label" htmlFor="custom-checkbox">
           {label ?? ''}
         </label>
       </div>
-      <span class="checkbox__text">{label ?? ''}</span>
+      <span className="checkbox__text">{label ?? ''}</span>
     </div>
   );
 }

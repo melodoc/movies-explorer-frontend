@@ -10,10 +10,9 @@ export function MoviesCard({
   hasDeleteBtn
 }) {
   const btn = CardButtonHelper.getButton(isSaved, hasDeleteBtn);
-  console.info(btn);
   return (
     <figure className="card">
-      <button className={btn.style}>{btn.label ?? ''}</button>
+      <button className={btn?.style}>{btn.label ?? ''}</button>
       <img className="card__image" src={src} alt="label" />
       <figcaption className="card__caption">
         <p className="card__label">{label ?? '-'}</p>

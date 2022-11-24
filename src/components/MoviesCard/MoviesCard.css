@@ -38,7 +38,7 @@
   bottom: 0;
   background: url('../../images/saved.svg') no-repeat 53% 47%;
   background-size: 9px 12px;
-  z-index: 2;
+  z-index: 0;
   transition: 0.5s ease-in-out;
 }
 
@@ -61,7 +61,7 @@
   bottom: 0;
   background: url('../../images/cross.svg') no-repeat 50% 50%;
   background-size: 7px;
-  z-index: 2;
+  z-index: 0;
   transition: 0.5s ease-in-out;
 }
 

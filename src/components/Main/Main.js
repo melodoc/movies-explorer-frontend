@@ -6,7 +6,7 @@ import { AboutMe } from '../AboutMe/AboutMe';
 import { Portfolio } from '../Portfolio/Portfolio';
 import { Footer } from '../Footer/Footer';
 import { Movies } from '../Movies/Movies';
-import { headerType } from '../../constants/headerType';
+import { HEADER_TYPES } from '../../constants/headerTypes';
 import './Main.css';
 
 export function Main() {
@@ -61,7 +61,7 @@ export function Main() {
   return isBanner ? (
     <>
       {/* FIXME:  Задавать header в зависимости от роута*/}
-      <Header type={headerType.Banner} />
+      <Header type={HEADER_TYPES.Banner} />
       <Promo />
       <AboutProject />
       <Techs />
@@ -71,13 +71,13 @@ export function Main() {
     </>
   ) : isSaved ? (
     <>
-      <Header type={headerType.Main} isLoggedIn={true} />
+      <Header type={HEADER_TYPES.Main} isLoggedIn={true} />
       <Movies cards={savedCards} />
       <Footer />
     </>
   ) : (
     <>
-      <Header type={headerType.Main} isLoggedIn={true} />
+      <Header type={HEADER_TYPES.Main} isLoggedIn={true} />
       <Movies cards={mockedCards} />
       <Footer />
     </>

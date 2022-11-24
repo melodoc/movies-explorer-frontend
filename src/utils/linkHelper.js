@@ -1,9 +1,9 @@
 import { DocumentBreakpoints } from './documentBreakpoints';
-import { breakPointTypes } from '../constants/breakPointTypes';
+import { BREAK_POINT_TYPES } from '../constants/breakPointTypes';
 
 const FONT_STYLES_MAP = new Map([
-  [breakPointTypes.Tablet, { fontSize: '12px' }],
-  [breakPointTypes.Mobile, { fontSize: '10px', lineHeight: '16px' }]
+  [BREAK_POINT_TYPES.Tablet, { fontSize: '12px' }],
+  [BREAK_POINT_TYPES.Mobile, { fontSize: '10px', lineHeight: '16px' }]
 ]);
 
 export class LinkHelper {
@@ -20,11 +20,11 @@ export class LinkHelper {
 
     return DocumentBreakpoints.getIsTablet()
       ? {
-          ...FONT_STYLES_MAP.get(breakPointTypes.Tablet),
+          ...FONT_STYLES_MAP.get(BREAK_POINT_TYPES.Tablet),
           ...baseFontLinkStyle
         }
       : {
-          ...FONT_STYLES_MAP.get(breakPointTypes.Mobile),
+          ...FONT_STYLES_MAP.get(BREAK_POINT_TYPES.Mobile),
           ...baseFontLinkStyle
         };
   }

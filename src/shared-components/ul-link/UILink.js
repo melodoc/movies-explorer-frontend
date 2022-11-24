@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import { iconType } from '../../constants/iconType';
+import { ICON_TYPES } from '../../constants/iconTypes';
 import { LinkHelper } from '../../utils/linkHelper';
 import profile from '../../images/profile.svg';
 
 import './UILink.css';
 
 const ICON_TYPE_MAP = new Map([
-  [iconType.Profile, { src: profile, alt: profile }]
+  [ICON_TYPES.Profile, { src: profile, alt: profile }]
 ]);
 
 export function UILink({
@@ -41,7 +41,7 @@ export function UILink({
         <span className="link__text" style={linkStyles.font}>
           {label}
         </span>
-        <img src={image.src} alt={image.alt} />
+        <img src={image?.src} alt={image?.alt} />
       </a>
     </li>
   );

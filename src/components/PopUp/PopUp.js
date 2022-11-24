@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { UILink } from '../../shared-components/ul-link/UILink';
 import { useOutsideAlerter } from '../../hooks/useOutsideAlerter';
-import { iconType } from '../../constants/iconType';
+import { ICON_TYPES } from '../../constants/iconTypes';
 import close from '../../images/close.svg';
 
 import './PopUp.css';
@@ -31,7 +31,7 @@ export function PopUp({ onToggleMobileMenu }) {
             label="Аккаунт"
             link="."
             isWithIcon
-            iconType={iconType.Profile}
+            iconType={ICON_TYPES.Profile}
             font={{ weight: 500, size: '13px', lineHeight: '12px' }}
           />
         </ul>

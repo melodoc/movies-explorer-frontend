@@ -5,7 +5,7 @@ import { UILink } from '../../shared-components/ul-link/UILink';
 import { UIButton } from '../../shared-components/ui-button/UIButton';
 import { Portal } from '../../components/Portal/Portal';
 import { PopUp } from '../../components/PopUp/PopUp';
-import { iconType } from '../../constants/iconType';
+import { ICON_TYPES } from '../../constants/iconTypes';
 import logo from '../../images/logo.svg';
 import menu from '../../images/menu.svg';
 import menu_mobile from '../../images/menu_mobile.svg';
@@ -58,7 +58,7 @@ export function Header({ isLoggedIn, type }) {
                       label="Аккаунт"
                       link="."
                       isWithIcon
-                      iconType={iconType.Profile}
+                      iconType={ICON_TYPES.Profile}
                     />
                   </div>
                 </ul>

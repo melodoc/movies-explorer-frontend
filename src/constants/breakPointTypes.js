@@ -1,5 +1,4 @@
-export const breakPointTypes = {
-    Tablet: 'tablet',
-    Mobile: 'mobile'
-  };
-  
+export const BREAK_POINT_TYPES = {
+  Tablet: 'tablet',
+  Mobile: 'mobile'
+};

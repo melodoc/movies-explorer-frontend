@@ -1,6 +1,6 @@
 :root {
   --black: #202020;
-  --transparent-black: rgba(0,0,0,.3);
+  --transparent-black: rgba(0, 0, 0, 0.3);
   --semi-black: #303030;
   --total-black: #000000;
   --pearl-opal: #073042;
@@ -9,11 +9,12 @@
   --gray-1: #8b8b8b;
   --gray-2: #272727;
   --gray-3: #424242;
-  --gray-4: #2F2F2F;
+  --gray-4: #2f2f2f;
   --gray-5: #313131;
-  --blue: #4285F4;
+  --light-gray: #202020;
+  --blue: #4285f4;
   --white: #ffffff;
-  --pink: #EE3465;
+  --pink: #ee3465;
   --hover-opacity: 0.6;
   --offset: 70px;
   --offset-s: 30px;

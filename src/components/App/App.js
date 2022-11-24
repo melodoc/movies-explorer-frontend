@@ -7,6 +7,8 @@ import { Techs } from '../Techs/Techs';
 import { AboutMe } from '../AboutMe/AboutMe';
 import { Portfolio } from '../Portfolio/Portfolio';
 import { Movies } from '../Movies/Movies';
+import { Login } from '../Login/Login';
+import { Register } from '../Register/Register';
 
 import { HEADER_TYPES } from '../../constants/headerTypes';
 import { ROUTES } from '../../constants/routes';
@@ -14,20 +16,22 @@ import { mockedCards, savedCards } from '../../mocked/mockedCards';
 
 function App() {
   const location = useLocation();
+  const isAboutPage = location?.pathname === ROUTES.About;
+  const areBlocksShown = [
+    ROUTES.About,
+    ROUTES.Movies,
+    ROUTES.SavedMovies
+  ].includes(location?.pathname);
 
   return (
     <>
       {/* FIXME: Перенести в утилиты */}
-      <Header
-        type={
-          location?.pathname === ROUTES.About
-            ? HEADER_TYPES.Banner
-            : HEADER_TYPES.Main
-        }
-        isLoggedIn={
-          location?.pathname === ROUTES.About ? false : true
-        }
-      />
+      {areBlocksShown && (
+        <Header
+          type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main}
+          isLoggedIn={isAboutPage ? false : true}
+        />
+      )}
       <Switch>
         <Route path={ROUTES.About} exact>
           <Promo />
@@ -37,10 +41,10 @@ function App() {
           <Portfolio />
         </Route>
         <Route path={ROUTES.SignUp}>
-          <div>Регистрация</div>
+          <Register />
         </Route>
         <Route path={ROUTES.SignIn}>
-          <div>Войти</div>
+          <Login />
         </Route>
         <Route path={ROUTES.Movies}>
           <Movies cards={mockedCards} />
@@ -55,7 +59,7 @@ function App() {
           <div>404</div>
         </Route>
       </Switch>
-      <Footer />
+      {areBlocksShown && <Footer />}
     </>
   );
 }

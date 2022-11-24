@@ -1,0 +1,27 @@
+.link__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 6px;
+}
+
+.link__text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--gray-1);
+}
+
+.link__redirect-link,
+.link__redirect-link:visited {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.link__redirect-link:hover {
+  opacity: var(--hover-opacity);
+}

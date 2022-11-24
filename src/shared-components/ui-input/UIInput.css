@@ -1,0 +1,45 @@
+.field__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.field__label {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: var(--gray-1);
+}
+
+.field__input {
+  width: calc(100% - 15px);
+  height: 42px;
+  margin: 0;
+  padding: 0;
+  padding-left: 15px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--white);
+  background-color: var(--gray-4);
+  border: none;
+  border-radius: 8px;
+}
+
+.field__input:invalid {
+  color: var(--pink);
+}
+
+.field__input:focus {
+  outline: 0px var(--gray-4) solid;
+  outline-offset: 2px;
+  box-shadow: 0 0 16px var(--blue);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: 0.1s ease-in-out;
+}

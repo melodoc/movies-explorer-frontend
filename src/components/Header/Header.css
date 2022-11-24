@@ -35,6 +35,13 @@
   padding: 0;
 }
 
+.header__list-menu_button {
+  border: none;
+  background: none;
+  margin: 0;
+  padding: 0;
+}
+
 @media screen and (max-width: 1023px) {
   .header {
     padding: 18px var(--offset-s);

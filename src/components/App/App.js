@@ -40,10 +40,7 @@ function App() {
           <div>Регистрация</div>
         </Route>
         <Route path={ROUTES.SignIn}>
-          <div>Логин</div>
-        </Route>
-        <Route path={ROUTES.SignIn}>
-          <div>Логин</div>
+          <div>Войти</div>
         </Route>
         <Route path={ROUTES.Movies}>
           <Movies cards={mockedCards} />
@@ -51,8 +48,8 @@ function App() {
         <Route path={ROUTES.SavedMovies}>
           <Movies cards={savedCards} />
         </Route>
-        <Route path={ROUTES.SavedMovies}>
-          <Movies cards={savedCards} />
+        <Route path={ROUTES.Profile}>
+          <div>Профиль</div>
         </Route>
         <Route path="*">
           <div>404</div>

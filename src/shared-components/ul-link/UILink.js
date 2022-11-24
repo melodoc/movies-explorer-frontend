@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { ICON_TYPES } from '../../constants/iconTypes';
 import { LinkHelper } from '../../utils/linkHelper';
 import profile from '../../images/profile.svg';
@@ -27,22 +28,22 @@ export function UILink({
 
   return !isWithIcon ? (
     <li className={linkStyles.item}>
-      <a
+      <Link
         className={linkStyles.link}
-        href={link}
+        to={link}
         style={linkStyles.font}
       >
         {label}
-      </a>
+      </Link>
     </li>
   ) : (
     <li className={linkStyles.item}>
-      <a className={`${linkStyles.link} link__image`} href={link}>
+      <Link className={`${linkStyles.link} link__image`} to={link}>
         <span className="link__text" style={linkStyles.font}>
           {label}
         </span>
         <img src={image?.src} alt={image?.alt} />
-      </a>
+      </Link>
     </li>
   );
 }

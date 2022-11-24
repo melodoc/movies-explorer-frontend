@@ -1,15 +1,17 @@
+import { Link } from 'react-router-dom';
+
 import './UIButton.css';
 
 export function UIButton({ label, link, handleClick }) {
   return (
     <li>
-      <a
+      <Link
         className="button"
-        href={link}
+        to={link}
         onClick={handleClick}
       >
         {label ?? "Ok"}
-      </a>
+      </Link>
     </li>
   );
 }

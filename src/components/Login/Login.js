@@ -15,11 +15,11 @@ export function Login() {
   };
 
   return (
-    <section class="login">
-      <div class="login__container">
-        <form class="login__form" onSubmit={onSubmit}>
+    <section class="entry-form">
+      <div class="form__container">
+        <form class="form__form" onSubmit={onSubmit}>
           <Link to={ROUTES.About}>
-            <img src={logo} class="login__logo" alt="logo" />
+            <img src={logo} class="form__logo" alt="logo" />
           </Link>
           <UITitle label="Рады видеть!" />
           <UIInput label="E-mail" type={INPUT_TYPES.Email} required />

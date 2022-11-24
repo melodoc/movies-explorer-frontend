@@ -5,6 +5,7 @@ import { useEffect } from 'react';
  * Хук, который выполняет действие callback при клике 
  * за пределами переданного ref
  */
+
 export function useOutsideAlerter(ref, callback) {
   useEffect(() => {
     function handleClickOutside(event) {

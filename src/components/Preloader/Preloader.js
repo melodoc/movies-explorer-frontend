@@ -1,9 +1,13 @@
+import React from 'react';
+
 import './Preloader.css';
 
-export function Preloader() {
+export const Preloader = () => {
   return (
     <div className="preloader">
-        отвечает за работу прелоадера
+      <div className="preloader__container">
+        <span className="preloader__round"></span>
+      </div>
     </div>
   );
-}
+};

@@ -8,7 +8,7 @@ export function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__link"
-            href="https://github.com/melodoc/"
+            href="https://melodoc.github.io/how-to-learn/"
             target="_blank"
             rel="noreferrer"
           >
@@ -18,7 +18,7 @@ export function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__link"
-            href="https://github.com/melodoc/"
+            href="https://github.com/melodoc/from-portland-to-portland"
             target="_blank"
             rel="noreferrer"
           >
@@ -28,7 +28,7 @@ export function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__link"
-            href="https://github.com/melodoc/"
+            href="https://melodoc.github.io/react-mesto-auth/"
             target="_blank"
             rel="noreferrer"
           >

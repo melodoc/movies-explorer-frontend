@@ -12,7 +12,7 @@ export function Footer() {
           <li className="footer__link-item">
             <a
               className="footer__link"
-              href="https://github.com/melodoc/"
+              href="https://practicum.yandex.ru/web/"
               target="_blank"
               rel="noreferrer"
             >

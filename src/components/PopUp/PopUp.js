@@ -8,12 +8,12 @@ import close from '../../images/close.svg';
 import './PopUp.css';
 
 export function PopUp({ onToggleMobileMenu }) {
-  const wrapperRef = useRef(null);
+  const containerRef = useRef(null);
   const font = { size: '18px', lineHeight: '22px', weight: 500 };
-  useOutsideAlerter(wrapperRef, onToggleMobileMenu);
+  useOutsideAlerter(containerRef, onToggleMobileMenu);
 
   return (
-    <nav className="popup" ref={wrapperRef}>
+    <nav className="popup" ref={containerRef}>
       <div className="popup__list">
         <ul className="popup__links">
           <UILink

@@ -6,7 +6,7 @@ export function Footer() {
       <p className="footer__name">
         Учебный проект Яндекс.Практикум х BeatFilm.
       </p>
-      <div className="footer__wrapper">
+      <div className="footer__container">
         <p className="footer__year">© {new Date().getFullYear()}</p>
         <ul className="footer__links">
           <li className="footer__link-item">

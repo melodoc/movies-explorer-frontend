@@ -18,7 +18,7 @@ export function SearchForm({ onSubmitSearch }) {
   return (
     <section>
       <form className="search-form" onSubmit={onSubmit}>
-        <div className="search-form__wrapper">
+        <div className="search-form__container">
           <label className="search-form__label">
             <input
               className="search-form__input"

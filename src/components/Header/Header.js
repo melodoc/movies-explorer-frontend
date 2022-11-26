@@ -55,7 +55,7 @@ export function Header({ isLoggedIn, type }) {
                     link={ROUTES.SavedMovies}
                     font={{ weight: 400 }}
                   />
-                  <div className="header__link--wrapper">
+                  <div className="header__link--container">
                     <UILink
                       label="Аккаунт"
                       link={ROUTES.Profile}

@@ -10,6 +10,7 @@ import { Movies } from '../Movies/Movies';
 import { SavedMovies } from '../SavedMovies/SavedMovies';
 import { Login } from '../Login/Login';
 import { Register } from '../Register/Register';
+import { NotFound } from '../NotFound/NotFound';
 
 import { HEADER_TYPES } from '../../constants/headerTypes';
 import { ROUTES } from '../../constants/routes';
@@ -57,7 +58,7 @@ function App() {
           <div>Профиль</div>
         </Route>
         <Route path="*">
-          <div>404</div>
+          <NotFound />
         </Route>
       </Switch>
       {areBlocksShown && <Footer />}

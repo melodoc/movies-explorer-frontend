@@ -18,7 +18,7 @@
   color: var(--white);
 }
 
-.promo__image-wrapper {
+.promo__image-container {
   align-self: end;
 }
 
@@ -39,7 +39,7 @@
     text-align: center;
   }
 
-  .promo__image-wrapper {
+  .promo__image-container {
     align-self: center;
   }
 
@@ -61,14 +61,14 @@
     padding: 180px 0 60px 0;
   }
 
-  .promo__image-wrapper {
+  .promo__image-container {
     position: relative;
     overflow: hidden;
     width: 100vw;
     height: 230px;
   }
 
-  .promo__image-wrapper .promo__image {
+  .promo__image-container .promo__image {
     position: absolute;
     top: 50%;
     left: 50%;

@@ -2,7 +2,7 @@ import './UICheckbox.css';
 
 export function UICheckbox({ onSubmit, label }) {
   return (
-    <div className="checkbox__wrapper">
+    <div className="checkbox__container">
       <div className="checkbox">
         <input
           className="checkbox__input"

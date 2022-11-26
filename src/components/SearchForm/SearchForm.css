@@ -7,7 +7,7 @@
   border-bottom: 1px solid var(--gray-3);
 }
 
-.search-form__wrapper {
+.search-form__container {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -78,7 +78,7 @@
     padding-bottom: 50px;
   }
 
-  .search-form__wrapper {
+  .search-form__container {
     max-width: 704px;
     margin-top: 70px;
   }
@@ -90,7 +90,7 @@
     padding-bottom: 50px;
   }
 
-  .search-form__wrapper {
+  .search-form__container {
     max-width: 286px;
     margin-top: 70px;
   }

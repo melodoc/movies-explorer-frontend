@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { INPUT_TYPES } from '../../constants/inputTypes';
 import { UIRedirect } from '../../shared-components/ui-redirect/UIRedirect';
@@ -10,8 +10,11 @@ import logo from '../../images/logo.svg';
 import './Register.css';
 
 export function Register() {
+  const history = useHistory();
+
   const onSubmit = (e) => {
     e.preventDefault();
+    history.push(ROUTES.SignIn);
   };
 
   return (

@@ -8,7 +8,7 @@ export function Promo() {
       <h1 className="promo__headline">
         Учебный проект студента факультета Веб-разработки.
       </h1>
-      <div className="promo__image-wrapper">
+      <div className="promo__image-container">
         <img className="promo__image" src={spinner} alt="spinner" />
       </div>
     </section>

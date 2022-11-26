@@ -7,6 +7,7 @@ import { Techs } from '../Techs/Techs';
 import { AboutMe } from '../AboutMe/AboutMe';
 import { Portfolio } from '../Portfolio/Portfolio';
 import { Movies } from '../Movies/Movies';
+import { SavedMovies } from '../SavedMovies/SavedMovies';
 import { Login } from '../Login/Login';
 import { Register } from '../Register/Register';
 
@@ -50,7 +51,7 @@ function App() {
           <Movies cards={mockedCards} />
         </Route>
         <Route path={ROUTES.SavedMovies}>
-          <Movies cards={savedCards} />
+          <SavedMovies cards={savedCards} />
         </Route>
         <Route path={ROUTES.Profile}>
           <div>Профиль</div>

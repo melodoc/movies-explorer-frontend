@@ -1,10 +1,13 @@
+import { SearchForm } from '../SearchForm/SearchForm';
+import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
+
 import './SavedMovies.css';
 
-export function SavedMovies() {
+export function SavedMovies({ cards }) {
   return (
-    <div className="savedMovies">
-        компонент страницы с сохранёнными карточками фильмов. 
-        Пригодятся эти компоненты: MoviesCardList и MoviesCard
-    </div>
+    <>
+      <SearchForm onSubmitSearch={() => {}} />
+      <MoviesCardList cards={cards} />
+    </>
   );
 }

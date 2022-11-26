@@ -17,11 +17,11 @@ export function SearchForm({ onSubmitSearch }) {
 
   return (
     <section>
-      <form className="form" onSubmit={onSubmit}>
-        <div className="form__wrapper">
-          <label className="form__label">
+      <form className="search-form" onSubmit={onSubmit}>
+        <div className="search-form__wrapper">
+          <label className="search-form__label">
             <input
-              className="form__input"
+              className="search-form__input"
               id="films"
               onChange={handleInputChange}
               name="films"
@@ -32,7 +32,7 @@ export function SearchForm({ onSubmitSearch }) {
               type="text"
             />
           </label>
-          <button className="form__button" />
+          <button className="search-form__button" />
         </div>
         <UICheckbox label="Короткометражки"/>
       </form>

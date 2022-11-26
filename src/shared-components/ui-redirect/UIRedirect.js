@@ -4,9 +4,9 @@ import './UIRedirect.css';
 
 export function UIRedirect({ label, redirectLabel, link }) {
   return (
-    <div class="link__container">
-      <p class="link__text">{label ?? ''}</p>
-      <Link class="link__redirect-link" to={link}>
+    <div className="redirect-link__container">
+      <p className="redirect-link__text">{label ?? ''}</p>
+      <Link className="redirect-link__link" to={link}>
         {redirectLabel ?? '-'}
       </Link>
     </div>

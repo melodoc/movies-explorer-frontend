@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory} from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { INPUT_TYPES } from '../../constants/inputTypes';
 import { UIRedirect } from '../../shared-components/ui-redirect/UIRedirect';
@@ -10,16 +10,19 @@ import logo from '../../images/logo.svg';
 import './Login.css';
 
 export function Login() {
+  const history = useHistory();
+
   const onSubmit = (e) => {
     e.preventDefault();
+    history.push(ROUTES.Movies);
   };
 
   return (
-    <section class="entry-form">
-      <div class="form__container">
-        <form class="form__form" onSubmit={onSubmit}>
+    <section className="entry-form">
+      <div className="form__container">
+        <form className="form__form" onSubmit={onSubmit}>
           <Link to={ROUTES.About}>
-            <img src={logo} class="form__logo" alt="logo" />
+            <img src={logo} className="form__logo" alt="logo" />
           </Link>
           <UITitle label="Рады видеть!" />
           <UIInput label="E-mail" type={INPUT_TYPES.Email} required />
@@ -28,7 +31,7 @@ export function Login() {
             type={INPUT_TYPES.Password}
             required
           />
-          <UISubmit label="Войти" name="login" />
+          <UISubmit label="Войти" name="login" link={ROUTES.Movies}/>
           <UIRedirect
             label="Еще не зарегистрированы?"
             redirectLabel="Регистрация"

@@ -4,12 +4,12 @@ import './UIInput.css';
 
 export function UIInput({ label, type, value, required, handleChange }) {
   return (
-    <div class="field__container">
-      <label class="field__label" htmlFor={label}>
+    <div className="field__container">
+      <label className="field__label" htmlFor={label}>
         {label}
       </label>
       <input
-        class="field__input"
+        className="field__input"
         onChange={handleChange}
         type={type}
         id={label}

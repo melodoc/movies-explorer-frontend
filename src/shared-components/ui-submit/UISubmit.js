@@ -1,9 +1,9 @@
 import './UISubmit.css';
 
-export function UISubmit({ label, name }) {
+export function UISubmit({ label, name, link }) {
   return (
     <input
-      class="form__submit"
+      className="form__submit"
       type="submit"
       id="submit"
       name={name}

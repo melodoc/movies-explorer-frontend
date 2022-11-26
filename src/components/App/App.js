@@ -11,6 +11,7 @@ import { SavedMovies } from '../SavedMovies/SavedMovies';
 import { Login } from '../Login/Login';
 import { Register } from '../Register/Register';
 import { NotFound } from '../NotFound/NotFound';
+import { Profile } from '../Profile/Profile';
 
 import { HEADER_TYPES } from '../../constants/headerTypes';
 import { ROUTES } from '../../constants/routes';
@@ -19,7 +20,16 @@ import { mockedCards, savedCards } from '../../mocked/mockedCards';
 function App() {
   const location = useLocation();
   const isAboutPage = location?.pathname === ROUTES.About;
-  const areBlocksShown = [
+
+  /* FIXME: Перенести в утилиты */
+
+  const isHeaderShown = [
+    ROUTES.About,
+    ROUTES.Movies,
+    ROUTES.SavedMovies,
+    ROUTES.Profile
+  ].includes(location?.pathname);
+  const isFooterShown = [
     ROUTES.About,
     ROUTES.Movies,
     ROUTES.SavedMovies
@@ -27,8 +37,7 @@ function App() {
 
   return (
     <>
-      {/* FIXME: Перенести в утилиты */}
-      {areBlocksShown && (
+      {isHeaderShown && (
         <Header
           type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main}
           isLoggedIn={isAboutPage ? false : true}
@@ -55,13 +64,13 @@ function App() {
           <SavedMovies cards={savedCards} />
         </Route>
         <Route path={ROUTES.Profile}>
-          <div>Профиль</div>
+          <Profile />
         </Route>
         <Route path="*">
           <NotFound />
         </Route>
       </Switch>
-      {areBlocksShown && <Footer />}
+      {isFooterShown && <Footer />}
     </>
   );
 }

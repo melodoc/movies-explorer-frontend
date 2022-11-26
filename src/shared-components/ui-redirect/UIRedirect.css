@@ -23,6 +23,7 @@
   line-height: 17px;
   color: var(--blue);
   text-decoration: none;
+  transition: 0.1s ease-in-out;
 }
 
 .redirect-link__link:hover {

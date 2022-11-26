@@ -29,7 +29,9 @@ export function Register() {
             type={INPUT_TYPES.Password}
             required
           />
-          <UISubmit label="Зарегистрироваться" name="signUp" />
+          <div className="entry-form__input entry-form__input_type_register">
+            <UISubmit label="Зарегистрироваться" name="signUp" />
+          </div>
           <UIRedirect
             label="Уже зарегистрированы?"
             redirectLabel="Войти"

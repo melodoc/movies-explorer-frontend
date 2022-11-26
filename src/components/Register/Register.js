@@ -16,10 +16,10 @@ export function Register() {
 
   return (
     <section className="entry-form">
-      <div className="form__container">
-        <form className="form__form" onSubmit={onSubmit}>
+      <div className="entry-form__container">
+        <form className="entry-form__form" onSubmit={onSubmit}>
           <Link to={ROUTES.About}>
-            <img src={logo} className="form__logo" alt="logo" />
+            <img src={logo} className="entry-form__logo" alt="logo" />
           </Link>
           <UITitle label="Добро пожаловать!" />
           <UIInput label="Имя" type={INPUT_TYPES.Text} required />

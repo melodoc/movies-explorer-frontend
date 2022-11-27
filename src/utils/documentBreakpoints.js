@@ -23,11 +23,15 @@ export class DocumentBreakpoints {
     );
   }
 
-  static getIsDesktop() {
-    return window.innerWidth >= this.desktopBreakpoint;
-  }
-
   static getIsSmallMobile() {
     return window.innerWidth <= this.mobileBreakpoint;
+  }
+
+  static getIsMobileOrTablet() {
+    return window.innerWidth <= this.tabletBreakpoint + 1;
+  }
+
+  static getIsDesktop() {
+    return window.innerWidth >= this.desktopBreakpoint;
   }
 }

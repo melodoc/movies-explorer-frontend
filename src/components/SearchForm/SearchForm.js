@@ -30,6 +30,7 @@ export function SearchForm({ onSubmitSearch }) {
               minLength={2}
               maxLength={200}
               type="text"
+              required
             />
           </label>
           <button className="search-form__button" />

@@ -19,7 +19,7 @@ export function Header({ isLoggedIn, type }) {
     useState(false);
 
   const [isLoggedInMock, setIsLoggedInMock] = useState(isLoggedIn);
-  const isDesktop = DocumentBreakpoints.getIsDesktop();
+  const isMobileOrTablet = DocumentBreakpoints.getIsMobileOrTablet();
   const menuSrc = DocumentBreakpoints.getIsMobile
     ? menu_mobile
     : menu;
@@ -46,7 +46,7 @@ export function Header({ isLoggedIn, type }) {
         </Link>
         {isLoggedInMock ? (
           <>
-            {isDesktop ? (
+            {!isMobileOrTablet ? (
               <div className="header__list">
                 <ul className="header__links">
                   <UILink label="Фильмы" link={ROUTES.Movies} />
@@ -94,10 +94,7 @@ export function Header({ isLoggedIn, type }) {
               link={ROUTES.SignUp}
               font={{ size: '12px', lineHeight: '16px' }}
             />
-            <UIButton
-              label="Войти"
-              link={ROUTES.SignIn}
-            />
+            <UIButton label="Войти" link={ROUTES.SignIn} />
           </ul>
         )}
       </nav>

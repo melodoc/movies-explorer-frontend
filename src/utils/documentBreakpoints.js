@@ -1,5 +1,3 @@
-// TODO: Добавить resizeObserver для определения размеров при ресайзе
-
 export class DocumentBreakpoints {
   static mobileBreakpoint = 360;
   static tabletBreakpoint = 767;
@@ -27,11 +25,11 @@ export class DocumentBreakpoints {
     return window.innerWidth <= this.mobileBreakpoint;
   }
 
-  static getIsMobileOrTablet() {
-    return window.innerWidth <= this.tabletBreakpoint + 1;
-  }
-
   static getIsDesktop() {
     return window.innerWidth >= this.desktopBreakpoint;
+  }
+
+  static getIsMobileInValue(value) {
+    return this.tabletBreakpoint + 1 >= value;
   }
 }

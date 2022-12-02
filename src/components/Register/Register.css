@@ -1,0 +1,9 @@
+.entry-form__input_type_register {
+  margin-top: 49px;
+}
+
+@media screen and (max-width: 767px) {
+  .entry-form__input_type_register {
+    margin-top: 136px;
+  }
+}

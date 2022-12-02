@@ -1,0 +1,22 @@
+:root {
+  --black: #202020;
+  --transparent-black: rgba(0, 0, 0, 0.3);
+  --semi-black: #303030;
+  --total-black: #000000;
+  --pearl-opal: #073042;
+  --green: #3ddc84;
+  --gray: #dadada;
+  --gray-1: #8b8b8b;
+  --gray-2: #272727;
+  --gray-3: #424242;
+  --gray-4: #2f2f2f;
+  --gray-5: #313131;
+  --light-gray: #202020;
+  --blue: #4285f4;
+  --white: #ffffff;
+  --pink: #ee3465;
+  --hover-opacity: 0.6;
+  --offset: 70px;
+  --offset-s: 30px;
+  --offset-xs: 14px;
+}

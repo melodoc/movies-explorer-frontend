@@ -1,0 +1,19 @@
+.headline {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+}
+
+@media screen and (max-width: 767px) {
+  .headline {
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.04em;
+    padding-bottom: 27px;
+  }
+}

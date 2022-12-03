@@ -12,6 +12,7 @@ const SEARCH_FORM_VALIDATION_MAP = new Map([
 export function SearchForm({ onSubmitSearch }) {
   const input = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [checkboxQuery, setCheckboxQuery] = useState(false);
   const [inputState, setInputState] = useState(
     SEARCH_FORM_VALIDATION_MAP.get(true)
   );
@@ -20,11 +21,15 @@ export function SearchForm({ onSubmitSearch }) {
     e.preventDefault();
     const isWord = ValidationHelper.isWord(searchQuery);
     setInputState(SEARCH_FORM_VALIDATION_MAP.get(isWord));
-    isWord && onSubmitSearch(searchQuery);
+    isWord && onSubmitSearch(searchQuery, checkboxQuery);
   };
 
   const handleOnChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleOnCheckboxChange = (checkboxValue) => {
+    setCheckboxQuery(checkboxValue);
   };
 
   return (
@@ -49,7 +54,7 @@ export function SearchForm({ onSubmitSearch }) {
         {!inputState.valid && (
           <p className="search-form__valid-text">{inputState.text}</p>
         )}
-        <UICheckbox label="Короткометражки" />
+        <UICheckbox label="Короткометражки" onSubmit={handleOnCheckboxChange}/>
       </form>
     </section>
   );

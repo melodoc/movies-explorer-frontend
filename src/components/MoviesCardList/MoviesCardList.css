@@ -31,6 +31,15 @@
   cursor: pointer;
 }
 
+.cards__empty {
+  padding: 0;
+  margin: 0;
+  justify-self: center;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  color: var(--pink);
+}
+
 @media screen and (max-width: 1023px) {
   .cards {
     max-width: 708px;

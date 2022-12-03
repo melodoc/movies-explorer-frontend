@@ -1,11 +1,11 @@
-export class CardButtonHelper {
+export class CardHelper {
   // на главной
   // !isSaved -- не добавлено в избранное
   // isSaved -- добавлено в избранное
 
   // на странице избранного
   // delete --  удалить на странице избранных
-  static getButton(isSaved, hasDeleteBtn) {
+  static getButtonStyle(isSaved, hasDeleteBtn) {
     return {
       style: [
         'card__button',
@@ -22,5 +22,36 @@ export class CardButtonHelper {
         .filter((className) => !!className)
         .pop()
     };
+  }
+
+  static _addAdditionalSymbolsBefore(
+    inputString,
+    symbol,
+    symbolsAmount
+  ) {
+    return inputString.padStart(symbolsAmount, symbol);
+  }
+
+  static getDuration(duration) {
+    if (!duration) {
+      return '-';
+    }
+
+    const hours = parseInt(duration / 60);
+    const minutes = CardHelper._addAdditionalSymbolsBefore(
+      (duration % 60).toString(),
+      '0',
+      2
+    );
+
+    return `${hours} ч ${minutes} м`;
+  }
+
+  static getMaxCardAmount(isDesktop, isTablet) {
+    return !isDesktop ? (isTablet ? 8 : 5) : 12;
+  }
+  
+  static getMoreCardAmount(isDesktop) {
+    return !isDesktop ? 2 : 3;
   }
 }

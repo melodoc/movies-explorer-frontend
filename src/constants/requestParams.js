@@ -1,5 +1,5 @@
 export const beatfilmMoviesRequestParams = {
-  baseUrl: 'https://api.nomoreparties.co/beatfilm-movies',
+  baseUrl: 'https://api.nomoreparties.co',
   headers: {
     'Content-Type': 'application/json'
   }

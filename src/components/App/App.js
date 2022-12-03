@@ -15,7 +15,7 @@ import { Profile } from '../Profile/Profile';
 
 import { HEADER_TYPES } from '../../constants/headerTypes';
 import { ROUTES } from '../../constants/routes';
-import { mockedCards, savedCards } from '../../mocked/mockedCards';
+import { savedCards } from '../../mocked/mockedCards';
 
 function App() {
   const location = useLocation();
@@ -58,7 +58,7 @@ function App() {
           <Login />
         </Route>
         <Route path={ROUTES.Movies}>
-          <Movies cards={mockedCards} />
+          <Movies />
         </Route>
         <Route path={ROUTES.SavedMovies}>
           <SavedMovies cards={savedCards} />

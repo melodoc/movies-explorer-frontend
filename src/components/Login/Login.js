@@ -29,41 +29,23 @@ export function Login() {
         <div className="entry-form__container">
           <form className="entry-form__form" onSubmit={onSubmit}>
             <Link to={ROUTES.About}>
-              <img
-                src={logo}
-                className="entry-form__logo"
-                alt="logo"
-              />
+              <img src={logo} className="entry-form__logo" alt="logo" />
             </Link>
             <UITitle label="Рады видеть!" />
-            <UIInput
-              label="E-mail"
-              type={INPUT_TYPES.Email}
-              required
-            />
-            <UIInput
-              label="Пароль"
-              type={INPUT_TYPES.Password}
-              required
-            />
+            <UIInput label="E-mail" type={INPUT_TYPES.Email} required />
+            <UIInput label="Пароль" type={INPUT_TYPES.Password} required />
             <div className="entry-form__input">
-              <UISubmit
-                label="Войти"
-                name="login"
-                link={ROUTES.Movies}
-              />
+              <UISubmit label="Войти" name="login" link={ROUTES.Movies} />
             </div>
-            <UIRedirect
-              label="Еще не зарегистрированы?"
-              redirectLabel="Регистрация"
-              link={ROUTES.SignUp}
-            />
+            <UIRedirect label="Еще не зарегистрированы?" redirectLabel="Регистрация" link={ROUTES.SignUp} />
           </form>
         </div>
       </section>
-      {isLoading && (<div className="entry-form__loader">
-        <Preloader />
-      </div>)}
+      {isLoading && (
+        <div className="entry-form__loader">
+          <Preloader />
+        </div>
+      )}
     </>
   );
 }

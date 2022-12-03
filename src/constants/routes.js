@@ -4,5 +4,5 @@ export const ROUTES = {
   About: '/',
   Movies: '/movies',
   SavedMovies: '/saved-movies',
-  Profile: '/profile',
+  Profile: '/profile'
 };

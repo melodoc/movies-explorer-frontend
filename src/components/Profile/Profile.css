@@ -28,8 +28,7 @@
 }
 
 .profile__title:hover {
-  text-shadow: 0 0 5px var(--white), 0 0 20px var(--pink),
-    0 0 30px var(--pink);
+  text-shadow: 0 0 5px var(--white), 0 0 20px var(--pink), 0 0 30px var(--pink);
 }
 
 .profile__form-container {

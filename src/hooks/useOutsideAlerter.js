@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 // Источник хука: https://stackoverflow.com/questions/32553158/detect-click-outside-react-component
 
 /**
- * Хук, который выполняет действие callback при клике 
+ * Хук, который выполняет действие callback при клике
  * за пределами переданного ref
  */
 

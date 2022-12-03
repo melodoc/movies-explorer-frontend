@@ -16,21 +16,16 @@ import menu_mobile from '../../images/menu_mobile.svg';
 import './Header.css';
 
 export function Header({ isLoggedIn, type }) {
-  const [isMobileMenuPopupOpen, setIsMobileMenuPopupOpen] =
-    useState(false);
+  const [isMobileMenuPopupOpen, setIsMobileMenuPopupOpen] = useState(false);
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth
   });
   const [isLoggedInMock, setIsLoggedInMock] = useState(isLoggedIn);
 
-  const isMobileOrTablet = DocumentBreakpoints.getIsMobileInValue(
-    dimensions.width
-  );
+  const isMobileOrTablet = DocumentBreakpoints.getIsMobileInValue(dimensions.width);
 
-  const menuSrc = DocumentBreakpoints.getIsMobile
-    ? menu_mobile
-    : menu;
+  const menuSrc = DocumentBreakpoints.getIsMobile ? menu_mobile : menu;
 
   useEffect(() => {
     const debouncedHandleResize = debounce(function handleResize() {
@@ -59,13 +54,7 @@ export function Header({ isLoggedIn, type }) {
 
   return (
     <>
-      <header
-        className={`header ${
-          HeaderHelper.isBanner(type)
-            ? 'header-banner'
-            : 'header-main'
-        }`}
-      >
+      <header className={`header ${HeaderHelper.isBanner(type) ? 'header-banner' : 'header-main'}`}>
         <nav className="header__nav">
           <Link to={ROUTES.About} className="header__link">
             <img src={logo} alt="logo" />
@@ -76,31 +65,15 @@ export function Header({ isLoggedIn, type }) {
                 <div className="header__list">
                   <ul className="header__links">
                     <UILink label="Фильмы" link={ROUTES.Movies} />
-                    <UILink
-                      label="Сохранённые фильмы"
-                      link={ROUTES.SavedMovies}
-                      font={{ weight: 400 }}
-                    />
+                    <UILink label="Сохранённые фильмы" link={ROUTES.SavedMovies} font={{ weight: 400 }} />
                     <div className="header__link--container">
-                      <UILink
-                        label="Аккаунт"
-                        link={ROUTES.Profile}
-                        isWithIcon
-                        iconType={ICON_TYPES.Profile}
-                      />
+                      <UILink label="Аккаунт" link={ROUTES.Profile} isWithIcon iconType={ICON_TYPES.Profile} />
                     </div>
                   </ul>
                 </div>
               ) : (
-                <button
-                  className="header__list-menu_button"
-                  onClick={handleMobileMenuPopup}
-                >
-                  <img
-                    className="header__list-menu_mobile"
-                    src={menuSrc}
-                    alt="menu"
-                  />
+                <button className="header__list-menu_button" onClick={handleMobileMenuPopup}>
+                  <img className="header__list-menu_mobile" src={menuSrc} alt="menu" />
                 </button>
               )}
               {isMobileMenuPopupOpen && (
@@ -115,11 +88,7 @@ export function Header({ isLoggedIn, type }) {
             </>
           ) : (
             <ul className="header__list">
-              <UILink
-                label="Регистрация"
-                link={ROUTES.SignUp}
-                font={{ size: '12px', lineHeight: '16px' }}
-              />
+              <UILink label="Регистрация" link={ROUTES.SignUp} font={{ size: '12px', lineHeight: '16px' }} />
               <UIButton label="Войти" link={ROUTES.SignIn} />
             </ul>
           )}

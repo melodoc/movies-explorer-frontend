@@ -67,24 +67,15 @@ export function Profile() {
           </ul>
         </form>
         {isReadOnly ? (
-            <div className="profile__form-links">
-              <UISubmit
-                label="Редактировать"
-                name="edit"
-                handleClick={handleEditProfileClick}
-                secondary
-              />
-              <Link className="profile__form-link" to={ROUTES.SignIn}>
-                Выйти из аккаунта
-              </Link>
-            </div>
-          ) : (
-            <UISubmit
-              label="Сохранить"
-              name="save"
-              handleClick={handleSaveProfileClick}
-            />
-          )}
+          <div className="profile__form-links">
+            <UISubmit label="Редактировать" name="edit" handleClick={handleEditProfileClick} secondary />
+            <Link className="profile__form-link" to={ROUTES.SignIn}>
+              Выйти из аккаунта
+            </Link>
+          </div>
+        ) : (
+          <UISubmit label="Сохранить" name="save" handleClick={handleSaveProfileClick} />
+        )}
       </div>
     </section>
   );

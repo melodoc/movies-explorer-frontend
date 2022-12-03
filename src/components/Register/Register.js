@@ -27,19 +27,11 @@ export function Register() {
           <UITitle label="Добро пожаловать!" />
           <UIInput label="Имя" type={INPUT_TYPES.Text} required />
           <UIInput label="E-mail" type={INPUT_TYPES.Email} required />
-          <UIInput
-            label="Пароль"
-            type={INPUT_TYPES.Password}
-            required
-          />
+          <UIInput label="Пароль" type={INPUT_TYPES.Password} required />
           <div className="entry-form__input entry-form__input_type_register">
             <UISubmit label="Зарегистрироваться" name="signUp" />
           </div>
-          <UIRedirect
-            label="Уже зарегистрированы?"
-            redirectLabel="Войти"
-            link={ROUTES.SignIn}
-          />
+          <UIRedirect label="Уже зарегистрированы?" redirectLabel="Войти" link={ROUTES.SignIn} />
         </form>
       </div>
     </section>

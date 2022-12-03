@@ -15,20 +15,13 @@ export class CardHelper {
       ]
         .filter((className) => !!className)
         .join(' '),
-      label: [
-        (isSaved || hasDeleteBtn) && '',
-        !isSaved && !hasDeleteBtn && 'Сохранить'
-      ]
+      label: [(isSaved || hasDeleteBtn) && '', !isSaved && !hasDeleteBtn && 'Сохранить']
         .filter((className) => !!className)
         .pop()
     };
   }
 
-  static _addAdditionalSymbolsBefore(
-    inputString,
-    symbol,
-    symbolsAmount
-  ) {
+  static _addAdditionalSymbolsBefore(inputString, symbol, symbolsAmount) {
     return inputString.padStart(symbolsAmount, symbol);
   }
 
@@ -38,11 +31,7 @@ export class CardHelper {
     }
 
     const hours = parseInt(duration / 60);
-    const minutes = CardHelper._addAdditionalSymbolsBefore(
-      (duration % 60).toString(),
-      '0',
-      2
-    );
+    const minutes = CardHelper._addAdditionalSymbolsBefore((duration % 60).toString(), '0', 2);
 
     return `${hours} ч ${minutes} м`;
   }
@@ -50,7 +39,7 @@ export class CardHelper {
   static getMaxCardAmount(isDesktop, isTablet) {
     return !isDesktop ? (isTablet ? 8 : 5) : 12;
   }
-  
+
   static getMoreCardAmount(isDesktop) {
     return !isDesktop ? 2 : 3;
   }

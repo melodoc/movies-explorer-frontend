@@ -7,6 +7,4 @@ class MoviesApi extends BaseApi {
   }
 }
 
-export const moviesApiClient = new MoviesApi(
-  beatfilmMoviesRequestParams
-);
+export const moviesApiClient = new MoviesApi(beatfilmMoviesRequestParams);

@@ -2,14 +2,7 @@ import { CardHelper } from '../../utils/cardHelper';
 
 import './MoviesCard.css';
 
-export function MoviesCard({
-  src,
-  label,
-  duration,
-  trailerLink,
-  isSaved,
-  hasDeleteBtn
-}) {
+export function MoviesCard({ src, label, duration, trailerLink, isSaved, hasDeleteBtn }) {
   const btn = CardHelper.getButtonStyle(isSaved, hasDeleteBtn);
   const convertedDuration = CardHelper.getDuration(duration);
 

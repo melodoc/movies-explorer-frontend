@@ -6,33 +6,15 @@ import profile from '../../images/profile.svg';
 
 import './UILink.css';
 
-const ICON_TYPE_MAP = new Map([
-  [ICON_TYPES.Profile, { src: profile, alt: profile }]
-]);
+const ICON_TYPE_MAP = new Map([[ICON_TYPES.Profile, { src: profile, alt: profile }]]);
 
-export function UILink({
-  label,
-  link,
-  font,
-  isWithIcon,
-  isVertical,
-  iconType,
-  hasDecoration
-}) {
+export function UILink({ label, link, font, isWithIcon, isVertical, iconType, hasDecoration }) {
   const image = ICON_TYPE_MAP.get(iconType);
-  const linkStyles = LinkHelper.getLinkStyles(
-    font,
-    isVertical,
-    hasDecoration
-  );
+  const linkStyles = LinkHelper.getLinkStyles(font, isVertical, hasDecoration);
 
   return !isWithIcon ? (
     <li className={linkStyles.item}>
-      <Link
-        className={linkStyles.link}
-        to={link}
-        style={linkStyles.font}
-      >
+      <Link className={linkStyles.link} to={link} style={linkStyles.font}>
         {label}
       </Link>
     </li>

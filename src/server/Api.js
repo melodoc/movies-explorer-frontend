@@ -12,9 +12,7 @@ export class BaseApi {
   }
 
   _fetchHandle(method, path, options) {
-    const fetchPath = !!path
-      ? `${this.baseUrl}${path}`
-      : `${this.baseUrl}`;
+    const fetchPath = !!path ? `${this.baseUrl}${path}` : `${this.baseUrl}`;
     const token = localStorage.getItem('token');
     const fetchHeaders = !!token
       ? this.headers

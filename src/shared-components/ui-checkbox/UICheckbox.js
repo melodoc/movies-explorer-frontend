@@ -5,7 +5,7 @@ export function UICheckbox({ onSubmit, label }) {
   const input = useRef(null);
 
   const handleOnChange = () => {
-    onSubmit(input.current.checked)
+    onSubmit(input.current.checked);
   };
 
   return (

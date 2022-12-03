@@ -8,17 +8,11 @@ export class DocumentBreakpoints {
   }
 
   static getIsMobile() {
-    return (
-      window.innerWidth >= this.mobileBreakpoint &&
-      window.innerWidth < this.tabletBreakpoint
-    );
+    return window.innerWidth >= this.mobileBreakpoint && window.innerWidth < this.tabletBreakpoint;
   }
 
   static getIsTablet() {
-    return (
-      window.innerWidth >= this.tabletBreakpoint &&
-      window.innerWidth < this.desktopBreakpoint
-    );
+    return window.innerWidth >= this.tabletBreakpoint && window.innerWidth < this.desktopBreakpoint;
   }
 
   static getIsSmallMobile() {

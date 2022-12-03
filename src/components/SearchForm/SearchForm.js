@@ -13,9 +13,7 @@ export function SearchForm({ onSubmitSearch }) {
   const input = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxQuery, setCheckboxQuery] = useState(false);
-  const [inputState, setInputState] = useState(
-    SEARCH_FORM_VALIDATION_MAP.get(true)
-  );
+  const [inputState, setInputState] = useState(SEARCH_FORM_VALIDATION_MAP.get(true));
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -51,10 +49,8 @@ export function SearchForm({ onSubmitSearch }) {
           </label>
           <button className="search-form__button" />
         </div>
-        {!inputState.valid && (
-          <p className="search-form__valid-text">{inputState.text}</p>
-        )}
-        <UICheckbox label="Короткометражки" onSubmit={handleOnCheckboxChange}/>
+        {!inputState.valid && <p className="search-form__valid-text">{inputState.text}</p>}
+        <UICheckbox label="Короткометражки" onSubmit={handleOnCheckboxChange} />
       </form>
     </section>
   );

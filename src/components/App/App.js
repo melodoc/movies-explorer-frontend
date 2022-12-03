@@ -23,25 +23,13 @@ function App() {
 
   /* FIXME: Перенести в утилиты */
 
-  const isHeaderShown = [
-    ROUTES.About,
-    ROUTES.Movies,
-    ROUTES.SavedMovies,
-    ROUTES.Profile
-  ].includes(location?.pathname);
-  const isFooterShown = [
-    ROUTES.About,
-    ROUTES.Movies,
-    ROUTES.SavedMovies
-  ].includes(location?.pathname);
+  const isHeaderShown = [ROUTES.About, ROUTES.Movies, ROUTES.SavedMovies, ROUTES.Profile].includes(location?.pathname);
+  const isFooterShown = [ROUTES.About, ROUTES.Movies, ROUTES.SavedMovies].includes(location?.pathname);
 
   return (
     <>
       {isHeaderShown && (
-        <Header
-          type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main}
-          isLoggedIn={isAboutPage ? false : true}
-        />
+        <Header type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main} isLoggedIn={isAboutPage ? false : true} />
       )}
       <Switch>
         <Route path={ROUTES.About} exact>

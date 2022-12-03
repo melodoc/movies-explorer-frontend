@@ -3,13 +3,7 @@ import { INPUT_TYPES } from '../../constants/inputTypes';
 
 import './UIInput.css';
 
-export function UIInput({
-  label,
-  type,
-  value,
-  required,
-  handleChange
-}) {
+export function UIInput({ label, type, value, required, handleChange }) {
   const input = useRef(null);
   const [inputState, setInputState] = useState({
     valid: true,

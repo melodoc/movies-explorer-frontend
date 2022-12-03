@@ -3,6 +3,7 @@ import { SearchForm } from '../SearchForm/SearchForm';
 import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
 import { Preloader } from '../Preloader/Preloader';
 import { moviesApiClient } from '../../utils/MoviesApi';
+import { CardHelper } from '../../utils/cardHelper';
 import { ERROR_LABELS } from '../../constants/errorLabels';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 
@@ -16,7 +17,7 @@ export function Movies() {
   const handleSubmitSearch = async (searchQuery, checkboxQuery) => {
     setIsLoading(true);
     try {
-      const movies = await moviesApiClient.getMovies();
+      const movies = CardHelper.filterMovies(await moviesApiClient.getMovies(), searchQuery, checkboxQuery);
       setCards(movies);
       const localStorageItems = [
         { key: LOCAL_STORAGE_KEYS.Movies, value: JSON.stringify(movies) },

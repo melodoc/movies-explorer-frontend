@@ -33,7 +33,7 @@ export class CardHelper {
     const hours = parseInt(duration / 60);
     const minutes = CardHelper._addAdditionalSymbolsBefore((duration % 60).toString(), '0', 2);
 
-    return `${hours} ч ${minutes} м`;
+    return hours ? `${hours} ч ${minutes} м` : `${minutes} м`;
   }
 
   static getMaxCardAmount(isDesktop, isTablet) {
@@ -42,5 +42,15 @@ export class CardHelper {
 
   static getMoreCardAmount(isDesktop) {
     return !isDesktop ? 2 : 3;
+  }
+
+  static filterMovies(movies, searchQuery, isShort) {
+    const shortDuration = 40;
+
+    return movies.filter((movie) => {
+      return !isShort
+        ? movie?.nameRU?.includes(searchQuery) && movie?.duration > shortDuration
+        : movie?.nameRU?.includes(searchQuery) && movie?.duration <= shortDuration;
+    });
   }
 }

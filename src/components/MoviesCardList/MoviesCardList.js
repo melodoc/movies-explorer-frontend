@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MoviesCard } from '../MoviesCard/MoviesCard';
 import { DocumentBreakpoints } from '../../utils/documentBreakpoints';
 import { CardHelper } from '../../utils/cardHelper';
@@ -26,6 +26,10 @@ export function MoviesCardList({ cards, cardsLabel }) {
     setAmountOfCards(amountOfCards + MORE_CARD_AMOUNT);
     setShownCards([...cards].slice(0, amountOfCards));
   };
+
+  useEffect(() => {
+    setShownCards([...cards].slice(0, INITIAL_TO_SHOW_CARDS_AMOUNT));
+  }, [INITIAL_TO_SHOW_CARDS_AMOUNT, cards]);
 
   return (
     <section className="cards">

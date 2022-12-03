@@ -44,7 +44,6 @@ export function SearchForm({ onSubmitSearch }) {
               placeholder="Фильм"
               autoComplete="off"
               type="text"
-              required
             />
           </label>
           <button className="search-form__button" />

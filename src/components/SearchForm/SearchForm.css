@@ -72,6 +72,15 @@
   transition: 0.1s ease-in-out;
 }
 
+.search-form__valid-text{
+  margin: 0 0 42px;
+  padding: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--pink);
+}
+
 @media screen and (max-width: 1023px) {
   .form {
     margin: 0 30px;

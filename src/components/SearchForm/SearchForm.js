@@ -1,18 +1,30 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { UICheckbox } from '../../shared-components/ui-checkbox/UICheckbox';
+import { ValidationHelper } from '../../utils/validationHelper';
 
 import './SearchForm.css';
 
-export function SearchForm({ onSubmitSearch }) {
-  const [searchQuery, setSearchQuery] = useState('');
+const SEARCH_FORM_VALIDATION_MAP = new Map([
+  [true, { valid: true, text: '' }],
+  [false, { valid: false, text: 'Нужно ввести ключевое слово' }]
+]);
 
-  const handleInputChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+export function SearchForm({ onSubmitSearch }) {
+  const input = useRef(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [inputState, setInputState] = useState(
+    SEARCH_FORM_VALIDATION_MAP.get(true)
+  );
 
   const onSubmit = (e) => {
     e.preventDefault();
-    onSubmitSearch(searchQuery);
+    const isWord = ValidationHelper.isWord(searchQuery);
+    setInputState(SEARCH_FORM_VALIDATION_MAP.get(isWord));
+    isWord && onSubmitSearch(searchQuery);
+  };
+
+  const handleOnChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   return (
@@ -21,21 +33,23 @@ export function SearchForm({ onSubmitSearch }) {
         <div className="search-form__container">
           <label className="search-form__label">
             <input
+              ref={input}
               className="search-form__input"
               id="films"
-              onChange={handleInputChange}
+              onChange={handleOnChange}
               name="films"
               placeholder="Фильм"
               autoComplete="off"
-              minLength={2}
-              maxLength={200}
               type="text"
               required
             />
           </label>
           <button className="search-form__button" />
         </div>
-        <UICheckbox label="Короткометражки"/>
+        {!inputState.valid && (
+          <p className="search-form__valid-text">{inputState.text}</p>
+        )}
+        <UICheckbox label="Короткометражки" />
       </form>
     </section>
   );

@@ -4,3 +4,10 @@ export const beatfilmMoviesRequestParams = {
     'Content-Type': 'application/json'
   }
 };
+
+export const moviesRequestParams = {
+  baseUrl: 'https://api.movies.melodoc.nomoredomains.icu/',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+};

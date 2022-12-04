@@ -1,7 +1,16 @@
 import { BaseApi } from '../server/Api';
-import { baseRequestParams } from '../constants/requestParams';
+import { moviesRequestParams } from '../constants/requestParams';
 
-class Api extends BaseApi {
+class MainApi extends BaseApi {
+  //POST /movies
+  addNewMovies(card) {
+    return this._fetchHandle(this._methods.POST, '/movies', card);
+  }
+
+  deleteMovieById(movieId) {
+    return this._fetchHandle(this._methods.DELETE, `/movies/${movieId}`);
+  }
+
   getUserInformation() {
     return this._fetchHandle(this._methods.GET, '/users/me');
   }
@@ -15,17 +24,6 @@ class Api extends BaseApi {
       name,
       about
     });
-  }
-
-  addNewCard(name, link) {
-    return this._fetchHandle(this._methods.POST, '/cards', {
-      name,
-      link
-    });
-  }
-
-  deleteCardById(cardId) {
-    return this._fetchHandle(this._methods.DELETE, `/cards/${cardId}`);
   }
 
   changeLikeCardStatus(cardId, setLike) {
@@ -82,6 +80,6 @@ class AuthApi extends BaseApi {
   }
 }
 
-export const apiClient = new Api(baseRequestParams);
+export const mainApiClient = new MainApi(moviesRequestParams);
 
-export const authApiClient = new AuthApi(baseRequestParams);
+export const authApiClient = new AuthApi(moviesRequestParams);

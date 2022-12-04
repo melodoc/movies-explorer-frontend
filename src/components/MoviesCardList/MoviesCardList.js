@@ -3,6 +3,7 @@ import { MoviesCard } from '../MoviesCard/MoviesCard';
 import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { CardHelper } from '../../utils/cardHelper';
 import { beatfilmMoviesRequestParams } from '../../constants/requestParams';
+import { mainApiClient } from '../../utils/MainApi';
 
 import './MoviesCardList.css';
 
@@ -29,6 +30,32 @@ export function MoviesCardList({ cards, cardsLabel }) {
     setMoreCardAmount(CardHelper.getMoreCardAmount());
   }, [cards, dimensions, moreCardAmount, shownCards?.length]);
 
+  // FIXME: Проверить после добавления авторизации 
+  // Клик по иконке без заливки должен отправлять запрос к /movies
+  // нашего API на сохранение фильма. Клик по иконке с заливкой — запрос на удаление.
+
+  const handleClick = async (isSaved, card) => {
+    const cardData = {
+      country: card?.country,
+      director: card?.director,
+      duration: card?.duration,
+      year: card?.year,
+      description: card?.description,
+      image: `${beatfilmMoviesRequestParams.baseUrl}${card?.image?.url ?? ''}`,
+      trailerLink: card?.trailerLink,
+      thumbnail: `${beatfilmMoviesRequestParams.baseUrl}${card?.image?.formats?.thumbnail?.url ?? ''}`,
+      movieId: card?.id,
+      nameRU: card.nameRU,
+      nameEN: card.nameEN
+    };
+
+    if (!isSaved) {
+      await mainApiClient.addNewMovies(cardData);
+      return;
+    }
+    await mainApiClient.deleteMovieById(card?.id);
+  };
+
   return (
     <section className="cards">
       <div className="cards__container">
@@ -43,6 +70,8 @@ export function MoviesCardList({ cards, cardsLabel }) {
                 trailerLink={card?.trailerLink}
                 isSaved={card?.isSaved}
                 hasDeleteBtn={card?.hasDeleteBtn}
+                handleClick={handleClick}
+                card={card}
               />
             );
           })

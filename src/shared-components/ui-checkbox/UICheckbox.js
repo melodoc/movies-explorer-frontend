@@ -1,12 +1,21 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
+
 import './UICheckbox.css';
 
-export function UICheckbox({ onSubmit, label }) {
+export function UICheckbox({ label, onSubmit, initialDataLoadHandler }) {
   const input = useRef(null);
 
   const handleOnChange = () => {
     onSubmit(input.current.checked);
   };
+
+  const loadInitialData = () => {
+    input.current.checked = initialDataLoadHandler();
+  };
+
+  useEffect(() => {
+    loadInitialData();
+  }, []);
 
   return (
     <div className="checkbox__container">

@@ -1,6 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { UICheckbox } from '../../shared-components/ui-checkbox/UICheckbox';
 import { ValidationHelper } from '../../utils/validationHelper';
+import { CardHelper } from '../../utils/cardHelper';
+import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 
 import './SearchForm.css';
 
@@ -12,8 +14,12 @@ const SEARCH_FORM_VALIDATION_MAP = new Map([
 export function SearchForm({ onSubmitSearch }) {
   const input = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [checkboxQuery, setCheckboxQuery] = useState(false);
+  const [checkboxQuery, setCheckboxQuery] = useState(CardHelper.getCheckboxFromLocalStorage());
   const [inputState, setInputState] = useState(SEARCH_FORM_VALIDATION_MAP.get(true));
+
+  const loadInitialData = () => {
+    setSearchQuery(localStorage.getItem(LOCAL_STORAGE_KEYS.SearchQuery));
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -30,6 +36,10 @@ export function SearchForm({ onSubmitSearch }) {
     setCheckboxQuery(checkboxValue);
   };
 
+  useEffect(() => {
+    loadInitialData();
+  }, []);
+
   return (
     <section>
       <form className="search-form" onSubmit={onSubmit}>
@@ -44,12 +54,17 @@ export function SearchForm({ onSubmitSearch }) {
               placeholder="Фильм"
               autoComplete="off"
               type="text"
+              value={searchQuery}
             />
           </label>
           <button className="search-form__button" />
         </div>
         {!inputState.valid && <p className="search-form__valid-text">{inputState.text}</p>}
-        <UICheckbox label="Короткометражки" onSubmit={handleOnCheckboxChange} />
+        <UICheckbox
+          label="Короткометражки"
+          onSubmit={handleOnCheckboxChange}
+          initialDataLoadHandler={CardHelper.getCheckboxFromLocalStorage}
+        />
       </form>
     </section>
   );

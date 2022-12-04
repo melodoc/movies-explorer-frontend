@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchForm } from '../SearchForm/SearchForm';
 import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
 import { Preloader } from '../Preloader/Preloader';
@@ -14,20 +14,16 @@ export function Movies() {
   const [cards, setCards] = useState();
   const [cardsLabel, setCardsLabel] = useState(ERROR_LABELS.Movies.notFound);
 
+  const loadInitialData = () => {
+    setCards(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Movies)));
+  };
+
   const handleSubmitSearch = async (searchQuery, checkboxQuery) => {
     setIsLoading(true);
     try {
       const movies = CardHelper.filterMovies(await moviesApiClient.getMovies(), searchQuery, checkboxQuery);
+      CardHelper.setLocalStorageItems(movies, searchQuery, checkboxQuery);
       setCards(movies);
-      const localStorageItems = [
-        { key: LOCAL_STORAGE_KEYS.Movies, value: JSON.stringify(movies) },
-        { key: LOCAL_STORAGE_KEYS.SearchQuery, value: searchQuery },
-        { key: LOCAL_STORAGE_KEYS.Checkbox, value: checkboxQuery }
-      ];
-
-      localStorageItems.forEach((item) => {
-        localStorage.setItem(item.key, item.value);
-      });
     } catch {
       setCards([]);
       setCardsLabel(ERROR_LABELS.Movies.connection);
@@ -36,6 +32,10 @@ export function Movies() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    loadInitialData();
+  }, []);
 
   return (
     <>

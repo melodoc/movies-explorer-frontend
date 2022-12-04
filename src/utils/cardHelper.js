@@ -1,3 +1,5 @@
+import { LOCAL_STORAGE_KEYS } from '../constants/localStorageKeys';
+
 export class CardHelper {
   // на главной
   // !isSaved -- не добавлено в избранное
@@ -52,5 +54,21 @@ export class CardHelper {
         ? movie?.nameRU?.includes(searchQuery) && movie?.duration > shortDuration
         : movie?.nameRU?.includes(searchQuery) && movie?.duration <= shortDuration;
     });
+  }
+
+  static setLocalStorageItems(movies, searchQuery, checkboxQuery) {
+    const localStorageItems = [
+      { key: LOCAL_STORAGE_KEYS.Movies, value: JSON.stringify(movies) },
+      { key: LOCAL_STORAGE_KEYS.SearchQuery, value: searchQuery },
+      { key: LOCAL_STORAGE_KEYS.Checkbox, value: checkboxQuery }
+    ];
+
+    localStorageItems.forEach((item) => {
+      localStorage.setItem(item.key, item.value);
+    });
+  }
+
+  static getCheckboxFromLocalStorage = () => {
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Checkbox));
   }
 }

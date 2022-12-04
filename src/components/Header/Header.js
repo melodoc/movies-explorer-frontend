@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import debounce from 'lodash-es/debounce';
 import { DocumentBreakpoints } from '../../utils/documentBreakpoints';
 import { HeaderHelper } from '../../utils/headerHelper';
+import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { UILink } from '../../shared-components/ul-link/UILink';
 import { UIButton } from '../../shared-components/ui-button/UIButton';
 import { Portal } from '../../components/Portal/Portal';
@@ -17,30 +18,11 @@ import './Header.css';
 
 export function Header({ isLoggedIn, type }) {
   const [isMobileMenuPopupOpen, setIsMobileMenuPopupOpen] = useState(false);
-  const [dimensions, setDimensions] = useState({
-    height: window.innerHeight,
-    width: window.innerWidth
-  });
   const [isLoggedInMock, setIsLoggedInMock] = useState(isLoggedIn);
+  const dimensions = useResizeObserver();
 
   const isMobileOrTablet = DocumentBreakpoints.getIsMobileInValue(dimensions.width);
-
   const menuSrc = DocumentBreakpoints.getIsMobile ? menu_mobile : menu;
-
-  useEffect(() => {
-    const debouncedHandleResize = debounce(function handleResize() {
-      setDimensions({
-        height: window.innerHeight,
-        width: window.innerWidth
-      });
-    }, 100);
-
-    window.addEventListener('resize', debouncedHandleResize);
-
-    return (_) => {
-      window.removeEventListener('resize', debouncedHandleResize);
-    };
-  });
 
   const handleMobileMenuPopup = (e) => {
     e.preventDefault();

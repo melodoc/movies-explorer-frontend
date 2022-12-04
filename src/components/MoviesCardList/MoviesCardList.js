@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MoviesCard } from '../MoviesCard/MoviesCard';
-import { DocumentBreakpoints } from '../../utils/documentBreakpoints';
+import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { CardHelper } from '../../utils/cardHelper';
 import { beatfilmMoviesRequestParams } from '../../constants/requestParams';
 
@@ -9,27 +9,25 @@ import './MoviesCardList.css';
 const MIN_CARDS_TO_SHOW = 3;
 
 export function MoviesCardList({ cards, cardsLabel }) {
-  // FIXME: Добавить Ресайзобсервер
   const MAX_AMOUNT = cards?.length ?? 0;
-  const INITIAL_TO_SHOW_CARDS_AMOUNT = CardHelper.getMaxCardAmount(
-    DocumentBreakpoints.getIsDesktop(),
-    DocumentBreakpoints.getIsTablet()
-  );
-  const MORE_CARD_AMOUNT = CardHelper.getMoreCardAmount(DocumentBreakpoints.getIsDesktop());
-  const [amountOfCards, setAmountOfCards] = useState(INITIAL_TO_SHOW_CARDS_AMOUNT + MORE_CARD_AMOUNT);
-  const [shownCards, setShownCards] = useState([...cards].slice(0, INITIAL_TO_SHOW_CARDS_AMOUNT));
+  const [moreCardAmount, setMoreCardAmount] = useState(CardHelper.getMoreCardAmount());
+  const [shownCards, setShownCards] = useState(CardHelper.getShownCards(cards, CardHelper.getMaxCardAmount()));
+  const dimensions = useResizeObserver();
 
   const handleMoreClick = () => {
-    if (amountOfCards > MAX_AMOUNT + MORE_CARD_AMOUNT) {
+    if (shownCards?.length > MAX_AMOUNT + moreCardAmount) {
       return;
     }
-    setAmountOfCards(amountOfCards + MORE_CARD_AMOUNT);
-    setShownCards([...cards].slice(0, amountOfCards));
+    setShownCards(CardHelper.getShownCards(cards, shownCards?.length + moreCardAmount));
   };
 
   useEffect(() => {
-    setShownCards([...cards].slice(0, INITIAL_TO_SHOW_CARDS_AMOUNT));
-  }, [INITIAL_TO_SHOW_CARDS_AMOUNT, cards]);
+    setShownCards(CardHelper.getShownCards(cards, CardHelper.getMaxCardAmount()));
+  }, [cards]);
+
+  useEffect(() => {
+    setMoreCardAmount(CardHelper.getMoreCardAmount());
+  }, [cards, dimensions, moreCardAmount, shownCards?.length]);
 
   return (
     <section className="cards">

@@ -1,3 +1,4 @@
+import { DocumentBreakpoints } from './documentBreakpoints';
 import { LOCAL_STORAGE_KEYS } from '../constants/localStorageKeys';
 
 export class CardHelper {
@@ -38,21 +39,27 @@ export class CardHelper {
     return hours ? `${hours} ч ${minutes} м` : `${minutes} м`;
   }
 
-  static getMaxCardAmount(isDesktop, isTablet) {
-    return !isDesktop ? (isTablet ? 8 : 5) : 12;
+  static getMaxCardAmount() {
+    return !DocumentBreakpoints.getIsDesktop() ? (DocumentBreakpoints.getIsTablet() ? 8 : 5) : 12;
   }
 
-  static getMoreCardAmount(isDesktop) {
-    return !isDesktop ? 2 : 3;
+  static getMoreCardAmount() {
+    return !DocumentBreakpoints.getIsDesktop() ? (DocumentBreakpoints.getIsTablet() ? 2 : 1) : 3;
   }
 
-  static filterMovies(movies, searchQuery, isShort) {
+  static getShownCards(cards, amount) {
+    return [...cards].slice(0, amount);
+  }
+
+  static filterMoviesCards(movies, searchQuery, isShort) {
     const shortDuration = 40;
 
     return movies.filter((movie) => {
+      const isSearchQueryIncluded =
+        movie?.nameRU?.includes(searchQuery.toUpperCase()) || movie?.nameRU?.includes(searchQuery.toLowerCase());
       return !isShort
-        ? movie?.nameRU?.includes(searchQuery) && movie?.duration > shortDuration
-        : movie?.nameRU?.includes(searchQuery) && movie?.duration <= shortDuration;
+        ? isSearchQueryIncluded && movie?.duration > shortDuration
+        : isSearchQueryIncluded && movie?.duration <= shortDuration;
     });
   }
 
@@ -70,5 +77,5 @@ export class CardHelper {
 
   static getCheckboxFromLocalStorage = () => {
     return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Checkbox));
-  }
+  };
 }

@@ -21,8 +21,9 @@ export function Movies() {
   const handleSubmitSearch = async (searchQuery, checkboxQuery) => {
     setIsLoading(true);
     try {
-      const movies = CardHelper.filterMovies(await moviesApiClient.getMovies(), searchQuery, checkboxQuery);
+      const movies = CardHelper.filterMoviesCards(await moviesApiClient.getMovies(), searchQuery, checkboxQuery);
       CardHelper.setLocalStorageItems(movies, searchQuery, checkboxQuery);
+      console.info(movies);
       setCards(movies);
     } catch {
       setCards([]);

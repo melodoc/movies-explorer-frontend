@@ -5,6 +5,7 @@ import { Preloader } from '../Preloader/Preloader';
 import { ERROR_LABELS } from '../../constants/errorLabels';
 import { mainApiClient } from '../../utils/MainApi';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
+import { CardHelper } from '../../utils/cardHelper';
 
 import './SavedMovies.css';
 
@@ -13,12 +14,16 @@ export function SavedMovies() {
   const [savedCards, setSavedCards] = useState();
   const [savedCardsLabel, setSavedCardsLabel] = useState(ERROR_LABELS.Movies.notFound);
 
-  const handleSubmitSearch = async () => {
+  const loadInitialData = async () => {
     setIsLoading(true);
     try {
       const movies = await mainApiClient.getMovies();
-      setSavedCards(movies);
-      localStorage.setItem(LOCAL_STORAGE_KEYS.SavedMovies, JSON.stringify(movies));
+      const searchQuery = CardHelper.getSearchQueryFromLocalStorage();
+      const checkboxQuery = CardHelper.getCheckboxFromLocalStorage();
+      const filteredMovies =
+        searchQuery && checkboxQuery ? CardHelper.filterMoviesCards(movies, searchQuery, checkboxQuery) : movies;
+      setSavedCards(filteredMovies);
+      localStorage.setItem(LOCAL_STORAGE_KEYS.SavedMovies, JSON.stringify(filteredMovies));
     } catch {
       setSavedCards([]);
       setSavedCardsLabel(ERROR_LABELS.Movies.connection);
@@ -28,8 +33,14 @@ export function SavedMovies() {
     }
   };
 
+  const handleSubmitSearch = (searchQuery, checkboxQuery) => {
+    const movies = CardHelper.filterMoviesCards(savedCards, searchQuery, checkboxQuery);
+    CardHelper.setLocalStorageItems(movies, searchQuery, checkboxQuery);
+    setSavedCards(movies);
+  };
+
   useEffect(() => {
-    handleSubmitSearch();
+    loadInitialData();
   }, []);
 
   return (

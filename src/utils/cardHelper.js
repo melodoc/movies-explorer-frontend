@@ -54,7 +54,7 @@ export class CardHelper {
   static filterMoviesCards(movies, searchQuery, isShort) {
     const shortDuration = 40;
 
-    return movies.filter((movie) => {
+    return (movies || []).filter((movie) => {
       const isSearchQueryIncluded =
         movie?.nameRU?.includes(searchQuery.toUpperCase()) || movie?.nameRU?.includes(searchQuery.toLowerCase());
       return !isShort
@@ -76,11 +76,19 @@ export class CardHelper {
   }
 
   static getCheckboxFromLocalStorage() {
-    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Checkbox));
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Checkbox)) ?? false;
+  }
+
+  static getSearchQueryFromLocalStorage() {
+    return localStorage.getItem(LOCAL_STORAGE_KEYS.SearchQuery) ?? "";
   }
 
   static getSavedCardsFromLocalStorage() {
-    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.SavedMovies));
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.SavedMovies)) ?? "";
+  }
+
+  static updateSavedCardsFromLocalStorage(cards) {
+    return localStorage.setItem(LOCAL_STORAGE_KEYS.SavedMovies, JSON.stringify(cards));
   }
 
   static preparedCardData(card, baseUrl) {

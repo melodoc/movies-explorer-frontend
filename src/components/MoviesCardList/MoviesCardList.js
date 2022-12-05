@@ -47,7 +47,9 @@ export function MoviesCardList({ cards, cardsLabel }) {
     try {
       await mainApiClient.deleteMovieById(card?._id);
       setToastLabel(`Карточка «${card.nameRU}» удалена из сохраненных фильмов`);
-      setMoviesCards(moviesCards.filter((oldCard) => oldCard?._id !== card?._id));
+      const updatedCards = moviesCards.filter((oldCard) => oldCard?._id !== card?._id);
+      setMoviesCards(updatedCards);
+      CardHelper.updateSavedCardsFromLocalStorage(updatedCards);
     } catch {
       console.error(ERROR_LABELS.Form.connection);
       setToastLabel(ERROR_LABELS.Form.connection);
@@ -61,6 +63,10 @@ export function MoviesCardList({ cards, cardsLabel }) {
   useEffect(() => {
     setMoreCardAmount(CardHelper.getMoreCardAmount());
   }, [moviesCards, cards, dimensions, moreCardAmount, shownCards?.length]);
+
+  useEffect(() => {
+    setMoviesCards(cards);
+  }, [cards]);
 
   const handleClick = async (card, hasDeleteBtn) => {
     if (!hasDeleteBtn) {
@@ -76,7 +82,7 @@ export function MoviesCardList({ cards, cardsLabel }) {
         {shownCards.length ? (
           shownCards.map((card, key) => {
             const src = card?.image?.url ? `${baseUrl}${card?.image?.url}` : card?.image;
-            const hasSaved = !!savedCards.find((savedCard) => savedCard?.nameRU === card?.nameRU);
+            const hasSaved = !!(savedCards || []).find((savedCard) => savedCard?.nameRU === card?.nameRU);
             return (
               <MoviesCard
                 key={key}

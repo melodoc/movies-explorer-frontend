@@ -13,13 +13,9 @@ const SEARCH_FORM_VALIDATION_MAP = new Map([
 
 export function SearchForm({ onSubmitSearch }) {
   const input = useRef(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [checkboxQuery, setCheckboxQuery] = useState(CardHelper.getCheckboxFromLocalStorage());
   const [inputState, setInputState] = useState(SEARCH_FORM_VALIDATION_MAP.get(true));
-
-  const loadInitialData = () => {
-    setSearchQuery(localStorage.getItem(LOCAL_STORAGE_KEYS.SearchQuery));
-  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -37,7 +33,7 @@ export function SearchForm({ onSubmitSearch }) {
   };
 
   useEffect(() => {
-    loadInitialData();
+    setSearchQuery(CardHelper.getSearchQueryFromLocalStorage());
   }, []);
 
   return (

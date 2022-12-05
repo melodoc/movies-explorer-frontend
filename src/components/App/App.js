@@ -1,6 +1,5 @@
-import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
 import { Promo } from '../Promo/Promo';
@@ -27,7 +26,7 @@ function App() {
   const [isTokenValid, setIsTokenValid] = useState(false);
   const [userInformation, setUserInformation] = useState({
     email: '',
-    loggedIn: false
+    loggedIn: !!localStorage.getItem(LOCAL_STORAGE_KEYS.Token)
   });
 
   /* FIXME: Перенести в утилиты */
@@ -85,7 +84,7 @@ function App() {
           <Movies />
         </Route>
         <Route path={ROUTES.SavedMovies}>
-          <SavedMovies/>
+          <SavedMovies />
         </Route>
         <Route path={ROUTES.Profile}>
           <Profile />

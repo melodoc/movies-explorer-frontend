@@ -23,7 +23,6 @@ export function Movies() {
     try {
       const movies = CardHelper.filterMoviesCards(await moviesApiClient.getMovies(), searchQuery, checkboxQuery);
       CardHelper.setLocalStorageItems(movies, searchQuery, checkboxQuery);
-      console.info(movies);
       setCards(movies);
     } catch {
       setCards([]);

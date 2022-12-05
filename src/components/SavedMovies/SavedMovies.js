@@ -4,6 +4,7 @@ import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
 import { Preloader } from '../Preloader/Preloader';
 import { ERROR_LABELS } from '../../constants/errorLabels';
 import { mainApiClient } from '../../utils/MainApi';
+import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 
 import './SavedMovies.css';
 
@@ -16,8 +17,8 @@ export function SavedMovies() {
     setIsLoading(true);
     try {
       const movies = await mainApiClient.getMovies();
-      console.info(movies);
       setSavedCards(movies);
+      localStorage.setItem(LOCAL_STORAGE_KEYS.SavedMovies, JSON.stringify(movies));
     } catch {
       setSavedCards([]);
       setSavedCardsLabel(ERROR_LABELS.Movies.connection);

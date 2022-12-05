@@ -4,10 +4,10 @@ import { MoviesCard } from '../MoviesCard/MoviesCard';
 import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { CardHelper } from '../../utils/cardHelper';
 import { mainApiClient } from '../../utils/MainApi';
+import { Toast } from '../../components/Toast/Toast';
 import { beatfilmMoviesRequestParams } from '../../constants/requestParams';
 import { ROUTES } from '../../constants/routes';
 import { ERROR_LABELS } from '../../constants/errorLabels';
-import { Toast } from '../../components/Toast/Toast';
 
 import './MoviesCardList.css';
 
@@ -15,6 +15,7 @@ const MIN_CARDS_TO_SHOW = 3;
 
 export function MoviesCardList({ cards, cardsLabel }) {
   const baseUrl = beatfilmMoviesRequestParams.baseUrl;
+  const savedCards = CardHelper.getSavedCardsFromLocalStorage();
   const location = useLocation();
   const isSavedMoviesPage = location?.pathname === ROUTES.SavedMovies;
   const [moviesCards, setMoviesCards] = useState(cards);
@@ -74,6 +75,7 @@ export function MoviesCardList({ cards, cardsLabel }) {
         {shownCards.length ? (
           shownCards.map((card, key) => {
             const src = card?.image?.url ? `${baseUrl}${card?.image?.url}` : card?.image;
+            const hasSaved = !!savedCards.find((savedCard) => savedCard?.nameRU === card?.nameRU);
             return (
               <MoviesCard
                 key={key}
@@ -82,6 +84,7 @@ export function MoviesCardList({ cards, cardsLabel }) {
                 duration={card?.duration}
                 trailerLink={card?.trailerLink}
                 hasDeleteBtn={isSavedMoviesPage}
+                hasSaved={hasSaved}
                 handleClick={handleClick}
                 card={card}
               />

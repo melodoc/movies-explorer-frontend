@@ -79,6 +79,10 @@ export class CardHelper {
     return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Checkbox));
   }
 
+  static getSavedCardsFromLocalStorage() {
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.SavedMovies));
+  }
+
   static preparedCardData(card, baseUrl) {
     return {
       country: card?.country,

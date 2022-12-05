@@ -5,10 +5,11 @@ import { ROUTES } from '../../constants/routes';
 
 import './MoviesCard.css';
 
-export function MoviesCard({ src, label, duration, trailerLink, handleClick, card }) {
+export function MoviesCard({ src, label, duration, trailerLink, hasDeleteBtn, hasSaved, handleClick, card }) {
   const location = useLocation();
-  const hasDeleteBtn = location?.pathname === ROUTES.SavedMovies;
-  const [isSaved, setIsSaved] = useState(location?.pathname === ROUTES.SavedMovies);
+  const isSavedPage = location?.pathname === ROUTES.SavedMovies;
+  const [isSaved, setIsSaved] = useState(isSavedPage || hasSaved);
+
   const btn = CardHelper.getButtonStyle(isSaved, hasDeleteBtn);
   const convertedDuration = CardHelper.getDuration(duration);
 
@@ -21,7 +22,7 @@ export function MoviesCard({ src, label, duration, trailerLink, handleClick, car
 
   return (
     <figure className="card">
-      <button className={btn?.style} onClick={onClickHandler}>
+      <button className={btn?.style} onClick={onClickHandler} disabled={isSaved && !isSavedPage}>
         {btn.label ?? ''}
       </button>
       <a href={trailerLink} target="_blank" rel="noreferrer">

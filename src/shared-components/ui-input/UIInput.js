@@ -1,14 +1,11 @@
 import { useRef, useState } from 'react';
 import { INPUT_TYPES } from '../../constants/inputTypes';
+import { ValidationHelper } from '../../utils/validationHelper';
 
 import './UIInput.css';
 
-const VALIDATION_PATTERN = '^[sA-Za-z А-Яа-яёЁ-]{2,30}$';
-
-const VALIDATION_MESSAGE = new Map([
-  [true, { valid: true, text: '' }],
-  [false, { valid: false, text: 'Введите 2 - 30 символов: только латиницу, кириллицу, пробел или дефис.' }]
-]);
+const VALIDATION_PATTERN = ValidationHelper.validationPattern;
+const VALIDATION_MESSAGE = ValidationHelper.validationMessage;
 
 export function UIInput({ label, type, value, required, handleChange }) {
   const input = useRef(null);

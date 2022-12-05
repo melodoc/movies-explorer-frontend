@@ -2,36 +2,72 @@ import { useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
+import { INPUT_TYPES } from '../../constants/inputTypes';
 import { UISubmit } from '../../shared-components/ui-submit/UISubmit';
+import { ValidationHelper } from '../../utils/validationHelper';
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 
 import './Profile.css';
+
+const VALIDATION_PATTERN = ValidationHelper.validationPattern;
+const VALIDATION_MESSAGE = ValidationHelper.validationMessage;
 
 export function Profile() {
   const [isReadOnly, setIsReadOnly] = useState(true);
   const [profileName, setProfileName] = useState('Виталий');
   const [email, setEmail] = useState('pochta@yandex.ru');
-  const input = useRef(null);
+  const [emailInputState, setEmailInputState] = useState(VALIDATION_MESSAGE.get(true));
+  const [profileNameInputState, setProfileNameInputState] = useState(VALIDATION_MESSAGE.get(true));
+
+  const profileInput = useRef(null);
+  const emailInput = useRef(null);
   const history = useHistory();
+  const { handleChange, isValid } = useFormWithValidation();
+  console.info(isValid);
+
+  const checkValidation = (type) => {
+    if (type === INPUT_TYPES.Name) {
+      setProfileNameInputState(VALIDATION_MESSAGE.get(!!profileInput.current.value.match(VALIDATION_PATTERN)?.input));
+      return;
+    }
+
+    setEmailInputState({
+      valid: emailInput.current.validity.valid,
+      text: emailInput.current.validationMessage
+    });
+    setProfileNameInputState({
+      valid: profileInput.current.validity.valid,
+      text: profileInput.current.validationMessage
+    });
+  };
 
   const handleSubmit = (e) => {
+    handleChange(e);
     e.preventDefault();
   };
 
   const handleEditProfileClick = (e) => {
+    handleChange(e);
     e.preventDefault();
     setIsReadOnly(false);
-    input.current.focus();
+    profileInput.current.focus();
   };
+
   const handleSaveProfileClick = (e) => {
+    handleChange(e);
     e.preventDefault();
     setIsReadOnly(true);
   };
 
   const handleChangeProfileName = (e) => {
+    handleChange(e);
+    checkValidation(INPUT_TYPES.Name);
     setProfileName(e.target.value);
   };
 
   const handleChangeEmail = (e) => {
+    handleChange(e);
+    checkValidation(INPUT_TYPES.Email);
     setEmail(e.target.value);
   };
 
@@ -54,11 +90,16 @@ export function Profile() {
                 id="name"
                 onChange={handleChangeProfileName}
                 value={profileName}
+                type={INPUT_TYPES.Name}
                 className="profile__form-input"
                 readOnly={isReadOnly}
-                ref={input}
+                ref={profileInput}
+                minLength={2}
+                maxLength={200}
+                required
               />
             </li>
+            {!profileNameInputState.valid && <p className="field__valid-text">{profileNameInputState.text}</p>}
             <li className="profile__form-item">
               <label htmlFor="email" className="profile__form-label">
                 E-mail
@@ -67,22 +108,33 @@ export function Profile() {
                 id="email"
                 onChange={handleChangeEmail}
                 value={email}
+                type={INPUT_TYPES.Email}
                 className="profile__form-input"
                 readOnly={isReadOnly}
+                minLength={2}
+                maxLength={200}
+                ref={emailInput}
+                required
               />
             </li>
+            {!emailInputState.valid && <p className="field__valid-text">{emailInputState.text}</p>}
           </ul>
+          {isReadOnly ? (
+            <div className="profile__form-links">
+              <UISubmit label="Редактировать" name="edit" handleClick={handleEditProfileClick} secondary />
+              <Link className="profile__form-link" to={ROUTES.SignIn} onClick={handleLogOut}>
+                Выйти из аккаунта
+              </Link>
+            </div>
+          ) : (
+            <UISubmit
+              label="Сохранить"
+              name="save"
+              handleClick={handleSaveProfileClick}
+              disabled={!profileNameInputState.valid || !emailInputState.valid}
+            />
+          )}
         </form>
-        {isReadOnly ? (
-          <div className="profile__form-links">
-            <UISubmit label="Редактировать" name="edit" handleClick={handleEditProfileClick} secondary />
-            <Link className="profile__form-link" to={ROUTES.SignIn} onClick={handleLogOut}>
-              Выйти из аккаунта
-            </Link>
-          </div>
-        ) : (
-          <UISubmit label="Сохранить" name="save" handleClick={handleSaveProfileClick} />
-        )}
       </div>
     </section>
   );

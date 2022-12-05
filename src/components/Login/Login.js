@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { INPUT_TYPES } from '../../constants/inputTypes';
 import { Preloader } from '../../components/Preloader/Preloader';
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import { UIRedirect } from '../../shared-components/ui-redirect/UIRedirect';
 import { UIInput } from '../../shared-components/ui-input/UIInput';
 import { UISubmit } from '../../shared-components/ui-submit/UISubmit';
@@ -11,31 +12,40 @@ import logo from '../../images/logo.svg';
 
 import './Login.css';
 
-export function Login() {
-  const history = useHistory();
-  const [isLoading, setIsLoading] = useState(false);
+export function Login({ onSubmit, isLoading }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { handleChange, isValid } = useFormWithValidation();
 
-  const onSubmit = (e) => {
+  const handleChangeEmail = (e) => {
+    handleChange(e);
+    setEmail(e.target.value);
+  };
+
+  const handleChangePassword = (e) => {
+    handleChange(e);
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    handleChange(e);
     e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      history.push(ROUTES.Movies);
-    }, 1000);
+    onSubmit({ email, password });
   };
 
   return (
     <>
       <section className="entry-form">
         <div className="entry-form__container">
-          <form className="entry-form__form" onSubmit={onSubmit}>
+          <form className="entry-form__form" onSubmit={handleSubmit}>
             <Link to={ROUTES.About}>
               <img src={logo} className="entry-form__logo" alt="logo" />
             </Link>
             <UITitle label="Рады видеть!" />
-            <UIInput label="E-mail" type={INPUT_TYPES.Email} required />
-            <UIInput label="Пароль" type={INPUT_TYPES.Password} required />
+            <UIInput label="E-mail" type={INPUT_TYPES.Email} required handleChange={handleChangeEmail} />
+            <UIInput label="Пароль" type={INPUT_TYPES.Password} required handleChange={handleChangePassword} />
             <div className="entry-form__input">
-              <UISubmit label="Войти" name="login" link={ROUTES.Movies} />
+              <UISubmit label="Войти" name="login" link={ROUTES.Movies} disabled={isLoading || !isValid} />
             </div>
             <UIRedirect label="Еще не зарегистрированы?" redirectLabel="Регистрация" link={ROUTES.SignUp} />
           </form>

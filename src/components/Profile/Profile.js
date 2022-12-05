@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
+import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 import { UISubmit } from '../../shared-components/ui-submit/UISubmit';
 
 import './Profile.css';
@@ -10,6 +11,7 @@ export function Profile() {
   const [profileName, setProfileName] = useState('Виталий');
   const [email, setEmail] = useState('pochta@yandex.ru');
   const input = useRef(null);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,6 +33,11 @@ export function Profile() {
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
+  };
+
+  const handleLogOut = (e) => {
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.Token);
+    history.push(ROUTES.SignIn);
   };
 
   return (
@@ -69,7 +76,7 @@ export function Profile() {
         {isReadOnly ? (
           <div className="profile__form-links">
             <UISubmit label="Редактировать" name="edit" handleClick={handleEditProfileClick} secondary />
-            <Link className="profile__form-link" to={ROUTES.SignIn}>
+            <Link className="profile__form-link" to={ROUTES.SignIn} onClick={handleLogOut}>
               Выйти из аккаунта
             </Link>
           </div>

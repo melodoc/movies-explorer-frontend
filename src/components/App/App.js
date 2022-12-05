@@ -17,6 +17,7 @@ import { Profile } from '../Profile/Profile';
 import { HEADER_TYPES } from '../../constants/headerTypes';
 import { ROUTES } from '../../constants/routes';
 import { ERROR_LABELS } from '../../constants/errorLabels';
+import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 import { authApiClient } from '../../utils/MainApi';
 import { savedCards } from '../../mocked/mockedCards';
 
@@ -24,6 +25,11 @@ function App() {
   const location = useLocation();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(false);
+  const [userInformation, setUserInformation] = useState({
+    email: '',
+    loggedIn: false
+  });
 
   /* FIXME: Перенести в утилиты */
   const isAboutPage = location?.pathname === ROUTES.About;
@@ -36,7 +42,22 @@ function App() {
       await authApiClient.register({ name, email, password });
       history.push(ROUTES.SignIn);
     } catch {
-      console.error(ERROR_LABELS.Register.connection);
+      console.error(ERROR_LABELS.Form.connection);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLoginSubmit = async ({ email, password }) => {
+    setIsLoading(true);
+    try {
+      const res = await authApiClient.login({ email, password });
+      localStorage.setItem(LOCAL_STORAGE_KEYS.Token, res.token);
+      setUserInformation({ email, loggedIn: true });
+      setIsTokenValid(true);
+      history.push(ROUTES.Movies);
+    } catch {
+      console.error(ERROR_LABELS.Form.connection);
     } finally {
       setIsLoading(false);
     }
@@ -45,7 +66,7 @@ function App() {
   return (
     <>
       {isHeaderShown && (
-        <Header type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main} isLoggedIn={isAboutPage ? false : true} />
+        <Header type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main} isLoggedIn={userInformation.loggedIn} />
       )}
       <Switch>
         <Route path={ROUTES.About} exact>
@@ -59,7 +80,7 @@ function App() {
           <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />
         </Route>
         <Route path={ROUTES.SignIn}>
-          <Login />
+          <Login onSubmit={handleLoginSubmit} isLoading={isLoading} />
         </Route>
         <Route path={ROUTES.Movies}>
           <Movies />

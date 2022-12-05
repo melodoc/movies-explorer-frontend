@@ -1,3 +1,5 @@
+import { LOCAL_STORAGE_KEYS } from '../constants/localStorageKeys';
+
 export class BaseApi {
   constructor({ baseUrl, headers }) {
     this.baseUrl = baseUrl;
@@ -11,25 +13,24 @@ export class BaseApi {
     };
   }
 
-  _fetchHandle(method, path, options) {
+  async _fetchHandle(method, path, options) {
     const fetchPath = !!path ? `${this.baseUrl}${path}` : `${this.baseUrl}`;
-    const token = localStorage.getItem('token');
-    const fetchHeaders = !!token
+    const token = localStorage.getItem(LOCAL_STORAGE_KEYS.Token);
+    const fetchHeaders = !token
       ? this.headers
       : {
           ...this.headers,
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_KEYS.Token)}`
         };
 
-    return fetch(fetchPath, {
+    const res = await fetch(fetchPath, {
       method,
       headers: fetchHeaders,
       body: JSON.stringify(options)
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
     });
+    if (res.ok) {
+      return res.json();
+    }
+    return await Promise.reject(`Ошибка: ${res.status}`);
   }
 }

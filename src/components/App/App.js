@@ -19,7 +19,6 @@ import { ROUTES } from '../../constants/routes';
 import { ERROR_LABELS } from '../../constants/errorLabels';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 import { authApiClient } from '../../utils/MainApi';
-import { savedCards } from '../../mocked/mockedCards';
 
 function App() {
   const location = useLocation();
@@ -86,7 +85,7 @@ function App() {
           <Movies />
         </Route>
         <Route path={ROUTES.SavedMovies}>
-          <SavedMovies cards={savedCards} />
+          <SavedMovies/>
         </Route>
         <Route path={ROUTES.Profile}>
           <Profile />

@@ -11,12 +11,12 @@ class MainApi extends BaseApi {
     return this._fetchHandle(this._methods.DELETE, `/movies/${movieId}`);
   }
 
+  getMovies() {
+    return this._fetchHandle(this._methods.GET, '/movies');
+  }
+
   // getUserInformation() {
   //   return this._fetchHandle(this._methods.GET, '/users/me');
-  // }
-
-  // getCards() {
-  //   return this._fetchHandle(this._methods.GET, '/cards');
   // }
 
   // setUserInfo(name, about) {

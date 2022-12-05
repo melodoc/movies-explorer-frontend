@@ -13,6 +13,10 @@
   width: 100%;
 }
 
+.form__submit:disabled {
+  opacity: var(--hover-opacity);
+}
+
 .form__submit:hover {
   cursor: pointer;
   transition: 0.1s ease-in-out;

@@ -3,25 +3,30 @@ import { INPUT_TYPES } from '../../constants/inputTypes';
 
 import './UIInput.css';
 
+const VALIDATION_PATTERN = '^[sA-Za-z А-Яа-яёЁ-]{2,30}$';
+
+const VALIDATION_MESSAGE = new Map([
+  [true, { valid: true, text: '' }],
+  [false, { valid: false, text: 'Введите 2 - 30 символов: только латиницу, кириллицу, пробел или дефис.' }]
+]);
+
 export function UIInput({ label, type, value, required, handleChange }) {
   const input = useRef(null);
-  const [inputState, setInputState] = useState({
-    valid: true,
-    text: ''
-  });
+  const [inputState, setInputState] = useState(VALIDATION_MESSAGE.get(true));
 
   const checkValidation = (e) => {
     handleChange && handleChange(e);
+
+    if (type === INPUT_TYPES.Name) {
+      setInputState(VALIDATION_MESSAGE.get(!!input.current.value.match(VALIDATION_PATTERN)?.input))
+      return;
+    }
+
     setInputState({
       valid: input.current.validity.valid,
       text: input.current.validationMessage
     });
   };
-
-// Добавить валидацию
-// все поля обязательные;
-// поле email соответствует шаблону электронной почты;
-// поле name содержит только латиницу, кириллицу, пробел или дефис.
 
   return (
     <div className="field__container">

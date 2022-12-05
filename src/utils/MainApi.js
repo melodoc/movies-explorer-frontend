@@ -11,50 +11,52 @@ class MainApi extends BaseApi {
     return this._fetchHandle(this._methods.DELETE, `/movies/${movieId}`);
   }
 
-  getUserInformation() {
-    return this._fetchHandle(this._methods.GET, '/users/me');
-  }
+  // getUserInformation() {
+  //   return this._fetchHandle(this._methods.GET, '/users/me');
+  // }
 
-  getCards() {
-    return this._fetchHandle(this._methods.GET, '/cards');
-  }
+  // getCards() {
+  //   return this._fetchHandle(this._methods.GET, '/cards');
+  // }
 
-  setUserInfo(name, about) {
-    return this._fetchHandle(this._methods.PATCH, '/users/me', {
-      name,
-      about
-    });
-  }
+  // setUserInfo(name, about) {
+  //   return this._fetchHandle(this._methods.PATCH, '/users/me', {
+  //     name,
+  //     about
+  //   });
+  // }
 
-  changeLikeCardStatus(cardId, setLike) {
-    return setLike ? this.setLikeById(cardId) : this.deleteLikeById(cardId);
-  }
+  // changeLikeCardStatus(cardId, setLike) {
+  //   return setLike ? this.setLikeById(cardId) : this.deleteLikeById(cardId);
+  // }
 
-  setLikeById(cardId) {
-    return this._fetchHandle(this._methods.PUT, `/cards/${cardId}/likes`);
-  }
+  // setLikeById(cardId) {
+  //   return this._fetchHandle(this._methods.PUT, `/cards/${cardId}/likes`);
+  // }
 
-  deleteLikeById(cardId) {
-    return this._fetchHandle(this._methods.DELETE, `/cards/${cardId}/likes`);
-  }
+  // deleteLikeById(cardId) {
+  //   return this._fetchHandle(this._methods.DELETE, `/cards/${cardId}/likes`);
+  // }
 
-  updateUserAvatar(avatar) {
-    return this._fetchHandle(this._methods.PATCH, `/users/me/avatar`, {
-      avatar
-    });
-  }
+  // updateUserAvatar(avatar) {
+  //   return this._fetchHandle(this._methods.PATCH, `/users/me/avatar`, {
+  //     avatar
+  //   });
+  // }
 }
 
 class AuthApi extends BaseApi {
-  signUp(email, password) {
-    return this._fetchHandle(this._methods.POST, '/signUp', {
+  register({ name, email, password }) {
+    console.info(name, email, password);
+    return this._fetchHandle(this._methods.POST, '/signup', {
+      name,
       email,
       password
     });
   }
 
-  signIn(email, password) {
-    return this._fetchHandle(this._methods.POST, '/signIn', {
+  login({ email, password }) {
+    return this._fetchHandle(this._methods.POST, '/signin', {
       email,
       password
     });

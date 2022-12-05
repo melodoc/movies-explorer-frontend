@@ -1,3 +1,5 @@
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
@@ -12,19 +14,33 @@ import { Login } from '../Login/Login';
 import { Register } from '../Register/Register';
 import { NotFound } from '../NotFound/NotFound';
 import { Profile } from '../Profile/Profile';
-
 import { HEADER_TYPES } from '../../constants/headerTypes';
 import { ROUTES } from '../../constants/routes';
+import { ERROR_LABELS } from '../../constants/errorLabels';
+import { authApiClient } from '../../utils/MainApi';
 import { savedCards } from '../../mocked/mockedCards';
 
 function App() {
   const location = useLocation();
-  const isAboutPage = location?.pathname === ROUTES.About;
+  const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
 
   /* FIXME: Перенести в утилиты */
-
+  const isAboutPage = location?.pathname === ROUTES.About;
   const isHeaderShown = [ROUTES.About, ROUTES.Movies, ROUTES.SavedMovies, ROUTES.Profile].includes(location?.pathname);
   const isFooterShown = [ROUTES.About, ROUTES.Movies, ROUTES.SavedMovies].includes(location?.pathname);
+
+  const handleRegisterSubmit = async ({ name, email, password }) => {
+    setIsLoading(true);
+    try {
+      await authApiClient.register({ name, email, password });
+      history.push(ROUTES.SignIn);
+    } catch {
+      console.error(ERROR_LABELS.Register.connection);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -40,7 +56,7 @@ function App() {
           <Portfolio />
         </Route>
         <Route path={ROUTES.SignUp}>
-          <Register />
+          <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />
         </Route>
         <Route path={ROUTES.SignIn}>
           <Login />

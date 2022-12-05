@@ -6,7 +6,7 @@ export const beatfilmMoviesRequestParams = {
 };
 
 export const moviesRequestParams = {
-  baseUrl: 'https://api.movies.melodoc.nomoredomains.icu/',
+  baseUrl: 'https://api.movies.melodoc.nomoredomains.icu',
   headers: {
     'Content-Type': 'application/json'
   }

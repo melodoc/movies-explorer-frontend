@@ -10,13 +10,18 @@ export function UIInput({ label, type, value, required, handleChange }) {
     text: ''
   });
 
-  const checkValidation = () => {
-    handleChange && handleChange();
+  const checkValidation = (e) => {
+    handleChange && handleChange(e);
     setInputState({
       valid: input.current.validity.valid,
       text: input.current.validationMessage
     });
   };
+
+// Добавить валидацию
+// все поля обязательные;
+// поле email соответствует шаблону электронной почты;
+// поле name содержит только латиницу, кириллицу, пробел или дефис.
 
   return (
     <div className="field__container">
@@ -24,6 +29,7 @@ export function UIInput({ label, type, value, required, handleChange }) {
         {label}
       </label>
       <input
+        value={value}
         className="field__input"
         onChange={checkValidation}
         type={type}

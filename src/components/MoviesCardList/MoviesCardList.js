@@ -32,7 +32,8 @@ export function MoviesCardList({ cards, cardsLabel }) {
     setShownCards(CardHelper.getShownCards(moviesCards, shownCards?.length + moreCardAmount));
   };
 
-  const addNewMovie = async (cardData) => {
+  const addNewMovie = async (card) => {
+    const cardData = CardHelper.preparedCardData(card, baseUrl);
     try {
       await mainApiClient.addNewMovies(cardData);
       setToastLabel(`Карточка «${cardData.nameRU}» добавлена в сохраненные фильмы`);
@@ -42,10 +43,11 @@ export function MoviesCardList({ cards, cardsLabel }) {
     }
   };
 
-  const deleteMovieById = async (cardData) => {
+  const deleteMovieById = async (card) => {
     try {
-      await mainApiClient.deleteMovieById(cardData?._id);
-      setToastLabel(`Карточка «${cardData.nameRU}» удалена из сохраненных фильмов`);
+      await mainApiClient.deleteMovieById(card?._id);
+      setToastLabel(`Карточка «${card.nameRU}» удалена из сохраненных фильмов`);
+      setMoviesCards(moviesCards.filter((oldCard) => oldCard?._id !== card?._id));
     } catch {
       console.error(ERROR_LABELS.Form.connection);
       setToastLabel(ERROR_LABELS.Form.connection);
@@ -61,9 +63,8 @@ export function MoviesCardList({ cards, cardsLabel }) {
   }, [moviesCards, cards, dimensions, moreCardAmount, shownCards?.length]);
 
   const handleClick = async (card, hasDeleteBtn) => {
-    // FIXME: обновить у setMoviesCards карточки
     if (!hasDeleteBtn) {
-      addNewMovie(CardHelper.preparedCardData(card, baseUrl));
+      addNewMovie(card);
       return;
     }
     deleteMovieById(card);

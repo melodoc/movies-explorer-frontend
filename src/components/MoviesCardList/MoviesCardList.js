@@ -7,6 +7,7 @@ import { mainApiClient } from '../../utils/MainApi';
 import { beatfilmMoviesRequestParams } from '../../constants/requestParams';
 import { ROUTES } from '../../constants/routes';
 import { ERROR_LABELS } from '../../constants/errorLabels';
+import { Toast } from '../../components/Toast/Toast';
 
 import './MoviesCardList.css';
 
@@ -17,6 +18,7 @@ export function MoviesCardList({ cards, cardsLabel }) {
   const location = useLocation();
   const isSavedMoviesPage = location?.pathname === ROUTES.SavedMovies;
   const [moviesCards, setMoviesCards] = useState(cards);
+  const [toastLabel, setToastLabel] = useState();
   const MAX_AMOUNT = moviesCards?.length ?? 0;
   const [moreCardAmount, setMoreCardAmount] = useState(CardHelper.getMoreCardAmount());
   const [shownCards, setShownCards] = useState(CardHelper.getShownCards(moviesCards, CardHelper.getMaxCardAmount()));
@@ -29,6 +31,26 @@ export function MoviesCardList({ cards, cardsLabel }) {
     setShownCards(CardHelper.getShownCards(moviesCards, shownCards?.length + moreCardAmount));
   };
 
+  const addNewMovie = async (cardData) => {
+    try {
+      await mainApiClient.addNewMovies(cardData);
+      setToastLabel(`Карточка «${cardData.nameRU}» добавлена в сохраненные фильмы`);
+    } catch {
+      console.error(ERROR_LABELS.Form.connection);
+      setToastLabel(ERROR_LABELS.Form.connection);
+    }
+  };
+
+  const deleteMovieById = async (cardData) => {
+    try {
+      await mainApiClient.deleteMovieById(cardData?._id);
+      setToastLabel(`Карточка «${cardData.nameRU}» удалена из сохраненных фильмов`);
+    } catch {
+      console.error(ERROR_LABELS.Form.connection);
+      setToastLabel(ERROR_LABELS.Form.connection);
+    }
+  };
+
   useEffect(() => {
     setShownCards(CardHelper.getShownCards(moviesCards, CardHelper.getMaxCardAmount()));
   }, [moviesCards, cards]);
@@ -38,31 +60,12 @@ export function MoviesCardList({ cards, cardsLabel }) {
   }, [moviesCards, cards, dimensions, moreCardAmount, shownCards?.length]);
 
   const handleClick = async (card, hasDeleteBtn) => {
-    const cardData = {
-      country: card?.country,
-      director: card?.director,
-      duration: card?.duration,
-      year: card?.year,
-      description: card?.description,
-      image: `${baseUrl}${card?.image?.url ?? ''}`,
-      trailerLink: card?.trailerLink,
-      thumbnail: `${baseUrl}${card?.image?.formats?.thumbnail?.url ?? ''}`,
-      movieId: card?.id,
-      nameRU: card.nameRU,
-      nameEN: card.nameEN
-    };
-
-    if (!hasDeleteBtn) {
-      try {
-        await mainApiClient.addNewMovies(cardData);
-        return;
-      } catch {
-        console.error(ERROR_LABELS.Form.connection);
-      }
-    }
-    await mainApiClient.deleteMovieById(card?._id);
     // FIXME: обновить у setMoviesCards карточки
-    // добавить тост
+    if (!hasDeleteBtn) {
+      addNewMovie(CardHelper.preparedCardData(card, baseUrl));
+      return;
+    }
+    deleteMovieById(card);
   };
 
   return (
@@ -93,6 +96,7 @@ export function MoviesCardList({ cards, cardsLabel }) {
           Еще
         </button>
       )}
+      {toastLabel && <Toast label={toastLabel} />}
     </section>
   );
 }

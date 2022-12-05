@@ -75,7 +75,23 @@ export class CardHelper {
     });
   }
 
-  static getCheckboxFromLocalStorage = () => {
+  static getCheckboxFromLocalStorage() {
     return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Checkbox));
-  };
+  }
+
+  static preparedCardData(card, baseUrl) {
+    return {
+      country: card?.country,
+      director: card?.director,
+      duration: card?.duration,
+      year: card?.year,
+      description: card?.description,
+      image: `${baseUrl}${card?.image?.url ?? ''}`,
+      trailerLink: card?.trailerLink,
+      thumbnail: `${baseUrl}${card?.image?.formats?.thumbnail?.url ?? ''}`,
+      movieId: card?.id,
+      nameRU: card.nameRU,
+      nameEN: card.nameEN
+    };
+  }
 }

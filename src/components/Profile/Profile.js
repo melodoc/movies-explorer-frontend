@@ -61,7 +61,6 @@ export function Profile({ handleChangeProfile, toastLabel }) {
     handleChange(e);
     e.preventDefault();
     setIsReadOnly(true);
-    console.info(profileName, email);
     handleChangeProfile({ name: profileName, email });
   };
 
@@ -87,7 +86,7 @@ export function Profile({ handleChangeProfile, toastLabel }) {
       <>
         <section className="profile">
           <div className="profile__container">
-            <h1 className="profile__title">Привет, Виталий!</h1>
+            <h1 className="profile__title">Привет, {profileName ?? ""}</h1>
             <form className="profile__form" onSubmit={handleSubmit}>
               <ul className="profile__form-container">
                 <li className="profile__form-item">

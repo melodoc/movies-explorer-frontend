@@ -20,6 +20,7 @@ import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 import { authApiClient } from '../../utils/MainApi';
 import { mainApiClient } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
   const location = useLocation();
@@ -94,17 +95,11 @@ function App() {
 
   return (
     <>
+      {isHeaderShown && (
+        <Header type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main} isLoggedIn={userInformation.loggedIn} />
+      )}
       <CurrentUserContext.Provider value={currentUser}>
-        {isHeaderShown && (
-          <Header type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main} isLoggedIn={userInformation.loggedIn} />
-        )}
         <Switch>
-          <Route path={ROUTES.SignUp}>
-            <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />
-          </Route>
-          <Route path={ROUTES.SignIn}>
-            <Login onSubmit={handleLoginSubmit} isLoading={isLoading} />
-          </Route>
           <Route path={ROUTES.About} exact>
             <Promo />
             <AboutProject />
@@ -112,27 +107,37 @@ function App() {
             <AboutMe />
             <Portfolio />
           </Route>
+          <Route path={ROUTES.SignUp}>
+            <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />
+          </Route>
+          <Route path={ROUTES.SignIn}>
+            <Login onSubmit={handleLoginSubmit} isLoading={isLoading} />
+          </Route>
           {isTokenValid ? (
             <>
-              <Route path={ROUTES.Movies}>
-                <Movies />
-              </Route>
-              <Route path={ROUTES.SavedMovies}>
-                <SavedMovies />
-              </Route>
-              <Route path={ROUTES.Profile}>
-                {currentUser && <Profile handleChangeProfile={handleChangeProfile} toastLabel={toastLabel} />}
-              </Route>
-              <Route path="*">
-                <NotFound />
-              </Route>
+              <ProtectedRoute path={ROUTES.Movies} loggedIn={userInformation.loggedIn} component={Movies} />
+              <ProtectedRoute
+                path={ROUTES.SavedMovies}
+                loggedIn={userInformation.loggedIn}
+                component={SavedMovies}
+              />
+              {!!currentUser && <ProtectedRoute
+                path={ROUTES.Profile}
+                loggedIn={userInformation.loggedIn}
+                component={Profile}
+                handleChangeProfile={handleChangeProfile}
+                toastLabel={toastLabel}
+              />}
             </>
           ) : (
             <Redirect to={ROUTES.SignIn} />
           )}
+          <Route path="*">
+            <NotFound />
+          </Route>
         </Switch>
-        {isFooterShown && <Footer />}
       </CurrentUserContext.Provider>
+      {isFooterShown && <Footer />}
     </>
   );
 }

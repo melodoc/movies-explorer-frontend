@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
@@ -18,6 +18,8 @@ import { ROUTES } from '../../constants/routes';
 import { ERROR_LABELS } from '../../constants/errorLabels';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 import { authApiClient } from '../../utils/MainApi';
+import { mainApiClient } from '../../utils/MainApi';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
   const location = useLocation();
@@ -28,6 +30,8 @@ function App() {
     email: '',
     loggedIn: !!localStorage.getItem(LOCAL_STORAGE_KEYS.Token)
   });
+  const [currentUser, setCurrentUser] = useState(null);
+  const [toastLabel, setToastLabel] = useState();
 
   /* FIXME: Перенести в утилиты */
   const isAboutPage = location?.pathname === ROUTES.About;
@@ -61,39 +65,68 @@ function App() {
     }
   };
 
+  const handleChangeProfile = async ({ email, name }) => {
+    console.info(email, name);
+    try {
+      const userInformation = await mainApiClient.setUserInfo({ email, name });
+      setCurrentUser(userInformation ?? {});
+    } catch {
+      console.error(ERROR_LABELS.Form.connection);
+      setToastLabel(ERROR_LABELS.Form.connection)
+    }
+  };
+
+  const loadInitData = async () => {
+    if (userInformation.loggedIn) {
+      try {
+        const userInformation = await mainApiClient.getUserInformation();
+        setCurrentUser(userInformation ?? {});
+      } catch {
+        console.error(ERROR_LABELS.Form.connection);
+        setToastLabel(ERROR_LABELS.Form.connection)
+      }
+    }
+  };
+
+  useEffect(() => {
+    loadInitData();
+  }, [userInformation.loggedIn]);
+
   return (
     <>
-      {isHeaderShown && (
-        <Header type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main} isLoggedIn={userInformation.loggedIn} />
-      )}
-      <Switch>
-        <Route path={ROUTES.About} exact>
-          <Promo />
-          <AboutProject />
-          <Techs />
-          <AboutMe />
-          <Portfolio />
-        </Route>
-        <Route path={ROUTES.SignUp}>
-          <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />
-        </Route>
-        <Route path={ROUTES.SignIn}>
-          <Login onSubmit={handleLoginSubmit} isLoading={isLoading} />
-        </Route>
-        <Route path={ROUTES.Movies}>
-          <Movies />
-        </Route>
-        <Route path={ROUTES.SavedMovies}>
-          <SavedMovies />
-        </Route>
-        <Route path={ROUTES.Profile}>
-          <Profile />
-        </Route>
-        <Route path="*">
-          <NotFound />
-        </Route>
-      </Switch>
-      {isFooterShown && <Footer />}
+      <CurrentUserContext.Provider value={currentUser}>
+        {isHeaderShown && (
+          <Header type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main} isLoggedIn={userInformation.loggedIn} />
+        )}
+        <Switch>
+          <Route path={ROUTES.About} exact>
+            <Promo />
+            <AboutProject />
+            <Techs />
+            <AboutMe />
+            <Portfolio />
+          </Route>
+          <Route path={ROUTES.SignUp}>
+            <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />
+          </Route>
+          <Route path={ROUTES.SignIn}>
+            <Login onSubmit={handleLoginSubmit} isLoading={isLoading} />
+          </Route>
+          <Route path={ROUTES.Movies}>
+            <Movies />
+          </Route>
+          <Route path={ROUTES.SavedMovies}>
+            <SavedMovies />
+          </Route>
+          <Route path={ROUTES.Profile}>
+          {currentUser && <Profile handleChangeProfile={handleChangeProfile} toastLabel={toastLabel}/>}
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
+        {isFooterShown && <Footer />}
+      </CurrentUserContext.Provider>
     </>
   );
 }

@@ -15,16 +15,15 @@ class MainApi extends BaseApi {
     return this._fetchHandle(this._methods.GET, '/movies');
   }
 
-  // getUserInformation() {
-  //   return this._fetchHandle(this._methods.GET, '/users/me');
-  // }
+  getUserInformation() {
+    return this._fetchHandle(this._methods.GET, '/users/me');
+  }
 
-  // setUserInfo(name, about) {
-  //   return this._fetchHandle(this._methods.PATCH, '/users/me', {
-  //     name,
-  //     about
-  //   });
-  // }
+  setUserInfo({email, name} ) {
+    return this._fetchHandle(this._methods.PATCH, '/users/me', {
+      email, name 
+    });
+  }
 
   // changeLikeCardStatus(cardId, setLike) {
   //   return setLike ? this.setLikeById(cardId) : this.deleteLikeById(cardId);

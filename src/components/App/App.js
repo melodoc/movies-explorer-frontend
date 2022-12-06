@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-dom';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
 import { Promo } from '../Promo/Promo';
@@ -25,7 +25,7 @@ function App() {
   const location = useLocation();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
-  const [isTokenValid, setIsTokenValid] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(!!localStorage.getItem(LOCAL_STORAGE_KEYS.Token));
   const [userInformation, setUserInformation] = useState({
     email: '',
     loggedIn: !!localStorage.getItem(LOCAL_STORAGE_KEYS.Token)
@@ -72,7 +72,7 @@ function App() {
       setCurrentUser(userInformation ?? {});
     } catch {
       console.error(ERROR_LABELS.Form.connection);
-      setToastLabel(ERROR_LABELS.Form.connection)
+      setToastLabel(ERROR_LABELS.Form.connection);
     }
   };
 
@@ -83,7 +83,7 @@ function App() {
         setCurrentUser(userInformation ?? {});
       } catch {
         console.error(ERROR_LABELS.Form.connection);
-        setToastLabel(ERROR_LABELS.Form.connection)
+        setToastLabel(ERROR_LABELS.Form.connection);
       }
     }
   };
@@ -99,6 +99,12 @@ function App() {
           <Header type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main} isLoggedIn={userInformation.loggedIn} />
         )}
         <Switch>
+          <Route path={ROUTES.SignUp}>
+            <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />
+          </Route>
+          <Route path={ROUTES.SignIn}>
+            <Login onSubmit={handleLoginSubmit} isLoading={isLoading} />
+          </Route>
           <Route path={ROUTES.About} exact>
             <Promo />
             <AboutProject />
@@ -106,24 +112,24 @@ function App() {
             <AboutMe />
             <Portfolio />
           </Route>
-          <Route path={ROUTES.SignUp}>
-            <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />
-          </Route>
-          <Route path={ROUTES.SignIn}>
-            <Login onSubmit={handleLoginSubmit} isLoading={isLoading} />
-          </Route>
-          <Route path={ROUTES.Movies}>
-            <Movies />
-          </Route>
-          <Route path={ROUTES.SavedMovies}>
-            <SavedMovies />
-          </Route>
-          <Route path={ROUTES.Profile}>
-          {currentUser && <Profile handleChangeProfile={handleChangeProfile} toastLabel={toastLabel}/>}
-          </Route>
-          <Route path="*">
-            <NotFound />
-          </Route>
+          {isTokenValid ? (
+            <>
+              <Route path={ROUTES.Movies}>
+                <Movies />
+              </Route>
+              <Route path={ROUTES.SavedMovies}>
+                <SavedMovies />
+              </Route>
+              <Route path={ROUTES.Profile}>
+                {currentUser && <Profile handleChangeProfile={handleChangeProfile} toastLabel={toastLabel} />}
+              </Route>
+              <Route path="*">
+                <NotFound />
+              </Route>
+            </>
+          ) : (
+            <Redirect to={ROUTES.SignIn} />
+          )}
         </Switch>
         {isFooterShown && <Footer />}
       </CurrentUserContext.Provider>

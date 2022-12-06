@@ -2,7 +2,9 @@
 
 ## Link
 
-WIP
+Pull request
+
+[https://github.com/melodoc/movies-explorer-frontend/pull/15](https://github.com/melodoc/movies-explorer-frontend/pull/15)
 
 <!-- [Movies explorer frontend](https://melodoc.github.io/react-mesto-auth/) -->
 

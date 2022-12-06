@@ -26,7 +26,7 @@ function App() {
   const location = useLocation();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
-  const [isTokenValid, setIsTokenValid] = useState(!!localStorage.getItem(LOCAL_STORAGE_KEYS.Token));
+  const [isTokenValid, setIsTokenValid] = useState(false);
   const [userInformation, setUserInformation] = useState({
     email: '',
     loggedIn: !!localStorage.getItem(LOCAL_STORAGE_KEYS.Token)
@@ -93,6 +93,11 @@ function App() {
     loadInitData();
   }, [userInformation.loggedIn]);
 
+
+  useEffect(() => {
+    setIsTokenValid(!!localStorage.getItem(LOCAL_STORAGE_KEYS.Token));
+  }, [isTokenValid]);
+
   return (
     <>
       {isHeaderShown && (
@@ -113,24 +118,16 @@ function App() {
           <Route path={ROUTES.SignIn}>
             <Login onSubmit={handleLoginSubmit} isLoading={isLoading} />
           </Route>
-          {isTokenValid ? (
-            <>
-              <ProtectedRoute path={ROUTES.Movies} loggedIn={userInformation.loggedIn} component={Movies} />
-              <ProtectedRoute
-                path={ROUTES.SavedMovies}
-                loggedIn={userInformation.loggedIn}
-                component={SavedMovies}
-              />
-              {!!currentUser && <ProtectedRoute
-                path={ROUTES.Profile}
-                loggedIn={userInformation.loggedIn}
-                component={Profile}
-                handleChangeProfile={handleChangeProfile}
-                toastLabel={toastLabel}
-              />}
-            </>
-          ) : (
-            <Redirect to={ROUTES.SignIn} />
+          <ProtectedRoute path={ROUTES.Movies} loggedIn={userInformation.loggedIn} component={Movies} />
+          <ProtectedRoute path={ROUTES.SavedMovies} loggedIn={userInformation.loggedIn} component={SavedMovies} />
+          {!!currentUser && (
+            <ProtectedRoute
+              path={ROUTES.Profile}
+              loggedIn={userInformation.loggedIn}
+              component={Profile}
+              handleChangeProfile={handleChangeProfile}
+              toastLabel={toastLabel}
+            />
           )}
           <Route path="*">
             <NotFound />

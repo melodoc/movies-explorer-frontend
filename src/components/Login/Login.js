@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { INPUT_TYPES } from '../../constants/inputTypes';
@@ -16,15 +16,25 @@ export function Login({ onSubmit, isLoading }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { handleChange, isValid } = useFormWithValidation();
+  const [validity, setValidity] = useState({});
+  const [customIsValid, setCustomIsValid] = useState(Object.values(validity).every((valid) => valid)); 
 
-  const handleChangeEmail = (e) => {
+  useEffect(() => {
+    setCustomIsValid(Object.values(validity).every((valid) => valid));
+  }, [validity])
+
+  console.info(customIsValid);
+
+  const handleChangeEmail = (e, valid) => {
     handleChange(e);
     setEmail(e.target.value);
+    setValidity({ ...validity, email: valid });
   };
 
-  const handleChangePassword = (e) => {
+  const handleChangePassword = (e, valid) => {
     handleChange(e);
     setPassword(e.target.value);
+    setValidity({ ...validity, password: valid });
   };
 
   const handleSubmit = (e) => {
@@ -45,7 +55,12 @@ export function Login({ onSubmit, isLoading }) {
             <UIInput label="E-mail" type={INPUT_TYPES.Email} required handleChange={handleChangeEmail} />
             <UIInput label="Пароль" type={INPUT_TYPES.Password} required handleChange={handleChangePassword} />
             <div className="entry-form__input">
-              <UISubmit label="Войти" name="login" link={ROUTES.Movies} disabled={isLoading || !isValid} />
+              <UISubmit
+                label="Войти"
+                name="login"
+                link={ROUTES.Movies}
+                disabled={isLoading || !isValid || !customIsValid}
+              />
             </div>
             <UIRedirect label="Еще не зарегистрированы?" redirectLabel="Регистрация" link={ROUTES.SignUp} />
           </form>

@@ -16,21 +16,25 @@ export function Register({ onSubmit, isLoading }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {handleChange, isValid } = useFormWithValidation();
+  const { handleChange, isValid } = useFormWithValidation();
+  const [validity, setValidity] = useState({});
 
-  const handleChangeName = (e) => {
+  const handleChangeName = (e, valid) => {
     handleChange(e);
     setName(e.target.value);
+    setValidity({ ...validity, name: valid });
   };
 
-  const handleChangeEmail = (e) => {
+  const handleChangeEmail = (e, valid) => {
     handleChange(e);
     setEmail(e.target.value);
+    setValidity({ ...validity, email: valid });
   };
 
-  const handleChangePassword = (e) => {
+  const handleChangePassword = (e, valid) => {
     handleChange(e);
     setPassword(e.target.value);
+    setValidity({ ...validity, password: valid });
   };
 
   const handleSubmit = (e) => {
@@ -58,7 +62,11 @@ export function Register({ onSubmit, isLoading }) {
               handleChange={handleChangePassword}
             />
             <div className="entry-form__input entry-form__input_type_register">
-              <UISubmit label="Зарегистрироваться" name="signUp" disabled={isLoading || !isValid} />
+              <UISubmit
+                label="Зарегистрироваться"
+                name="signUp"
+                disabled={isLoading || !isValid || !Object.values(validity).every((valid) => valid)}
+              />
             </div>
             <UIRedirect label="Уже зарегистрированы?" redirectLabel="Войти" link={ROUTES.SignIn} />
           </form>

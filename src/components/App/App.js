@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
 import { Promo } from '../Promo/Promo';
@@ -21,6 +21,7 @@ import { authApiClient } from '../../utils/MainApi';
 import { mainApiClient } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
+import { Toast } from '../Toast/Toast';
 
 function App() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function App() {
       history.push(ROUTES.SignIn);
     } catch {
       console.error(ERROR_LABELS.Form.connection);
+      setToastLabel(ERROR_LABELS.Form.connection)
     } finally {
       setIsLoading(false);
     }
@@ -61,6 +63,7 @@ function App() {
       history.push(ROUTES.Movies);
     } catch {
       console.error(ERROR_LABELS.Form.connection);
+      setToastLabel(ERROR_LABELS.Form.connection)
     } finally {
       setIsLoading(false);
     }
@@ -134,6 +137,7 @@ function App() {
           </Route>
         </Switch>
       </CurrentUserContext.Provider>
+      {toastLabel && <Toast label={toastLabel} />}
       {isFooterShown && <Footer />}
     </>
   );

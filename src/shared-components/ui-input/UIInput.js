@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { INPUT_TYPES } from '../../constants/inputTypes';
 import { ValidationHelper } from '../../utils/validationHelper';
 
@@ -12,10 +12,11 @@ export function UIInput({ label, type, value, required, handleChange }) {
   const [inputState, setInputState] = useState(VALIDATION_MESSAGE.get(true));
 
   const checkValidation = (e) => {
-    handleChange && handleChange(e);
 
     if (type === INPUT_TYPES.Name) {
-      setInputState(VALIDATION_MESSAGE.get(!!input.current.value.match(VALIDATION_PATTERN)?.input))
+      const validationState = getValidationState();
+      setInputState(validationState);
+      handleChange && handleChange(e, validationState.valid);
       return;
     }
 
@@ -23,6 +24,13 @@ export function UIInput({ label, type, value, required, handleChange }) {
       valid: input.current.validity.valid,
       text: input.current.validationMessage
     });
+
+    handleChange && handleChange(e, inputState.valid);
+  };
+
+  const getValidationState = () => {
+    const validation = !!input.current.value.match(VALIDATION_PATTERN)?.input;
+    return VALIDATION_MESSAGE.get(validation);
   };
 
   return (

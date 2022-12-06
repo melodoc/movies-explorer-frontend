@@ -24,24 +24,6 @@ class MainApi extends BaseApi {
       email, name 
     });
   }
-
-  // changeLikeCardStatus(cardId, setLike) {
-  //   return setLike ? this.setLikeById(cardId) : this.deleteLikeById(cardId);
-  // }
-
-  // setLikeById(cardId) {
-  //   return this._fetchHandle(this._methods.PUT, `/cards/${cardId}/likes`);
-  // }
-
-  // deleteLikeById(cardId) {
-  //   return this._fetchHandle(this._methods.DELETE, `/cards/${cardId}/likes`);
-  // }
-
-  // updateUserAvatar(avatar) {
-  //   return this._fetchHandle(this._methods.PATCH, `/users/me/avatar`, {
-  //     avatar
-  //   });
-  // }
 }
 
 class AuthApi extends BaseApi {

@@ -44,6 +44,7 @@ export function MoviesCardList({ cards, cardsLabel }) {
   };
 
   const deleteMovieById = async (card) => {
+    console.info(card);
     try {
       await mainApiClient.deleteMovieById(card?._id);
       setToastLabel(`Карточка «${card.nameRU}» удалена из сохраненных фильмов`);

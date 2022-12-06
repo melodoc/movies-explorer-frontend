@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { UICheckbox } from '../../shared-components/ui-checkbox/UICheckbox';
 import { ValidationHelper } from '../../utils/validationHelper';
 import { CardHelper } from '../../utils/cardHelper';
-import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 
 import './SearchForm.css';
 

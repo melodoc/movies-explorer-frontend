@@ -3,11 +3,11 @@ import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
 
 import './Movies.css';
 
-export function Movies({onSubmit, cards, cardsLabel}) {
+export function Movies({handleSubmitSearch, cards, cardsLabel}) {
 
   return (
     <>
-      <SearchForm onSubmitSearch={onSubmit} />
+      <SearchForm onSubmitSearch={handleSubmitSearch} />
       {cards && <MoviesCardList cards={cards} cardsLabel={cardsLabel} />}
     </>
   );

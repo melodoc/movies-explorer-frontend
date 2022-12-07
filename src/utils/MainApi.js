@@ -2,7 +2,6 @@ import { BaseApi } from '../server/Api';
 import { moviesRequestParams } from '../constants/requestParams';
 
 class MainApi extends BaseApi {
-  //POST /movies
   addNewMovies(card) {
     return this._fetchHandle(this._methods.POST, '/movies', card);
   }

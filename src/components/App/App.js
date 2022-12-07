@@ -35,6 +35,8 @@ function App() {
   const [toastLabel, setToastLabel] = useState();
   const [cards, setCards] = useState();
   const [cardsLabel, setCardsLabel] = useState(ERROR_LABELS.Movies.notFound);
+  const [savedCards, setSavedCards] = useState();
+  const [savedCardsLabel, setSavedCardsLabel] = useState(ERROR_LABELS.Movies.notFound);
 
   const { headerType, hasHeader, hasFooter } = RootPageHelper.getPageProps(location);
 
@@ -97,6 +99,32 @@ function App() {
     }
   };
 
+  const loadSavedCards = async () => {
+    setIsLoading(true);
+    try {
+      const movies = await mainApiClient.getMovies();
+      const searchQuery = CardHelper.getSearchQueryFromLocalStorage();
+      const checkboxQuery = CardHelper.getCheckboxFromLocalStorage();
+      const filteredMovies =
+        searchQuery && checkboxQuery ? CardHelper.filterMoviesCards(movies, searchQuery, checkboxQuery) : movies;
+      setSavedCards(filteredMovies);
+      localStorage.setItem(LOCAL_STORAGE_KEYS.SavedMovies, JSON.stringify(filteredMovies));
+    } catch {
+      setSavedCards([]);
+      setSavedCardsLabel(ERROR_LABELS.Movies.connection);
+      console.error(ERROR_LABELS.Movies.connection);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSavedCardsSearch = (searchQuery, checkboxQuery) => {
+    loadSavedCards();
+    const movies = CardHelper.filterMoviesCards(savedCards, searchQuery, checkboxQuery);
+    CardHelper.setLocalStorageItems(movies, searchQuery, checkboxQuery);
+    setSavedCards(movies);
+  };
+
   const loadInitData = async () => {
     if (userInformation.loggedIn) {
       try {
@@ -113,11 +141,10 @@ function App() {
     loadInitData();
   }, [userInformation.loggedIn]);
 
-
   useEffect(() => {
     loadInitialCards();
+    loadSavedCards();
   }, []);
-
 
   useEffect(() => {
     setIsTokenValid(!!localStorage.getItem(LOCAL_STORAGE_KEYS.Token));
@@ -141,11 +168,18 @@ function App() {
             path={ROUTES.Movies}
             loggedIn={userInformation.loggedIn}
             component={Movies}
-            onSubmit={handleSubmitSearch}
+            handleSubmitSearch={handleSubmitSearch}
             cards={cards}
             cardsLabel={cardsLabel}
           />
-          <ProtectedRoute path={ROUTES.SavedMovies} loggedIn={userInformation.loggedIn} component={SavedMovies} />
+          <ProtectedRoute
+            path={ROUTES.SavedMovies}
+            loggedIn={userInformation.loggedIn}
+            component={SavedMovies}
+            savedCards={savedCards}
+            savedCardsLabel={savedCardsLabel}
+            handleSubmitSearch={handleSavedCardsSearch}
+          />
           {!!currentUser && (
             <ProtectedRoute
               path={ROUTES.Profile}

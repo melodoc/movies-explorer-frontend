@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import { RootPageHelper } from '../../helpers/rootPageHelper';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
 import { Main } from '../Main/Main';
@@ -30,11 +31,7 @@ function App() {
   });
   const [currentUser, setCurrentUser] = useState(null);
   const [toastLabel, setToastLabel] = useState();
-
-  /* FIXME: Перенести в утилиты */
-  const isAboutPage = location?.pathname === ROUTES.About;
-  const isHeaderShown = [ROUTES.About, ROUTES.Movies, ROUTES.SavedMovies, ROUTES.Profile].includes(location?.pathname);
-  const isFooterShown = [ROUTES.About, ROUTES.Movies, ROUTES.SavedMovies].includes(location?.pathname);
+  const { headerType, hasHeader, hasFooter } = RootPageHelper.getPageProps(location);
 
   const handleRegisterSubmit = async ({ name, email, password }) => {
     setIsLoading(true);
@@ -43,7 +40,7 @@ function App() {
       history.push(ROUTES.SignIn);
     } catch {
       console.error(ERROR_LABELS.Form.connection);
-      setToastLabel(ERROR_LABELS.Form.connection)
+      setToastLabel(ERROR_LABELS.Form.connection);
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +56,7 @@ function App() {
       history.push(ROUTES.Movies);
     } catch {
       console.error(ERROR_LABELS.Form.connection);
-      setToastLabel(ERROR_LABELS.Form.connection)
+      setToastLabel(ERROR_LABELS.Form.connection);
     } finally {
       setIsLoading(false);
     }
@@ -92,16 +89,13 @@ function App() {
     loadInitData();
   }, [userInformation.loggedIn]);
 
-
   useEffect(() => {
     setIsTokenValid(!!localStorage.getItem(LOCAL_STORAGE_KEYS.Token));
   }, [isTokenValid]);
 
   return (
     <>
-      {isHeaderShown && (
-        <Header type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main} isLoggedIn={userInformation.loggedIn} />
-      )}
+      {hasHeader && <Header type={headerType} isLoggedIn={userInformation.loggedIn} />}
       <CurrentUserContext.Provider value={currentUser}>
         <Switch>
           <Route path={ROUTES.About} exact>
@@ -130,7 +124,7 @@ function App() {
         </Switch>
       </CurrentUserContext.Provider>
       {toastLabel && <Toast label={toastLabel} />}
-      {isFooterShown && <Footer />}
+      {hasFooter && <Footer />}
     </>
   );
 }

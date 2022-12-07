@@ -17,7 +17,6 @@ import './Header.css';
 
 export function Header({ isLoggedIn, type }) {
   const [isMobileMenuPopupOpen, setIsMobileMenuPopupOpen] = useState(false);
-  const [isLoggedInMock, setIsLoggedInMock] = useState(isLoggedIn);
   const dimensions = useResizeObserver();
 
   const isMobileOrTablet = DocumentBreakpoints.getIsMobileInValue(dimensions.width);
@@ -28,11 +27,6 @@ export function Header({ isLoggedIn, type }) {
     setIsMobileMenuPopupOpen(!isMobileMenuPopupOpen);
   };
 
-  const handleSignUp = (e) => {
-    e.preventDefault();
-    setIsLoggedInMock(!isLoggedInMock);
-  };
-
   return (
     <>
       <header className={`header ${HeaderHelper.isBanner(type) ? 'header-banner' : 'header-main'}`}>
@@ -40,7 +34,7 @@ export function Header({ isLoggedIn, type }) {
           <Link to={ROUTES.About} className="header__link">
             <img src={logo} alt="logo" />
           </Link>
-          {isLoggedInMock ? (
+          {isLoggedIn ? (
             <>
               {!isMobileOrTablet ? (
                 <div className="header__list">
@@ -60,9 +54,7 @@ export function Header({ isLoggedIn, type }) {
               {isMobileMenuPopupOpen && (
                 <Portal>
                   <PopUp
-                    isLoggedIn={isLoggedInMock}
                     onToggleMobileMenu={handleMobileMenuPopup}
-                    onSignUp={handleSignUp}
                   />
                 </Portal>
               )}

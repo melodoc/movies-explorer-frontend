@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { UICheckbox } from '../../shared-components/ui-checkbox/UICheckbox';
 import { ValidationHelper } from '../../helpers/validationHelper';
 import { CardHelper } from '../../helpers/cardHelper';
+import { ROUTES } from '../../constants/routes';
 
 import './SearchForm.css';
 
@@ -12,8 +14,11 @@ const SEARCH_FORM_VALIDATION_MAP = new Map([
 
 export function SearchForm({ onSubmitSearch }) {
   const input = useRef(null);
+  const location = useLocation();
+  const isMoviesPage = [ROUTES.Movies].includes(location?.pathname);
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [checkboxQuery, setCheckboxQuery] = useState(CardHelper.getCheckboxFromLocalStorage());
+  const [checkboxQuery, setCheckboxQuery] = useState(false);
   const [inputState, setInputState] = useState(SEARCH_FORM_VALIDATION_MAP.get(true));
 
   const onSubmit = (e) => {
@@ -32,8 +37,8 @@ export function SearchForm({ onSubmitSearch }) {
   };
 
   useEffect(() => {
-    setSearchQuery(CardHelper.getSearchQueryFromLocalStorage());
-  }, []);
+    isMoviesPage && setSearchQuery(CardHelper.getSearchQueryFromLocalStorage());
+  }, [isMoviesPage]);
 
   return (
     <section>
@@ -58,7 +63,7 @@ export function SearchForm({ onSubmitSearch }) {
         <UICheckbox
           label="Короткометражки"
           onSubmit={handleOnCheckboxChange}
-          initialDataLoadHandler={CardHelper.getCheckboxFromLocalStorage}
+          initialDataLoadHandler={isMoviesPage && CardHelper.getCheckboxFromLocalStorage}
         />
       </form>
     </section>

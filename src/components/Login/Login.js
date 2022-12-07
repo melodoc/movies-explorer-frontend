@@ -22,8 +22,6 @@ export function Login({ onSubmit, isLoading }) {
     setCustomIsValid(Object.values(validity).every((valid) => valid));
   }, [validity])
 
-  console.info(customIsValid);
-
   const handleChangeEmail = (e, valid) => {
     handleChange(e);
     setEmail(e.target.value);

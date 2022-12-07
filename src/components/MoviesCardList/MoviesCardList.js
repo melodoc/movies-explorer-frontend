@@ -15,7 +15,8 @@ const MIN_CARDS_TO_SHOW = 3;
 
 export function MoviesCardList({ cards, cardsLabel }) {
   const baseUrl = beatfilmMoviesRequestParams.baseUrl;
-  const savedCards = CardHelper.getSavedCardsFromLocalStorage();
+  //FIXME: Убрать
+  const savedCards = [];
   const location = useLocation();
   const isSavedMoviesPage = location?.pathname === ROUTES.SavedMovies;
   const [moviesCards, setMoviesCards] = useState(cards);
@@ -50,7 +51,8 @@ export function MoviesCardList({ cards, cardsLabel }) {
       setToastLabel(`Карточка «${card.nameRU}» удалена из сохраненных фильмов`);
       const updatedCards = moviesCards.filter((oldCard) => oldCard?._id !== card?._id);
       setMoviesCards(updatedCards);
-      CardHelper.updateSavedCardsFromLocalStorage(updatedCards);
+      //FIXME: продумать как это исправить
+      // CardHelper.updateSavedCardsFromLocalStorage(updatedCards);
     } catch {
       console.error(ERROR_LABELS.Form.connection);
       setToastLabel(ERROR_LABELS.Form.connection);

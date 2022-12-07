@@ -10,7 +10,7 @@ export function UICheckbox({ label, onSubmit, initialDataLoadHandler }) {
   };
 
   const loadInitialData = () => {
-    input.current.checked = initialDataLoadHandler();
+    initialDataLoadHandler && (input.current.checked = initialDataLoadHandler());
   };
 
   useEffect(() => {

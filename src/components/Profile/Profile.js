@@ -14,7 +14,7 @@ import './Profile.css';
 const VALIDATION_PATTERN = ValidationHelper.validationPattern;
 const VALIDATION_MESSAGE = ValidationHelper.validationMessage;
 
-export function Profile({ handleChangeProfile, toastLabel }) {
+export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }) {
   const currentUser = useContext(CurrentUserContext);
   const [isReadOnly, setIsReadOnly] = useState(true);
   const [profileName, setProfileName] = useState(currentUser?.name);
@@ -77,8 +77,8 @@ export function Profile({ handleChangeProfile, toastLabel }) {
   };
 
   const handleLogOut = (e) => {
+    handleProfileLogOut();
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Token);
-    localStorage.removeItem(LOCAL_STORAGE_KEYS.SavedMovies);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Movies);
     history.push(ROUTES.SignIn);
   };

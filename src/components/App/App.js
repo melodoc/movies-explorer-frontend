@@ -40,10 +40,6 @@ function App() {
 
   const { headerType, hasHeader, hasFooter } = RootPageHelper.getPageProps(location);
 
-  const loadInitialCards = () => {
-    setCards(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Movies)));
-  };
-
   const handleRegisterSubmit = async ({ name, email, password }) => {
     setIsLoading(true);
     try {
@@ -84,45 +80,32 @@ function App() {
     }
   };
 
-  const handleSubmitSearch = async (searchQuery, checkboxQuery) => {
-    setIsLoading(true);
-    try {
-      const movies = CardHelper.filterMoviesCards(await moviesApiClient.getMovies(), searchQuery, checkboxQuery);
-      CardHelper.setLocalStorageItems(movies, searchQuery, checkboxQuery);
-      setCards(movies);
-    } catch {
-      setCards([]);
-      setCardsLabel(ERROR_LABELS.Movies.connection);
-      console.error(ERROR_LABELS.Movies.connection);
-    } finally {
-      setIsLoading(false);
+  const loadMainCards = async () => {
+    if (!CardHelper.hasSavedFilms()) {
+      setIsLoading(true);
+      try {
+        const movies = await moviesApiClient.getMovies();
+        CardHelper.setLocalStorageMovies(movies);
+        setCards(movies);
+      } catch {
+        setCards([]);
+        setCardsLabel(ERROR_LABELS.Movies.connection);
+        console.error(ERROR_LABELS.Movies.connection);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
   const loadSavedCards = async () => {
-    setIsLoading(true);
     try {
       const movies = await mainApiClient.getMovies();
-      const searchQuery = CardHelper.getSearchQueryFromLocalStorage();
-      const checkboxQuery = CardHelper.getCheckboxFromLocalStorage();
-      const filteredMovies =
-        searchQuery && checkboxQuery ? CardHelper.filterMoviesCards(movies, searchQuery, checkboxQuery) : movies;
-      setSavedCards(filteredMovies);
-      localStorage.setItem(LOCAL_STORAGE_KEYS.SavedMovies, JSON.stringify(filteredMovies));
+      setSavedCards(movies);
     } catch {
       setSavedCards([]);
       setSavedCardsLabel(ERROR_LABELS.Movies.connection);
       console.error(ERROR_LABELS.Movies.connection);
-    } finally {
-      setIsLoading(false);
     }
-  };
-
-  const handleSavedCardsSearch = (searchQuery, checkboxQuery) => {
-    loadSavedCards();
-    const movies = CardHelper.filterMoviesCards(savedCards, searchQuery, checkboxQuery);
-    CardHelper.setLocalStorageItems(movies, searchQuery, checkboxQuery);
-    setSavedCards(movies);
   };
 
   const loadInitData = async () => {
@@ -137,12 +120,19 @@ function App() {
     }
   };
 
+  const handleLogOut = () => {
+    setCards(null);
+    setSavedCards(null);
+    setCardsLabel(ERROR_LABELS.Movies.notFound);
+    setSavedCardsLabel(ERROR_LABELS.Movies.notFound);
+  };
+
   useEffect(() => {
     loadInitData();
   }, [userInformation.loggedIn]);
 
   useEffect(() => {
-    loadInitialCards();
+    loadMainCards();
     loadSavedCards();
   }, []);
 
@@ -168,7 +158,6 @@ function App() {
             path={ROUTES.Movies}
             loggedIn={userInformation.loggedIn}
             component={Movies}
-            handleSubmitSearch={handleSubmitSearch}
             cards={cards}
             cardsLabel={cardsLabel}
           />
@@ -178,7 +167,6 @@ function App() {
             component={SavedMovies}
             savedCards={savedCards}
             savedCardsLabel={savedCardsLabel}
-            handleSubmitSearch={handleSavedCardsSearch}
           />
           {!!currentUser && (
             <ProtectedRoute
@@ -186,6 +174,7 @@ function App() {
               loggedIn={userInformation.loggedIn}
               component={Profile}
               handleChangeProfile={handleChangeProfile}
+              handleProfileLogOut={handleLogOut}
               toastLabel={toastLabel}
             />
           )}

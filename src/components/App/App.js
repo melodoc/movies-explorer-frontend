@@ -2,11 +2,7 @@ import { useState, useEffect } from 'react';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
-import { Promo } from '../Promo/Promo';
-import { AboutProject } from '../AboutProject/AboutProject';
-import { Techs } from '../Techs/Techs';
-import { AboutMe } from '../AboutMe/AboutMe';
-import { Portfolio } from '../Portfolio/Portfolio';
+import { Main } from '../Main/Main';
 import { Movies } from '../Movies/Movies';
 import { SavedMovies } from '../SavedMovies/SavedMovies';
 import { Login } from '../Login/Login';
@@ -109,11 +105,7 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <Switch>
           <Route path={ROUTES.About} exact>
-            <Promo />
-            <AboutProject />
-            <Techs />
-            <AboutMe />
-            <Portfolio />
+            <Main />
           </Route>
           <Route path={ROUTES.SignUp}>
             <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />

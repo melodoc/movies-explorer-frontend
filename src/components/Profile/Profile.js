@@ -79,6 +79,7 @@ export function Profile({ handleChangeProfile, toastLabel }) {
   const handleLogOut = (e) => {
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Token);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.SavedMovies);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.Movies);
     history.push(ROUTES.SignIn);
   };
 

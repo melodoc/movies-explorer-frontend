@@ -66,8 +66,8 @@ export class CardHelper {
   static setLocalStorageItems(movies, searchQuery, checkboxQuery) {
     const localStorageItems = [
       { key: LOCAL_STORAGE_KEYS.Movies, value: JSON.stringify(movies) },
-      { key: LOCAL_STORAGE_KEYS.SearchQuery, value: searchQuery },
-      { key: LOCAL_STORAGE_KEYS.Checkbox, value: checkboxQuery }
+      { key: LOCAL_STORAGE_KEYS.MainSearchQuery, value: searchQuery },
+      { key: LOCAL_STORAGE_KEYS.MainCheckbox, value: checkboxQuery }
     ];
 
     localStorageItems.forEach((item) => {
@@ -76,11 +76,11 @@ export class CardHelper {
   }
 
   static getCheckboxFromLocalStorage() {
-    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Checkbox)) ?? false;
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.MainCheckbox)) ?? false;
   }
 
   static getSearchQueryFromLocalStorage() {
-    return localStorage.getItem(LOCAL_STORAGE_KEYS.SearchQuery) ?? "";
+    return localStorage.getItem(LOCAL_STORAGE_KEYS.MainSearchQuery) ?? "";
   }
 
   static getSavedCardsFromLocalStorage() {

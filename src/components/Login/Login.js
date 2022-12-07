@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { INPUT_TYPES } from '../../constants/inputTypes';
-import { Preloader } from '../../components/Preloader/Preloader';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import { UIRedirect } from '../../shared-components/ui-redirect/UIRedirect';
 import { UIInput } from '../../shared-components/ui-input/UIInput';
@@ -66,11 +65,6 @@ export function Login({ onSubmit, isLoading }) {
           </form>
         </div>
       </section>
-      {isLoading && (
-        <div className="entry-form__loader">
-          <Preloader />
-        </div>
-      )}
     </>
   );
 }

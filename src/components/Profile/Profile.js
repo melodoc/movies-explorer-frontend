@@ -4,7 +4,7 @@ import { ROUTES } from '../../constants/routes';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 import { INPUT_TYPES } from '../../constants/inputTypes';
 import { UISubmit } from '../../shared-components/ui-submit/UISubmit';
-import { ValidationHelper } from '../../utils/validationHelper';
+import { ValidationHelper } from '../../helpers/validationHelper';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { Toast } from '../../components/Toast/Toast';

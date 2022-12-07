@@ -5,7 +5,7 @@ import { Preloader } from '../Preloader/Preloader';
 import { ERROR_LABELS } from '../../constants/errorLabels';
 import { mainApiClient } from '../../utils/MainApi';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
-import { CardHelper } from '../../utils/cardHelper';
+import { CardHelper } from '../../helpers/cardHelper';
 
 import './SavedMovies.css';
 

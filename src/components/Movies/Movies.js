@@ -3,7 +3,7 @@ import { SearchForm } from '../SearchForm/SearchForm';
 import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
 import { Preloader } from '../Preloader/Preloader';
 import { moviesApiClient } from '../../utils/MoviesApi';
-import { CardHelper } from '../../utils/cardHelper';
+import { CardHelper } from '../../helpers/cardHelper';
 import { ERROR_LABELS } from '../../constants/errorLabels';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 

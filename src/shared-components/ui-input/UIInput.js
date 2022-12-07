@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { INPUT_TYPES } from '../../constants/inputTypes';
-import { ValidationHelper } from '../../utils/validationHelper';
+import { ValidationHelper } from '../../helpers/validationHelper';
 
 import './UIInput.css';
 

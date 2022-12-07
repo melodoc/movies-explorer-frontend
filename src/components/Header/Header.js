@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import debounce from 'lodash-es/debounce';
-import { DocumentBreakpoints } from '../../utils/documentBreakpoints';
-import { HeaderHelper } from '../../utils/headerHelper';
+import { DocumentBreakpoints } from '../../helpers/documentBreakpoints';
+import { HeaderHelper } from '../../helpers/headerHelper';
 import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { UILink } from '../../shared-components/ul-link/UILink';
 import { UIButton } from '../../shared-components/ui-button/UIButton';

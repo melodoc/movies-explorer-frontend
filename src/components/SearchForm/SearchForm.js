@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { UICheckbox } from '../../shared-components/ui-checkbox/UICheckbox';
-import { ValidationHelper } from '../../utils/validationHelper';
-import { CardHelper } from '../../utils/cardHelper';
+import { ValidationHelper } from '../../helpers/validationHelper';
+import { CardHelper } from '../../helpers/cardHelper';
 
 import './SearchForm.css';
 

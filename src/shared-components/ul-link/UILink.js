@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { ICON_TYPES } from '../../constants/iconTypes';
-import { LinkHelper } from '../../utils/linkHelper';
+import { LinkHelper } from '../../helpers/linkHelper';
 import profile from '../../images/profile.svg';
 
 import './UILink.css';

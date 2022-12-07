@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MoviesCard } from '../MoviesCard/MoviesCard';
 import { useResizeObserver } from '../../hooks/useResizeObserver';
-import { CardHelper } from '../../utils/cardHelper';
+import { CardHelper } from '../../helpers/cardHelper';
 import { mainApiClient } from '../../utils/MainApi';
 import { Toast } from '../../components/Toast/Toast';
 import { beatfilmMoviesRequestParams } from '../../constants/requestParams';

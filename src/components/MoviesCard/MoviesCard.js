@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CardHelper } from '../../utils/cardHelper';
+import { CardHelper } from '../../helpers/cardHelper';
 import { ROUTES } from '../../constants/routes';
 
 import './MoviesCard.css';

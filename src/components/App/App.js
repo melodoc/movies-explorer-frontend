@@ -44,7 +44,11 @@ function App() {
     setIsLoading(true);
     try {
       await authApiClient.register({ name, email, password });
-      history.push(ROUTES.SignIn);
+      const res = await authApiClient.login({ email, password });
+      localStorage.setItem(LOCAL_STORAGE_KEYS.Token, res.token);
+      setIsTokenValid(true);
+      setUserInformation({...userInformation, loggedIn: true})
+      history.push(ROUTES.Movies);
     } catch {
       console.error(ERROR_LABELS.Form.connection);
       setToastLabel(ERROR_LABELS.Form.connection);
@@ -125,16 +129,18 @@ function App() {
     setSavedCards(null);
     setCardsLabel(ERROR_LABELS.Movies.notFound);
     setSavedCardsLabel(ERROR_LABELS.Movies.notFound);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.Token);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.Movies);
   };
 
   useEffect(() => {
-    loadInitData();
-  }, [userInformation.loggedIn]);
+    isTokenValid && loadInitData();
+  }, [userInformation.loggedIn, isTokenValid]);
 
   useEffect(() => {
-    loadMainCards();
-    loadSavedCards();
-  }, []);
+    isTokenValid && loadMainCards();
+    isTokenValid && loadSavedCards();
+  }, [isTokenValid]);
 
   useEffect(() => {
     setIsTokenValid(!!localStorage.getItem(LOCAL_STORAGE_KEYS.Token));

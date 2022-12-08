@@ -12,7 +12,6 @@ export function UIInput({ label, type, value, required, handleChange }) {
   const [inputState, setInputState] = useState(VALIDATION_MESSAGE.get(true));
 
   const checkValidation = (e) => {
-
     if (type === INPUT_TYPES.Name) {
       const validationState = getValidationState();
       setInputState(validationState);

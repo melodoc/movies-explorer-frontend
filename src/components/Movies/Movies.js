@@ -31,7 +31,11 @@ export function Movies({ cards, cardsLabel }) {
 
   return (
     <>
-      <SearchForm onSubmitSearch={handleSubmitSearch} />
+      <SearchForm
+        onSubmitSearch={handleSubmitSearch}
+        initialSearchQuery={CardHelper.getSearchQueryFromLocalStorage()}
+        initialCheckboxQuery={CardHelper.getCheckboxFromLocalStorage()}
+      />
       {(cards || CardHelper.hasSavedFilms()) && movieCards && (
         <MoviesCardList cards={movieCards} cardsLabel={cardsLabel} />
       )}

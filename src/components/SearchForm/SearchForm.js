@@ -12,17 +12,17 @@ const SEARCH_FORM_VALIDATION_MAP = new Map([
   [false, { valid: false, text: 'Нужно ввести ключевое слово' }]
 ]);
 
-export function SearchForm({ onSubmitSearch }) {
+export function SearchForm({ onSubmitSearch, initialSearchQuery, initialCheckboxQuery }) {
   const input = useRef(null);
   const location = useLocation();
   const isMoviesPage = [ROUTES.Movies].includes(location?.pathname);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [checkboxQuery, setCheckboxQuery] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery ?? "");
+  const [checkboxQuery, setCheckboxQuery] = useState(initialCheckboxQuery ?? false);
   const [inputState, setInputState] = useState(SEARCH_FORM_VALIDATION_MAP.get(true));
 
   const onSubmit = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     const isWord = ValidationHelper.isWord(searchQuery);
     setInputState(SEARCH_FORM_VALIDATION_MAP.get(isWord));
     isWord && onSubmitSearch(searchQuery, checkboxQuery);
@@ -32,7 +32,8 @@ export function SearchForm({ onSubmitSearch }) {
     setSearchQuery(e.target.value);
   };
 
-  const handleOnCheckboxChange = (checkboxValue) => {
+  const handleOnCheckboxChange = (checkboxValue, e) => {
+    onSubmit(e);
     setCheckboxQuery(checkboxValue);
   };
 
@@ -54,6 +55,7 @@ export function SearchForm({ onSubmitSearch }) {
               placeholder="Фильм"
               autoComplete="off"
               type="text"
+              required
               value={searchQuery}
             />
           </label>

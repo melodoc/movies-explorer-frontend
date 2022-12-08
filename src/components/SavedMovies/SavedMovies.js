@@ -8,8 +8,6 @@ import './SavedMovies.css';
 export function SavedMovies({ handleSavedCardsLoad, savedCards, savedCardsLabel}) {
   const [filteredSavedCards, setFilteredSavedCards] = useState(savedCards);
 
-  // FIXME: Добавить запрос при переходе каждый раз
-
   const handleSavedCardsSearch = (searchQuery, checkboxQuery) => {
     if (savedCards) {
       const movies = CardHelper.filterMoviesCards(savedCards, searchQuery, checkboxQuery);

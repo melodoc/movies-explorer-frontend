@@ -51,7 +51,7 @@ export class CardHelper {
     return [...cards].slice(0, amount);
   }
 
-  static filterMoviesCards(movies, searchQuery, isShort) {
+  static filterMoviesCards(movies, searchQuery, isShort, isSortBySearchQuery = true) {
     const shortDuration = 40;
 
     return (movies || []).filter((movie) => {

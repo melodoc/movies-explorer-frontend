@@ -5,8 +5,10 @@ import { CardHelper } from '../../helpers/cardHelper';
 
 import './SavedMovies.css';
 
-export function SavedMovies({ savedCards, savedCardsLabel}) {
+export function SavedMovies({ handleSavedCardsLoad, savedCards, savedCardsLabel}) {
   const [filteredSavedCards, setFilteredSavedCards] = useState(savedCards);
+
+  // FIXME: Добавить запрос при переходе каждый раз
 
   const handleSavedCardsSearch = (searchQuery, checkboxQuery) => {
     if (savedCards) {
@@ -18,10 +20,14 @@ export function SavedMovies({ savedCards, savedCardsLabel}) {
   useEffect(() => {
     setFilteredSavedCards(savedCards);
   }, [savedCards]);
-  
+
+  useEffect(() => {
+    handleSavedCardsLoad()
+  }, []);
+
   return (
     <>
-      <SearchForm onSubmitSearch={handleSavedCardsSearch}/>
+      <SearchForm onSubmitSearch={handleSavedCardsSearch} />
       {savedCards && filteredSavedCards && <MoviesCardList cards={filteredSavedCards} cardsLabel={savedCardsLabel} />}
     </>
   );

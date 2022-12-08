@@ -165,6 +165,7 @@ function App() {
             path={ROUTES.SavedMovies}
             loggedIn={userInformation.loggedIn}
             component={SavedMovies}
+            handleSavedCardsLoad={loadSavedCards}
             savedCards={savedCards}
             savedCardsLabel={savedCardsLabel}
           />

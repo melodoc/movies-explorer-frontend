@@ -56,19 +56,30 @@ export class CardHelper {
 
     return (movies || []).filter((movie) => {
       const isSearchQueryIncluded =
-        movie?.nameRU?.includes(searchQuery.toUpperCase()) || movie?.nameRU?.includes(searchQuery.toLowerCase());
+        movie?.nameRU?.includes(searchQuery.toUpperCase()) ||
+        movie?.nameRU?.includes(searchQuery.toLowerCase()) ||
+        movie?.nameRU?.includes(searchQuery) ||
+        movie?.nameRU?.includes(searchQuery[0].toUpperCase() + searchQuery.slice(1));
       return !isShort
         ? isSearchQueryIncluded && movie?.duration > shortDuration
         : isSearchQueryIncluded && movie?.duration <= shortDuration;
     });
   }
 
-  static hasSavedFilms(){
-    return !!(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Movies))?.length);
+  static hasSavedFilms() {
+    return !!JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Movies))?.length;
   }
 
   static setLocalStorageMovies(movies) {
     localStorage.setItem(LOCAL_STORAGE_KEYS.Movies, JSON.stringify(movies));
+  }
+
+  static setLocalStorageSearchQuery(searchQuery) {
+    localStorage.setItem(LOCAL_STORAGE_KEYS.MainSearchQuery, searchQuery);
+  }
+
+  static setLocalStorageCheckboxQuery(checkboxQuery) {
+    localStorage.setItem(LOCAL_STORAGE_KEYS.MainCheckbox, checkboxQuery);
   }
 
   static getMoviesFromLocalStorage() {
@@ -80,7 +91,7 @@ export class CardHelper {
   }
 
   static getSearchQueryFromLocalStorage() {
-    return localStorage.getItem(LOCAL_STORAGE_KEYS.MainSearchQuery) ?? "";
+    return localStorage.getItem(LOCAL_STORAGE_KEYS.MainSearchQuery) ?? '';
   }
 
   static preparedCardData(card, baseUrl) {

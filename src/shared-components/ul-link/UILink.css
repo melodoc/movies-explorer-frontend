@@ -1,32 +1,33 @@
 .link {
-  color: var(--white);
+  color: var(--gray-1);
   text-decoration: none;
-  transition: 0.5s ease-in-out;
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
 }
 
-.link:hover,
-.link:focus {
+.link:hover {
   cursor: pointer;
   opacity: var(--hover-opacity);
+  transition: 0.5s ease-in-out;
+}
+
+.link__selected-item {
+  color: var(--white);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--white);
 }
 
 .link__image {
   display: flex;
   align-items: center;
   gap: 7px;
+  padding-bottom: 0;
 }
 
 .link__text {
   font-size: 13px;
   line-height: 12px;
-}
-
-.link__selected-item {
-  padding-bottom: 4px;
-  border-bottom: 1px solid var(--white);
 }
 
 @media screen and (max-width: 1023px) {

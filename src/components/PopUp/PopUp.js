@@ -17,8 +17,7 @@ export function PopUp({ onToggleMobileMenu }) {
       <div className="popup__list">
         <ul className="popup__links">
           <UILink label="Главная" link={ROUTES.About} font={font} isVertical />
-          {/* FIXME: Добавить определение текуще страницы автоматически  */}
-          <UILink label="Фильмы" link={ROUTES.Movies} font={font} isVertical hasDecoration />
+          <UILink label="Фильмы" link={ROUTES.Movies} font={font} isVertical />
           <UILink label="Сохранённые фильмы" link={ROUTES.SavedMovies} font={font} />
         </ul>
         <ul className="popup__links">

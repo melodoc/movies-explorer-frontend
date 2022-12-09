@@ -87,7 +87,7 @@ export function MoviesCardList({ cards, cardsLabel }) {
             const hasSaved = !!(savedCards || []).find((savedCard) => savedCard?.nameRU === card?.nameRU);
             return (
               <MoviesCard
-                key={key}
+                key={`${key}${card?.nameRU ?? "card"}`}
                 src={src ?? ''}
                 label={card?.nameRU}
                 duration={card?.duration}

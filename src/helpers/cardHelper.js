@@ -75,11 +75,11 @@ export class CardHelper {
   }
 
   static setLocalStorageSearchQuery(searchQuery) {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.MainSearchQuery, searchQuery);
+    localStorage.setItem(LOCAL_STORAGE_KEYS.SearchQuery, searchQuery);
   }
 
   static setLocalStorageCheckboxQuery(checkboxQuery) {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.MainCheckbox, checkboxQuery);
+    localStorage.setItem(LOCAL_STORAGE_KEYS.Checkbox, checkboxQuery);
   }
 
   static getMoviesFromLocalStorage() {
@@ -87,11 +87,11 @@ export class CardHelper {
   }
 
   static getCheckboxFromLocalStorage() {
-    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.MainCheckbox)) ?? false;
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.Checkbox)) ?? false;
   }
 
   static getSearchQueryFromLocalStorage() {
-    return localStorage.getItem(LOCAL_STORAGE_KEYS.MainSearchQuery) ?? '';
+    return localStorage.getItem(LOCAL_STORAGE_KEYS.SearchQuery) ?? '';
   }
 
   static preparedCardData(card, baseUrl) {

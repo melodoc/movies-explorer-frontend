@@ -37,7 +37,8 @@ UILink.propTypes = {
   font: PropTypes.shape({
     weight: PropTypes.number,
     size: PropTypes.string,
-    lineHeight: PropTypes.string
+    lineHeight: PropTypes.string,
+    color: PropTypes.string
   }),
   isWithIcon: PropTypes.bool,
   isVertical: PropTypes.bool,

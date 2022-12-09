@@ -38,12 +38,10 @@ function App() {
     try {
       const token = localStorage.getItem(LOCAL_STORAGE_KEYS.Token);
       const res = await authApiClient.checkValidity(token);
-      setUserInformation({ ...res, loggedIn: true });
+      setUserInformation({ email: res.email, name: res.name, loggedIn: true });
       setIsTokenValid(true);
-      history.push(ROUTES.Movies);
     } catch {
       console.error(ERROR_LABELS.Form.connection);
-      setToastLabel(ERROR_LABELS.Form.connection);
       setIsTokenValid(false);
     }
   };
@@ -54,8 +52,8 @@ function App() {
       await authApiClient.register({ name, email, password });
       const res = await authApiClient.login({ email, password });
       localStorage.setItem(LOCAL_STORAGE_KEYS.Token, res.token);
+      setUserInformation({ name, email, loggedIn: true });
       setIsTokenValid(true);
-      setUserInformation({ ...userInformation, loggedIn: true });
       history.push(ROUTES.Movies);
     } catch {
       console.error(ERROR_LABELS.Form.connection);
@@ -70,7 +68,7 @@ function App() {
     try {
       const res = await authApiClient.login({ email, password });
       localStorage.setItem(LOCAL_STORAGE_KEYS.Token, res.token);
-      setUserInformation({ email, loggedIn: true });
+      await checkValidity();
       setIsTokenValid(true);
       history.push(ROUTES.Movies);
     } catch {
@@ -97,7 +95,10 @@ function App() {
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Movies);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Checkbox);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.SearchQuery);
+    setUserInformation({ email: '', name: '', loggedIn: false });
+    setToastLabel(undefined);
     history.push(ROUTES.Movies);
+    setIsTokenValid(false);
   };
 
   useEffect(() => {
@@ -106,18 +107,26 @@ function App() {
 
   return (
     <>
-      {hasHeader && <Header type={headerType} isLoggedIn={userInformation.loggedIn} />}
+      {hasHeader && <Header type={headerType} isLoggedIn={isTokenValid} />}
       <CurrentUserContext.Provider value={userInformation}>
         <Switch>
           <Route path={ROUTES.About} exact>
             <Main />
           </Route>
-          <Route path={ROUTES.SignUp}>
-            <Register onSubmit={handleRegisterSubmit} isLoading={isLoading} />
-          </Route>
-          <Route path={ROUTES.SignIn}>
-            <Login onSubmit={handleLoginSubmit} isLoading={isLoading} />
-          </Route>
+          <ProtectedRoute
+            path={ROUTES.SignUp}
+            loggedIn={!isTokenValid}
+            component={Register}
+            onSubmit={handleRegisterSubmit}
+            isLoading={isLoading}
+          />
+          <ProtectedRoute
+            path={ROUTES.SignIn}
+            loggedIn={!isTokenValid}
+            component={Login}
+            onSubmit={handleLoginSubmit}
+            isLoading={isLoading}
+          />
           <ProtectedRoute path={ROUTES.Movies} loggedIn={isTokenValid} component={Movies} />
           <ProtectedRoute path={ROUTES.SavedMovies} loggedIn={isTokenValid} component={SavedMovies} />
           <ProtectedRoute

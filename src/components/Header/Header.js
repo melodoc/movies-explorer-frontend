@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DocumentBreakpoints } from '../../helpers/documentBreakpoints';
 import { HeaderHelper } from '../../helpers/headerHelper';
@@ -61,7 +61,7 @@ export function Header({ isLoggedIn, type }) {
             </>
           ) : (
             <ul className="header__list">
-              <UILink label="Регистрация" link={ROUTES.SignUp} font={{ size: '12px', lineHeight: '16px' }} />
+              <UILink label="Регистрация" link={ROUTES.SignUp} font={{ size: '12px', lineHeight: '16px', color: "var(--white)" }} />
               <UIButton label="Войти" link={ROUTES.SignIn} />
             </ul>
           )}

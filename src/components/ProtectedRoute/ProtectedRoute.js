@@ -14,7 +14,7 @@ export const ProtectedRoute = ({
         props.loggedIn ? (
           <Component  {...props} />
         ) : (
-          <Redirect to={ROUTES.SignIn} />
+          <Redirect to={ROUTES.About} />
         )
       }
     </Route>

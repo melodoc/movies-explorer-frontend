@@ -13,7 +13,7 @@ export function Movies() {
   const [cards, setCards] = useState();
   const [cardsLabel, setCardsLabel] = useState(ERROR_LABELS.Movies.notFound);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const storageMovies = CardHelper.getMoviesFromLocalStorage();
 
   const handleSubmitSearch = async (searchQuery, checkboxQuery) => {
@@ -55,11 +55,7 @@ export function Movies() {
 
   return (
     <>
-      <SearchForm
-        onSubmitSearch={handleSubmitSearch}
-        initialSearchQuery={CardHelper.getSearchQueryFromLocalStorage()}
-        initialCheckboxQuery={CardHelper.getCheckboxFromLocalStorage()}
-      />
+      <SearchForm onSubmitSearch={handleSubmitSearch} />
       {(cards || CardHelper.hasSavedFilms()) && movieCards && (
         <MoviesCardList cards={movieCards} cardsLabel={cardsLabel} />
       )}

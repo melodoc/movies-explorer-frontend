@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { UICheckbox } from '../../shared-components/ui-checkbox/UICheckbox';
 import { ValidationHelper } from '../../helpers/validationHelper';
 import { CardHelper } from '../../helpers/cardHelper';
 import { ROUTES } from '../../constants/routes';
@@ -12,18 +11,20 @@ const SEARCH_FORM_VALIDATION_MAP = new Map([
   [false, { valid: false, text: 'Нужно ввести ключевое слово' }]
 ]);
 
-export function SearchForm({ onSubmitSearch, initialSearchQuery, initialCheckboxQuery }) {
+export function SearchForm({ onSubmitSearch }) {
   const input = useRef(null);
+  const checkbox = useRef(null);
   const location = useLocation();
   const isMoviesPage = [ROUTES.Movies].includes(location?.pathname);
 
-  const [searchQuery, setSearchQuery] = useState(initialSearchQuery ?? "");
-  const [checkboxQuery, setCheckboxQuery] = useState(initialCheckboxQuery ?? false);
+  const [searchQuery, setSearchQuery] = useState(isMoviesPage ? CardHelper.getSearchQueryFromLocalStorage() : '');
+  const [checkboxQuery, setCheckboxQuery] = useState(isMoviesPage ? CardHelper.getCheckboxFromLocalStorage : false);
   const [inputState, setInputState] = useState(SEARCH_FORM_VALIDATION_MAP.get(true));
 
   const onSubmit = (e) => {
     e?.preventDefault();
     const isWord = ValidationHelper.isWord(searchQuery);
+    console.info(isWord);
     setInputState(SEARCH_FORM_VALIDATION_MAP.get(isWord));
     isWord && onSubmitSearch(searchQuery, checkboxQuery);
   };
@@ -32,14 +33,15 @@ export function SearchForm({ onSubmitSearch, initialSearchQuery, initialCheckbox
     setSearchQuery(e.target.value);
   };
 
-  const handleOnCheckboxChange = (checkboxValue, e) => {
-    onSubmit(e);
-    setCheckboxQuery(checkboxValue);
+
+  const handleOnCheckboxChange = (e) => {
+    setCheckboxQuery(checkbox.current.checked);
+    onSubmitSearch(searchQuery, checkbox.current.checked);
   };
 
   useEffect(() => {
-    isMoviesPage && setSearchQuery(CardHelper.getSearchQueryFromLocalStorage());
-  }, [isMoviesPage]);
+    isMoviesPage && (checkbox.current.checked = CardHelper.getCheckboxFromLocalStorage());
+  }, []);
 
   return (
     <section>
@@ -55,18 +57,28 @@ export function SearchForm({ onSubmitSearch, initialSearchQuery, initialCheckbox
               placeholder="Фильм"
               autoComplete="off"
               type="text"
-              required
               value={searchQuery}
             />
           </label>
           <button className="search-form__button" />
         </div>
         {!inputState.valid && <p className="search-form__valid-text">{inputState.text}</p>}
-        <UICheckbox
-          label="Короткометражки"
-          onSubmit={handleOnCheckboxChange}
-          initialDataLoadHandler={isMoviesPage && CardHelper.getCheckboxFromLocalStorage}
-        />
+        <div className="checkbox__container">
+          <div className="checkbox">
+            <input
+              ref={checkbox}
+              className="checkbox__input"
+              type="checkbox"
+              id="custom-checkbox"
+              tabIndex="1"
+              onChange={handleOnCheckboxChange}
+            />
+            <label className="checkbox__label" htmlFor="custom-checkbox">
+              Короткометражки
+            </label>
+          </div>
+          <span className="checkbox__text">Короткометражки</span>
+        </div>
       </form>
     </section>
   );

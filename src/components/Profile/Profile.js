@@ -94,7 +94,7 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
     <>
       <section className="profile">
         <div className="profile__container">
-          <h1 className="profile__title">Привет, {profileName ?? ''}</h1>
+          <h1 className="profile__title">Привет, {currentUser?.name ?? ''}</h1>
           <form className="profile__form" onSubmit={handleSubmit}>
             <ul className="profile__form-container">
               <li className="profile__form-item">

@@ -8,7 +8,7 @@ import { moviesApiClient } from '../../utils/MoviesApi';
 
 import './Movies.css';
 
-export function Movies({ savedCards }) {
+export function Movies() {
   const [movieCards, setMovieCards] = useState();
   const [cards, setCards] = useState();
   const [cardsLabel, setCardsLabel] = useState(TOAST_LABELS.Movies.notFound);
@@ -56,7 +56,7 @@ export function Movies({ savedCards }) {
     <>
       <SearchForm onSubmitSearch={handleSubmitSearch} />
       {(cards || CardHelper.hasSavedFilms()) && movieCards && (
-        <MoviesCardList cards={movieCards} cardsLabel={cardsLabel} savedCards={savedCards} />
+        <MoviesCardList cards={movieCards} cardsLabel={cardsLabel} />
       )}
       {isLoading && (
         <div className="entry-form__loader">

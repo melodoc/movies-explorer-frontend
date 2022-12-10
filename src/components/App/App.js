@@ -6,6 +6,7 @@ import { TOAST_LABELS } from '../../constants/toastLabels';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 import { authApiClient } from '../../utils/MainApi';
 import { mainApiClient } from '../../utils/MainApi';
+import { useCardsHelper } from '../../hooks/useCardsHelper';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import { Header } from '../Header/Header';
@@ -32,8 +33,7 @@ function App() {
     loggedIn: false
   });
   const [toastLabel, setToastLabel] = useState();
-  const [savedCards, setSavedCards] = useState();
-
+  const { handleChange } = useCardsHelper();
   const { headerType, hasHeader, hasFooter } = RootPageHelper.getPageProps(location);
 
   const checkValidity = async () => {
@@ -43,7 +43,7 @@ function App() {
       setUserInformation({ email: res.email, name: res.name, loggedIn: true });
       setIsTokenValid(true);
       const movies = await mainApiClient.getMovies();
-      setSavedCards(movies);
+      handleChange(movies);
     } catch {
       setIsTokenValid(false);
     }
@@ -100,6 +100,7 @@ function App() {
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Movies);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Checkbox);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.SearchQuery);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.SavedMovies);
     setUserInformation({ email: '', name: '', loggedIn: false });
     setToastLabel(undefined);
     setIsTokenValid(false);
@@ -133,7 +134,7 @@ function App() {
             onSubmit={handleLoginSubmit}
             isLoading={isLoading}
           />
-          <ProtectedRoute path={ROUTES.Movies} loggedIn={hasToken} component={Movies} savedCards={savedCards} />
+          <ProtectedRoute path={ROUTES.Movies} loggedIn={hasToken} component={Movies} />
           <ProtectedRoute path={ROUTES.SavedMovies} loggedIn={hasToken} component={SavedMovies} />
           <ProtectedRoute
             path={ROUTES.Profile}

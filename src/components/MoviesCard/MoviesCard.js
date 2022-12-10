@@ -20,7 +20,7 @@ export function MoviesCard({
   const [buttonStyle, setButtonStyle] = useState(CardHelper.getButtonStyle(hasSaved, hasDeleteBtn));
 
   const onClickHandler = (e) => {
-    if (!hasSaved) {
+    if (!hasSaved && !hasDeleteBtn) {
       handleAddCard(card);
     } else {
       handleDeleteCard(card);

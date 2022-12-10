@@ -94,6 +94,10 @@ export class CardHelper {
     return localStorage.getItem(LOCAL_STORAGE_KEYS.SearchQuery) ?? '';
   }
 
+  static getToken() {
+    return localStorage.getItem(LOCAL_STORAGE_KEYS.Token);
+  }
+
   static preparedCardData(card, baseUrl) {
     return {
       country: card?.country,

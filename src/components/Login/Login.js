@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { INPUT_TYPES } from '../../constants/inputTypes';
-import { useFormWithValidation } from '../../hooks/useFormWithValidation';
+import { ValidationHelper } from '../../helpers/validationHelper';
 import { UIRedirect } from '../../shared-components/ui-redirect/UIRedirect';
 import { UIInput } from '../../shared-components/ui-input/UIInput';
 import { UISubmit } from '../../shared-components/ui-submit/UISubmit';
@@ -11,31 +11,29 @@ import logo from '../../images/logo.svg';
 
 import './Login.css';
 
+const VALIDATION_MESSAGE = ValidationHelper.validationNameMessages;
+
 export function Login({ onSubmit, isLoading }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { handleChange, isValid } = useFormWithValidation();
-  const [validity, setValidity] = useState({});
-  const [customIsValid, setCustomIsValid] = useState(Object.values(validity).every((valid) => valid)); 
+  const [customValidity, setCustomValidity] = useState({
+    email: false,
+    password: false
+  });
 
-  useEffect(() => {
-    setCustomIsValid(Object.values(validity).every((valid) => valid));
-  }, [validity])
+  const isValid = Object.values(customValidity).every((valid) => valid);
 
-  const handleChangeEmail = (e, valid) => {
-    handleChange(e);
+  const handleChangeEmail = (e) => {
     setEmail(e.target.value);
-    setValidity({ ...validity, email: valid });
+    setCustomValidity({ ...customValidity, email: e.target.validity.valid });
   };
 
-  const handleChangePassword = (e, valid) => {
-    handleChange(e);
+  const handleChangePassword = (e) => {
     setPassword(e.target.value);
-    setValidity({ ...validity, password: valid });
+    setCustomValidity({ ...customValidity, password: e.target.validity.valid });
   };
 
   const handleSubmit = (e) => {
-    handleChange(e);
     e.preventDefault();
     onSubmit({ email, password });
   };
@@ -49,15 +47,27 @@ export function Login({ onSubmit, isLoading }) {
               <img src={logo} className="entry-form__logo" alt="logo" />
             </Link>
             <UITitle label="Рады видеть!" />
-            <UIInput label="E-mail" type={INPUT_TYPES.Email} required handleChange={handleChangeEmail} />
-            <UIInput label="Пароль" type={INPUT_TYPES.Password} required handleChange={handleChangePassword} />
+            <UIInput
+              label="E-mail"
+              type={INPUT_TYPES.Email}
+              required
+              value={email}
+              handleChange={handleChangeEmail}
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$"
+              errorText={VALIDATION_MESSAGE.get(INPUT_TYPES.Email)}
+            />
+
+            <UIInput
+              label="Пароль"
+              type={INPUT_TYPES.Password}
+              required
+              value={password}
+              handleChange={handleChangePassword}
+              errorText={VALIDATION_MESSAGE.get(INPUT_TYPES.Password)}
+              pattern={ValidationHelper.passwordPattern}
+            />
             <div className="entry-form__input">
-              <UISubmit
-                label="Войти"
-                name="login"
-                link={ROUTES.Movies}
-                disabled={isLoading || !isValid || !customIsValid}
-              />
+              <UISubmit label="Войти" name="login" link={ROUTES.Movies} disabled={isLoading || !isValid} />
             </div>
             <UIRedirect label="Еще не зарегистрированы?" redirectLabel="Регистрация" link={ROUTES.SignUp} />
           </form>

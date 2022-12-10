@@ -1,5 +1,5 @@
 import { useRef, useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { INPUT_TYPES } from '../../constants/inputTypes';
 import { UISubmit } from '../../shared-components/ui-submit/UISubmit';
@@ -10,42 +10,63 @@ import { Toast } from '../../components/Toast/Toast';
 
 import './Profile.css';
 
-const VALIDATION_PATTERN = ValidationHelper.validationPattern;
-const VALIDATION_MESSAGE = ValidationHelper.validationMessage;
+const VALIDATION_MESSAGE = ValidationHelper.validationNameMessages;
 
 export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }) {
   const currentUser = useContext(CurrentUserContext);
+  const history = useHistory();
+
   const [isReadOnly, setIsReadOnly] = useState(true);
   const [profileName, setProfileName] = useState(currentUser?.name);
   const [email, setEmail] = useState(currentUser?.email);
-  const [emailInputState, setEmailInputState] = useState(VALIDATION_MESSAGE.get(true));
-  const [profileNameInputState, setProfileNameInputState] = useState(VALIDATION_MESSAGE.get(true));
+  const [emailErrorText, setEmailErrorText] = useState(undefined);
+  const [profileNameErrorText, setProfileNameErrorText] = useState(undefined);
+  const [customValidity, setCustomValidity] = useState({
+    email: true,
+    name: true
+  });
+
+  const isValid = Object.values(customValidity).every((valid) => valid);
 
   const profileInput = useRef(null);
   const emailInput = useRef(null);
   const { handleChange } = useFormWithValidation();
 
-  const checkValidation = (type) => {
-    if (type === INPUT_TYPES.Name) {
-      setProfileNameInputState(VALIDATION_MESSAGE.get(!!profileInput.current.value.match(VALIDATION_PATTERN)?.input));
-      return;
+  const handleInputField = (e) => {
+    if (e.target?.type === INPUT_TYPES.Email) {
+      if (e.target.validity.valid) {
+        setEmailErrorText(undefined);
+        return;
+      }
+      setEmailErrorText(VALIDATION_MESSAGE.get(INPUT_TYPES.Email));
+    } else if (e.target?.type === 'text') {
+      if (e.target.validity.valid) {
+        setProfileNameErrorText(undefined);
+        return;
+      }
+      setProfileNameErrorText(VALIDATION_MESSAGE.get(INPUT_TYPES.Name));
+    } else {
+      setEmailErrorText(undefined);
+      setProfileNameErrorText(undefined);
     }
+  };
 
-    setEmailInputState({
-      valid: emailInput.current.validity.valid,
-      text: emailInput.current.validationMessage
-    });
-    setProfileNameInputState({
-      valid: profileInput.current.validity.valid,
-      text: profileInput.current.validationMessage
-    });
+  const handleChangeProfileName = (e) => {
+    handleInputField(e);
+    setProfileName(e.target.value);
+    setCustomValidity({ ...customValidity, name: e.target.validity.valid });
+  };
+
+  const handleChangeEmail = (e) => {
+    handleInputField(e);
+    setEmail(e.target.value);
+    setCustomValidity({ ...customValidity, email: e.target.validity.valid });
   };
 
   const handleSubmit = (e) => {
     handleChange(e);
     e.preventDefault();
     handleChangeProfile({ name: profileName, email });
-    console.info(profileName, email);
   };
 
   const handleEditProfileClick = (e) => {
@@ -62,20 +83,9 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
     handleChangeProfile({ name: profileName, email });
   };
 
-  const handleChangeProfileName = (e) => {
-    handleChange(e);
-    checkValidation(INPUT_TYPES.Name);
-    setProfileName(e.target.value);
-  };
-
-  const handleChangeEmail = (e) => {
-    handleChange(e);
-    checkValidation(INPUT_TYPES.Email);
-    setEmail(e.target.value);
-  };
-
-  const handleLogOut = (e) => {
+  const handleLogOut = () => {
     handleProfileLogOut();
+    history.push(ROUTES.Movies);
   };
 
   useEffect(() => {
@@ -105,9 +115,10 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
                   minLength={2}
                   maxLength={200}
                   required
+                  pattern={ValidationHelper.namePattern}
                 />
               </li>
-              {!profileNameInputState.valid && <p className="field__valid-text">{profileNameInputState.text}</p>}
+              {profileNameErrorText && <p className="field__valid-text">{profileNameErrorText}</p>}
               <li className="profile__form-item">
                 <label htmlFor="email" className="profile__form-label">
                   E-mail
@@ -123,9 +134,10 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
                   maxLength={200}
                   ref={emailInput}
                   required
-                />
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$"
+                  />
               </li>
-              {!emailInputState.valid && <p className="field__valid-text">{emailInputState.text}</p>}
+              {emailErrorText && <p className="field__valid-text">{emailErrorText}</p>}
             </ul>
             {isReadOnly ? (
               <div className="profile__form-links">
@@ -139,7 +151,7 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
                 label="Сохранить"
                 name="save"
                 handleClick={handleSaveProfileClick}
-                disabled={!profileNameInputState.valid || !emailInputState.valid}
+                disabled={!isValid}
               />
             )}
           </form>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { RootPageHelper } from '../../helpers/rootPageHelper';
 import { ROUTES } from '../../constants/routes';
 import { ERROR_LABELS } from '../../constants/errorLabels';
@@ -19,6 +19,7 @@ import { NotFound } from '../NotFound/NotFound';
 import { Profile } from '../Profile/Profile';
 import { Toast } from '../Toast/Toast';
 import { Preloader } from '../Preloader/Preloader';
+import { CardHelper } from '../../helpers/cardHelper';
 
 function App() {
   const location = useLocation();
@@ -41,7 +42,6 @@ function App() {
       setUserInformation({ email: res.email, name: res.name, loggedIn: true });
       setIsTokenValid(true);
     } catch {
-      console.error(ERROR_LABELS.Form.connection);
       setIsTokenValid(false);
     }
   };
@@ -80,10 +80,11 @@ function App() {
   };
 
   const handleChangeProfile = async ({ email, name }) => {
-    console.info(email, name);
     try {
       const userInformation = await mainApiClient.setUserInfo({ email, name });
       setUserInformation(userInformation ?? {});
+      setIsTokenValid(true);
+      setToastLabel("профиль изменен");
     } catch {
       console.error(ERROR_LABELS.Form.connection);
       setToastLabel(ERROR_LABELS.Form.connection);
@@ -91,15 +92,18 @@ function App() {
   };
 
   const handleLogOut = () => {
+    console.info('i worked');
+    history.push(ROUTES.Movies);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Token);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Movies);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Checkbox);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.SearchQuery);
     setUserInformation({ email: '', name: '', loggedIn: false });
     setToastLabel(undefined);
-    history.push(ROUTES.Movies);
-    setIsTokenValid(false);
+    setIsTokenValid(false)
   };
+
+  const hasToken = !!CardHelper.getToken() || isTokenValid;
 
   useEffect(() => {
     checkValidity();
@@ -127,11 +131,11 @@ function App() {
             onSubmit={handleLoginSubmit}
             isLoading={isLoading}
           />
-          <ProtectedRoute path={ROUTES.Movies} loggedIn={isTokenValid} component={Movies} />
-          <ProtectedRoute path={ROUTES.SavedMovies} loggedIn={isTokenValid} component={SavedMovies} />
+          <ProtectedRoute path={ROUTES.Movies} loggedIn={hasToken} component={Movies} />
+          <ProtectedRoute path={ROUTES.SavedMovies} loggedIn={hasToken} component={SavedMovies} />
           <ProtectedRoute
             path={ROUTES.Profile}
-            loggedIn={isTokenValid}
+            loggedIn={hasToken}
             component={Profile}
             handleChangeProfile={handleChangeProfile}
             handleProfileLogOut={handleLogOut}

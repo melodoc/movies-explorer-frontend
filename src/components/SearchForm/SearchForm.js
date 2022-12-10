@@ -24,7 +24,6 @@ export function SearchForm({ onSubmitSearch }) {
   const onSubmit = (e) => {
     e?.preventDefault();
     const isWord = ValidationHelper.isWord(searchQuery);
-    console.info(isWord);
     setInputState(SEARCH_FORM_VALIDATION_MAP.get(isWord));
     isWord && onSubmitSearch(searchQuery, checkboxQuery);
   };

@@ -52,3 +52,7 @@
   line-height: 12px;
   color: var(--pink);
 }
+
+.field__error {
+  color: var(--pink);
+}

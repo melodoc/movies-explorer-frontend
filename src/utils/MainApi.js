@@ -18,16 +18,16 @@ class MainApi extends BaseApi {
     return this._fetchHandle(this._methods.GET, '/users/me');
   }
 
-  setUserInfo({email, name} ) {
+  setUserInfo({ email, name }) {
     return this._fetchHandle(this._methods.PATCH, '/users/me', {
-      email, name 
+      email,
+      name
     });
   }
 }
 
 class AuthApi extends BaseApi {
   register({ name, email, password }) {
-    console.info(name, email, password);
     return this._fetchHandle(this._methods.POST, '/signup', {
       name,
       email,

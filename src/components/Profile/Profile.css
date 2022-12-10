@@ -77,6 +77,10 @@
   transition: 0.1s ease-in-out;
 }
 
+.profile__form-input:invalid {
+  color: var(--pink);
+}
+
 .profile__form-links {
   display: flex;
   flex-direction: column;

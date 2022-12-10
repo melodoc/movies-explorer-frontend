@@ -1,35 +1,21 @@
 import { useRef, useState } from 'react';
 import { INPUT_TYPES } from '../../constants/inputTypes';
-import { ValidationHelper } from '../../helpers/validationHelper';
 
 import './UIInput.css';
 
-const VALIDATION_PATTERN = ValidationHelper.validationPattern;
-const VALIDATION_MESSAGE = ValidationHelper.validationMessage;
-
-export function UIInput({ label, type, value, required, handleChange }) {
+export function UIInput({ label, type, value, required, handleChange, pattern, errorText, minLength }) {
   const input = useRef(null);
-  const [inputState, setInputState] = useState(VALIDATION_MESSAGE.get(true));
+  const [field, setField] = useState(true);
 
-  const checkValidation = (e) => {
-    if (type === INPUT_TYPES.Name) {
-      const validationState = getValidationState();
-      setInputState(validationState);
-      handleChange && handleChange(e, validationState.valid);
-      return;
+  const handleInputField = (e) => {
+    handleChange(e);
+    if (!e.target.validity.valid) {
+      setField(undefined);
+    } else if (e.target.value.match(pattern) != null) {
+      setField(e.target.value);
+    } else {
+      setField(undefined);
     }
-
-    setInputState({
-      valid: input.current.validity.valid,
-      text: input.current.validationMessage
-    });
-
-    handleChange && handleChange(e, inputState.valid);
-  };
-
-  const getValidationState = () => {
-    const validation = !!input.current.value.match(VALIDATION_PATTERN)?.input;
-    return VALIDATION_MESSAGE.get(validation);
   };
 
   return (
@@ -39,19 +25,20 @@ export function UIInput({ label, type, value, required, handleChange }) {
       </label>
       <input
         value={value}
-        className="field__input"
-        onChange={checkValidation}
+        className={`field__input`}
+        onChange={handleInputField}
         type={type}
         id={label}
         placeholder={label}
         autoComplete="off"
         name={label}
         required={required}
-        minLength={2}
+        minLength={minLength ?? 2}
         maxLength={type === INPUT_TYPES.Email ? 200 : 40}
         ref={input}
+        pattern={pattern}
       />
-      {!inputState.valid && <p className="field__valid-text">{inputState.text}</p>}
+      {!field && <p className="field__valid-text">{errorText}</p>}
     </div>
   );
 }

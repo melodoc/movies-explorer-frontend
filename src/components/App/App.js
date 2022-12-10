@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { RootPageHelper } from '../../helpers/rootPageHelper';
 import { ROUTES } from '../../constants/routes';
-import { ERROR_LABELS } from '../../constants/errorLabels';
+import { TOAST_LABELS } from '../../constants/toastLabels';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 import { authApiClient } from '../../utils/MainApi';
 import { mainApiClient } from '../../utils/MainApi';
@@ -56,8 +56,8 @@ function App() {
       setIsTokenValid(true);
       history.push(ROUTES.Movies);
     } catch {
-      console.error(ERROR_LABELS.Form.connection);
-      setToastLabel(ERROR_LABELS.Form.connection);
+      console.error(TOAST_LABELS.Form.connection);
+      setToastLabel(TOAST_LABELS.Form.connection);
     } finally {
       setIsLoading(false);
     }
@@ -72,8 +72,8 @@ function App() {
       setIsTokenValid(true);
       history.push(ROUTES.Movies);
     } catch {
-      console.error(ERROR_LABELS.Form.connection);
-      setToastLabel(ERROR_LABELS.Form.connection);
+      console.error(TOAST_LABELS.Form.connection);
+      setToastLabel(TOAST_LABELS.Form.connection);
     } finally {
       setIsLoading(false);
     }
@@ -84,10 +84,10 @@ function App() {
       const userInformation = await mainApiClient.setUserInfo({ email, name });
       setUserInformation(userInformation ?? {});
       setIsTokenValid(true);
-      setToastLabel("профиль изменен");
+      setToastLabel(TOAST_LABELS.Profile.change);
     } catch {
-      console.error(ERROR_LABELS.Form.connection);
-      setToastLabel(ERROR_LABELS.Form.connection);
+      console.error(TOAST_LABELS.Form.connection);
+      setToastLabel(TOAST_LABELS.Form.connection);
     }
   };
 

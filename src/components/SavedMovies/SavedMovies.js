@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { SearchForm } from '../SearchForm/SearchForm';
 import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
 import { Preloader } from '../Preloader/Preloader';
-import { ERROR_LABELS } from '../../constants/errorLabels';
+import { TOAST_LABELS } from '../../constants/toastLabels';
 import { CardHelper } from '../../helpers/cardHelper';
 import { mainApiClient } from '../../utils/MainApi';
 
@@ -11,7 +11,7 @@ import './SavedMovies.css';
 export function SavedMovies() {
   const [filteredSavedCards, setFilteredSavedCards] = useState();
   const [savedCards, setSavedCards] = useState();
-  const [savedCardsLabel, setSavedCardsLabel] = useState(ERROR_LABELS.Movies.notFound);
+  const [savedCardsLabel, setSavedCardsLabel] = useState(TOAST_LABELS.Movies.notFound);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSavedCardsSearch = (searchQuery, checkboxQuery) => {
@@ -28,8 +28,8 @@ export function SavedMovies() {
       setSavedCards(movies);
     } catch {
       setSavedCards([]);
-      setSavedCardsLabel(ERROR_LABELS.Movies.connection);
-      console.error(ERROR_LABELS.Movies.connection);
+      setSavedCardsLabel(TOAST_LABELS.Movies.connection);
+      console.error(TOAST_LABELS.Movies.connection);
     } finally {
       setIsLoading(false);
     }

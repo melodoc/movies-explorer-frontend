@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { SearchForm } from '../SearchForm/SearchForm';
 import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
 import { Preloader } from '../Preloader/Preloader';
-import { ERROR_LABELS } from '../../constants/errorLabels';
+import { TOAST_LABELS } from '../../constants/toastLabels';
 import { CardHelper } from '../../helpers/cardHelper';
 import { moviesApiClient } from '../../utils/MoviesApi';
 
@@ -11,7 +11,7 @@ import './Movies.css';
 export function Movies() {
   const [movieCards, setMovieCards] = useState();
   const [cards, setCards] = useState();
-  const [cardsLabel, setCardsLabel] = useState(ERROR_LABELS.Movies.notFound);
+  const [cardsLabel, setCardsLabel] = useState(TOAST_LABELS.Movies.notFound);
   const [isLoading, setIsLoading] = useState(false);
 
   const storageMovies = CardHelper.getMoviesFromLocalStorage();
@@ -34,8 +34,8 @@ export function Movies() {
         setCards(movies);
       } catch {
         setCards([]);
-        setCardsLabel(ERROR_LABELS.Movies.connection);
-        console.error(ERROR_LABELS.Movies.connection);
+        setCardsLabel(TOAST_LABELS.Movies.connection);
+        console.error(TOAST_LABELS.Movies.connection);
       } finally {
         setIsLoading(false);
       }

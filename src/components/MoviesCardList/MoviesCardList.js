@@ -7,7 +7,7 @@ import { mainApiClient } from '../../utils/MainApi';
 import { Toast } from '../../components/Toast/Toast';
 import { beatfilmMoviesRequestParams } from '../../constants/requestParams';
 import { ROUTES } from '../../constants/routes';
-import { ERROR_LABELS } from '../../constants/errorLabels';
+import { TOAST_LABELS } from '../../constants/toastLabels';
 
 import './MoviesCardList.css';
 
@@ -39,8 +39,8 @@ export function MoviesCardList({ cards, cardsLabel }) {
       await mainApiClient.addNewMovies(cardData);
       setToastLabel(`Карточка «${cardData.nameRU}» добавлена в сохраненные фильмы`);
     } catch {
-      console.error(ERROR_LABELS.Form.connection);
-      setToastLabel(ERROR_LABELS.Form.connection);
+      console.error(TOAST_LABELS.Form.connection);
+      setToastLabel(TOAST_LABELS.Form.connection);
     }
   };
 
@@ -53,8 +53,8 @@ export function MoviesCardList({ cards, cardsLabel }) {
       //FIXME: продумать как это исправить
       // CardHelper.updateSavedCardsFromLocalStorage(updatedCards);
     } catch {
-      console.error(ERROR_LABELS.Form.connection);
-      setToastLabel(ERROR_LABELS.Form.connection);
+      console.error(TOAST_LABELS.Form.connection);
+      setToastLabel(TOAST_LABELS.Form.connection);
     }
   };
 

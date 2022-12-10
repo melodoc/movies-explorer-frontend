@@ -1,4 +1,4 @@
-export const ERROR_LABELS = {
+export const TOAST_LABELS = {
   Movies: {
     notFound: 'Ничего не найдено',
     connection:
@@ -7,5 +7,8 @@ export const ERROR_LABELS = {
   Form: {
     connection: 'Во время запроса произошла ошибка.',
     token: 'Токен невалидный'
+  },
+  Profile: {
+    change: 'Профиль успешно изменен'
   }
 };

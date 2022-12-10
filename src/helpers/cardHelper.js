@@ -119,4 +119,8 @@ export class CardHelper {
       nameEN: card.nameEN
     };
   }
+
+  static getSavedState(savedCards, card) {
+    return savedCards.map((savedCard) => savedCard?.movieId).some((id) => id === card?.id)
+  }
 }

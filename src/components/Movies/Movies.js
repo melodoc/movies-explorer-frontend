@@ -8,12 +8,11 @@ import { moviesApiClient } from '../../utils/MoviesApi';
 
 import './Movies.css';
 
-export function Movies() {
+export function Movies({ savedCards }) {
   const [movieCards, setMovieCards] = useState();
   const [cards, setCards] = useState();
   const [cardsLabel, setCardsLabel] = useState(TOAST_LABELS.Movies.notFound);
   const [isLoading, setIsLoading] = useState(false);
-
   const storageMovies = CardHelper.getMoviesFromLocalStorage();
 
   const handleSubmitSearch = (searchQuery, checkboxQuery) => {
@@ -57,7 +56,7 @@ export function Movies() {
     <>
       <SearchForm onSubmitSearch={handleSubmitSearch} />
       {(cards || CardHelper.hasSavedFilms()) && movieCards && (
-        <MoviesCardList cards={movieCards} cardsLabel={cardsLabel} />
+        <MoviesCardList cards={movieCards} cardsLabel={cardsLabel} savedCards={savedCards} />
       )}
       {isLoading && (
         <div className="entry-form__loader">

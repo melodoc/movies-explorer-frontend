@@ -63,7 +63,12 @@ export function SavedMovies() {
     <>
       <SearchForm onSubmitSearch={handleSavedCardsSearch} />
       {savedCards && filteredSavedCards && (
-        <MoviesCardList cards={filteredSavedCards} cardsLabel={savedCardsLabel} deleteMovieById={deleteMovieById} />
+        <MoviesCardList
+          cards={filteredSavedCards}
+          cardsLabel={savedCardsLabel}
+          deleteMovieById={deleteMovieById}
+          savedCards={savedCards}
+        />
       )}
       {toastLabel && <Toast label={toastLabel} />}
       {isLoading && (

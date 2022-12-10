@@ -32,6 +32,7 @@ function App() {
     loggedIn: false
   });
   const [toastLabel, setToastLabel] = useState();
+  const [savedCards, setSavedCards] = useState();
 
   const { headerType, hasHeader, hasFooter } = RootPageHelper.getPageProps(location);
 
@@ -41,6 +42,8 @@ function App() {
       const res = await authApiClient.checkValidity(token);
       setUserInformation({ email: res.email, name: res.name, loggedIn: true });
       setIsTokenValid(true);
+      const movies = await mainApiClient.getMovies();
+      setSavedCards(movies);
     } catch {
       setIsTokenValid(false);
     }
@@ -99,7 +102,7 @@ function App() {
     localStorage.removeItem(LOCAL_STORAGE_KEYS.SearchQuery);
     setUserInformation({ email: '', name: '', loggedIn: false });
     setToastLabel(undefined);
-    setIsTokenValid(false)
+    setIsTokenValid(false);
   };
 
   const hasToken = !!CardHelper.getToken() || isTokenValid;
@@ -130,7 +133,7 @@ function App() {
             onSubmit={handleLoginSubmit}
             isLoading={isLoading}
           />
-          <ProtectedRoute path={ROUTES.Movies} loggedIn={hasToken} component={Movies} />
+          <ProtectedRoute path={ROUTES.Movies} loggedIn={hasToken} component={Movies} savedCards={savedCards} />
           <ProtectedRoute path={ROUTES.SavedMovies} loggedIn={hasToken} component={SavedMovies} />
           <ProtectedRoute
             path={ROUTES.Profile}

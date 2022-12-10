@@ -13,14 +13,13 @@ import './MoviesCardList.css';
 
 const MIN_CARDS_TO_SHOW = 3;
 
-export function MoviesCardList({ cards, cardsLabel, deleteMovieById }) {
+export function MoviesCardList({ cards, cardsLabel, deleteMovieById, savedCards }) {
   const baseUrl = beatfilmMoviesRequestParams.baseUrl;
-  //FIXME: Убрать
-  const savedCards = [];
   const location = useLocation();
   const isSavedMoviesPage = location?.pathname === ROUTES.SavedMovies;
   const [moviesCards, setMoviesCards] = useState(cards);
   const [toastLabel, setToastLabel] = useState();
+  const [updatedSavedCards, setUpdatedSavedCards] = useState(savedCards);
   const MAX_AMOUNT = moviesCards?.length ?? 0;
   const [moreCardAmount, setMoreCardAmount] = useState(CardHelper.getMoreCardAmount());
   const [shownCards, setShownCards] = useState(CardHelper.getShownCards(moviesCards, CardHelper.getMaxCardAmount()));
@@ -36,8 +35,8 @@ export function MoviesCardList({ cards, cardsLabel, deleteMovieById }) {
   const addNewMovie = async (card) => {
     const cardData = CardHelper.preparedCardData(card, baseUrl);
     try {
-      await mainApiClient.addNewMovies(cardData);
       setToastLabel(`Карточка «${cardData.nameRU}» добавлена в сохраненные фильмы`);
+      return await mainApiClient.addNewMovies(cardData);
     } catch {
       console.error(TOAST_LABELS.Form.connection);
       setToastLabel(TOAST_LABELS.Form.connection);
@@ -56,12 +55,18 @@ export function MoviesCardList({ cards, cardsLabel, deleteMovieById }) {
     setMoviesCards(cards);
   }, [cards]);
 
-  const handleClick = async (card, hasDeleteBtn) => {
-    if (!hasDeleteBtn) {
-      addNewMovie(card);
-      return;
-    }
-    deleteMovieById && deleteMovieById(card);
+  useEffect(() => {
+    savedCards && setUpdatedSavedCards(savedCards);
+  }, [savedCards]);
+
+  const handleClick = async (card) => {
+    const addedCard = await addNewMovie(card);
+    console.info(addedCard);
+    setUpdatedSavedCards([...updatedSavedCards, addedCard]);
+    // Клик по иконке без заливки должен отправлять запрос к /movies нашего API на сохранение фильма.
+    // Клик по иконке с заливкой — запрос на удаление.
+    // обновить массив сохраненных тут  на deleteMovieById
+    // deleteMovieById && deleteMovieById(card);
   };
 
   return (
@@ -70,19 +75,20 @@ export function MoviesCardList({ cards, cardsLabel, deleteMovieById }) {
         {shownCards.length ? (
           shownCards.map((card, key) => {
             const src = card?.image?.url ? `${baseUrl}${card?.image?.url}` : card?.image;
-            const hasSaved = !!(savedCards || []).find((savedCard) => savedCard?.nameRU === card?.nameRU);
             return (
-              <MoviesCard
-                key={`${key}${card?.nameRU ?? "card"}`}
-                src={src ?? ''}
-                label={card?.nameRU}
-                duration={card?.duration}
-                trailerLink={card?.trailerLink}
-                hasDeleteBtn={isSavedMoviesPage}
-                hasSaved={hasSaved}
-                handleClick={handleClick}
-                card={card}
-              />
+              updatedSavedCards && (
+                <MoviesCard
+                  key={`${key}${card?.nameRU ?? 'card'}`}
+                  src={src ?? ''}
+                  label={card?.nameRU}
+                  duration={card?.duration}
+                  trailerLink={card?.trailerLink}
+                  hasDeleteBtn={isSavedMoviesPage}
+                  handleClick={handleClick}
+                  card={card}
+                  savedCards={updatedSavedCards}
+                />
+              )
             );
           })
         ) : (

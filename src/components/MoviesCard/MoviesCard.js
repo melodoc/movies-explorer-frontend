@@ -1,29 +1,38 @@
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { CardHelper } from '../../helpers/cardHelper';
-import { ROUTES } from '../../constants/routes';
 
 import './MoviesCard.css';
 
-export function MoviesCard({ src, label, duration, trailerLink, hasDeleteBtn, hasSaved, handleClick, card }) {
-  const location = useLocation();
-  const isSavedPage = location?.pathname === ROUTES.SavedMovies;
-  const [isSaved, setIsSaved] = useState(isSavedPage || hasSaved);
-
-  const btn = CardHelper.getButtonStyle(isSaved, hasDeleteBtn);
+export function MoviesCard({
+  src,
+  label,
+  duration,
+  trailerLink,
+  hasDeleteBtn,
+  disabled,
+  handleClick,
+  card,
+  savedCards
+}) {
   const convertedDuration = CardHelper.getDuration(duration);
+  const [hasSaved, setHasSaved] = useState(savedCards && CardHelper.getSavedState(savedCards, card));
+  const [buttonStyle, setButtonStyle] = useState(CardHelper.getButtonStyle(hasSaved, hasDeleteBtn));
 
-  const onClickHandler = async (e) => {
-    handleClick(card, hasDeleteBtn);
-    if (!hasDeleteBtn) {
-      setIsSaved(true);
-    }
+  const onClickHandler = (e) => {
+    !hasSaved && handleClick(card);
+    savedCards && setHasSaved(CardHelper.getSavedState(savedCards, card));
+    setButtonStyle(CardHelper.getButtonStyle(hasSaved, hasDeleteBtn));
   };
+
+  useEffect(() => {
+    savedCards && setHasSaved(CardHelper.getSavedState(savedCards, card));
+    setButtonStyle(CardHelper.getButtonStyle(hasSaved, hasDeleteBtn));
+  }, [card, hasDeleteBtn, hasSaved, savedCards]);
 
   return (
     <figure className="card">
-      <button className={btn?.style} onClick={onClickHandler} disabled={isSaved && !isSavedPage}>
-        {btn.label ?? ''}
+      <button className={buttonStyle?.style} onClick={onClickHandler} disabled={disabled}>
+        {buttonStyle.label ?? ''}
       </button>
       <a href={trailerLink} target="_blank" rel="noreferrer">
         <img className="card__image" src={src} alt="label" />

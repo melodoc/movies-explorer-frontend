@@ -92,7 +92,6 @@ function App() {
   };
 
   const handleLogOut = () => {
-    console.info('i worked');
     history.push(ROUTES.Movies);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Token);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Movies);

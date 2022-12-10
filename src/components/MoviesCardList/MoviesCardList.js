@@ -13,7 +13,7 @@ import './MoviesCardList.css';
 
 const MIN_CARDS_TO_SHOW = 3;
 
-export function MoviesCardList({ cards, cardsLabel }) {
+export function MoviesCardList({ cards, cardsLabel, deleteMovieById }) {
   const baseUrl = beatfilmMoviesRequestParams.baseUrl;
   //FIXME: Убрать
   const savedCards = [];
@@ -44,20 +44,6 @@ export function MoviesCardList({ cards, cardsLabel }) {
     }
   };
 
-  const deleteMovieById = async (card) => {
-    try {
-      await mainApiClient.deleteMovieById(card?._id);
-      setToastLabel(`Карточка «${card.nameRU}» удалена из сохраненных фильмов`);
-      const updatedCards = moviesCards.filter((oldCard) => oldCard?._id !== card?._id);
-      setMoviesCards(updatedCards);
-      //FIXME: продумать как это исправить
-      // CardHelper.updateSavedCardsFromLocalStorage(updatedCards);
-    } catch {
-      console.error(TOAST_LABELS.Form.connection);
-      setToastLabel(TOAST_LABELS.Form.connection);
-    }
-  };
-
   useEffect(() => {
     setShownCards(CardHelper.getShownCards(moviesCards, CardHelper.getMaxCardAmount()));
   }, [moviesCards, cards]);
@@ -75,7 +61,7 @@ export function MoviesCardList({ cards, cardsLabel }) {
       addNewMovie(card);
       return;
     }
-    deleteMovieById(card);
+    deleteMovieById && deleteMovieById(card);
   };
 
   return (

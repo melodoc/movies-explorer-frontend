@@ -1,6 +1,8 @@
 import { DocumentBreakpoints } from './documentBreakpoints';
 import { LOCAL_STORAGE_KEYS } from '../constants/localStorageKeys';
 
+const SHORT_DURATION = 40;
+
 export class CardHelper {
   // на главной
   // !isSaved -- не добавлено в избранное
@@ -51,9 +53,7 @@ export class CardHelper {
     return [...cards].slice(0, amount);
   }
 
-  static filterMoviesCards(movies, searchQuery, isShort, isSortBySearchQuery = true) {
-    const shortDuration = 40;
-
+  static filterMoviesCards(movies, searchQuery, isShort) {
     return (movies || []).filter((movie) => {
       const isSearchQueryIncluded =
         movie?.nameRU?.includes(searchQuery.toUpperCase()) ||
@@ -61,8 +61,14 @@ export class CardHelper {
         movie?.nameRU?.includes(searchQuery) ||
         movie?.nameRU?.includes(searchQuery[0].toUpperCase() + searchQuery.slice(1));
       return !isShort
-        ? isSearchQueryIncluded && movie?.duration > shortDuration
-        : isSearchQueryIncluded && movie?.duration <= shortDuration;
+        ? isSearchQueryIncluded && movie?.duration > SHORT_DURATION
+        : isSearchQueryIncluded && movie?.duration <= SHORT_DURATION;
+    });
+  }
+
+  static filterMoviesCardsByDuration(movies, isShort) {
+    return (movies || []).filter((movie) => {
+      return !isShort ? movie?.duration > SHORT_DURATION : movie?.duration <= SHORT_DURATION;
     });
   }
 

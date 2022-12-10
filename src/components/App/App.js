@@ -6,7 +6,6 @@ import { TOAST_LABELS } from '../../constants/toastLabels';
 import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
 import { authApiClient } from '../../utils/MainApi';
 import { mainApiClient } from '../../utils/MainApi';
-import { useCardsHelper } from '../../hooks/useCardsHelper';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import { Header } from '../Header/Header';
@@ -21,10 +20,13 @@ import { Profile } from '../Profile/Profile';
 import { Toast } from '../Toast/Toast';
 import { Preloader } from '../Preloader/Preloader';
 import { CardHelper } from '../../helpers/cardHelper';
+import { moviesApiClient } from '../../utils/MoviesApi';
 
 function App() {
   const location = useLocation();
   const history = useHistory();
+  const [cards, setCards] = useState();
+  const [savedCards, setSavedCards] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isTokenValid, setIsTokenValid] = useState(false);
   const [userInformation, setUserInformation] = useState({
@@ -33,7 +35,8 @@ function App() {
     loggedIn: false
   });
   const [toastLabel, setToastLabel] = useState();
-  const { handleChange } = useCardsHelper();
+  const [cardsLabel, setCardsLabel] = useState("");
+  const [savedCardsLabel, setSavedCardsLabel] = useState(TOAST_LABELS.Movies.notFound);
   const { headerType, hasHeader, hasFooter } = RootPageHelper.getPageProps(location);
 
   const checkValidity = async () => {
@@ -42,8 +45,7 @@ function App() {
       const res = await authApiClient.checkValidity(token);
       setUserInformation({ email: res.email, name: res.name, loggedIn: true });
       setIsTokenValid(true);
-      const movies = await mainApiClient.getMovies();
-      handleChange(movies);
+      await loadSavedCards();
     } catch {
       setIsTokenValid(false);
     }
@@ -57,6 +59,7 @@ function App() {
       localStorage.setItem(LOCAL_STORAGE_KEYS.Token, res.token);
       setUserInformation({ name, email, loggedIn: true });
       setIsTokenValid(true);
+      await loadSavedCards();
       history.push(ROUTES.Movies);
     } catch {
       console.error(TOAST_LABELS.Form.connection);
@@ -94,6 +97,43 @@ function App() {
     }
   };
 
+  const loadInitialCards = async () => {
+    if (!CardHelper.hasSavedFilms()) {
+      setIsLoading(true);
+      try {
+        const movies = await moviesApiClient.getMovies();
+        CardHelper.setLocalStorageMovies(movies);
+        setCards(movies);
+      } catch {
+        setCards([]);
+        setCardsLabel(TOAST_LABELS.Movies.connection);
+        console.error(TOAST_LABELS.Movies.connection);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const loadSavedCards = async () => {
+    setIsLoading(true);
+    try {
+      const movies = await mainApiClient.getMovies();
+      setSavedCards(movies);
+    } catch {
+      setSavedCards([]);
+      setSavedCardsLabel(TOAST_LABELS.Movies.connection);
+      console.error(TOAST_LABELS.Movies.connection);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const hasToken = !!CardHelper.getToken() || isTokenValid;
+
+  useEffect(() => {
+    hasToken && loadInitialCards();
+  }, [hasToken]);
+
   const handleLogOut = () => {
     history.push(ROUTES.Movies);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Token);
@@ -105,8 +145,6 @@ function App() {
     setToastLabel(undefined);
     setIsTokenValid(false);
   };
-
-  const hasToken = !!CardHelper.getToken() || isTokenValid;
 
   useEffect(() => {
     checkValidity();
@@ -134,8 +172,24 @@ function App() {
             onSubmit={handleLoginSubmit}
             isLoading={isLoading}
           />
-          <ProtectedRoute path={ROUTES.Movies} loggedIn={hasToken} component={Movies} />
-          <ProtectedRoute path={ROUTES.SavedMovies} loggedIn={hasToken} component={SavedMovies} />
+          <ProtectedRoute
+            path={ROUTES.Movies}
+            loggedIn={hasToken}
+            component={Movies}
+            cards={cards}
+            savedCards={savedCards}
+            cardsLabel={cardsLabel}
+            isLoading={isLoading}
+          />
+          <ProtectedRoute
+            path={ROUTES.SavedMovies}
+            loggedIn={hasToken}
+            component={SavedMovies}
+            savedCards={savedCards}
+            savedCardsLabel={savedCardsLabel}
+            isLoading={isLoading}
+            loadSavedCards={loadSavedCards}
+          />
           <ProtectedRoute
             path={ROUTES.Profile}
             loggedIn={hasToken}

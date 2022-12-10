@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MoviesCard } from '../MoviesCard/MoviesCard';
 import { useResizeObserver } from '../../hooks/useResizeObserver';
-import { useCardsHelper } from '../../hooks/useCardsHelper';
 import { CardHelper } from '../../helpers/cardHelper';
 import { mainApiClient } from '../../utils/MainApi';
 import { Toast } from '../../components/Toast/Toast';
@@ -14,15 +13,13 @@ import './MoviesCardList.css';
 
 // const MIN_CARDS_TO_SHOW = 3;
 
-export function MoviesCardList({ cards, cardsLabel, savedCards }) {
+export function MoviesCardList({ cards, cardsLabel, savedCards, updateCardList }) {
   const baseUrl = beatfilmMoviesRequestParams.baseUrl;
   const location = useLocation();
-  const { getCards } = useCardsHelper();
   const isSavedMoviesPage = location?.pathname === ROUTES.SavedMovies;
   // const [moviesCards, setMoviesCards] = useState(cards);
   const [toastLabel, setToastLabel] = useState();
-  const [updatedSavedCards, setUpdatedSavedCards] = useState(savedCards ?? getCards());
-  console.info(updatedSavedCards)
+  const [updatedSavedCards, setUpdatedSavedCards] = useState(savedCards);
   // const MAX_AMOUNT = moviesCards?.length ?? 0;
   // const [moreCardAmount, setMoreCardAmount] = useState(CardHelper.getMoreCardAmount());
   // const [shownCards, setShownCards] = useState(CardHelper.getShownCards(moviesCards, CardHelper.getMaxCardAmount()));
@@ -83,6 +80,7 @@ export function MoviesCardList({ cards, cardsLabel, savedCards }) {
       const deletedCardRes = await deleteMovieById(deletingCard?._id ?? card?._id, deletingCard?.nameRU ?? card?.nameRU);
       const updatedCards = updatedSavedCards.filter((card) => card._id !== deletedCardRes._id ?? card?._id);
       setUpdatedSavedCards(updatedCards);
+      updateCardList && updateCardList();
     }
   };
 

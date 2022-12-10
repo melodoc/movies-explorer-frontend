@@ -46,7 +46,7 @@ export class CardHelper {
   }
 
   static getMoreCardAmount() {
-    return !DocumentBreakpoints.getIsDesktop() ? (DocumentBreakpoints.getIsTablet() ? 2 : 1) : 3;
+    return !DocumentBreakpoints.getIsDesktop() ? 2 : 3;
   }
 
   static getShownCards(cards, amount) {

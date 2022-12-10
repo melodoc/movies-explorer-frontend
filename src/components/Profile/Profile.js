@@ -11,6 +11,7 @@ import { Toast } from '../../components/Toast/Toast';
 import './Profile.css';
 
 const VALIDATION_MESSAGE = ValidationHelper.validationNameMessages;
+const VALIDATION_EQUAL_MESSAGES = ValidationHelper.validationEqualMessages;
 
 export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }) {
   const currentUser = useContext(CurrentUserContext);
@@ -22,8 +23,8 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
   const [emailErrorText, setEmailErrorText] = useState(undefined);
   const [profileNameErrorText, setProfileNameErrorText] = useState(undefined);
   const [customValidity, setCustomValidity] = useState({
-    email: true,
-    name: true
+    email: false,
+    name: false
   });
 
   const isValid = Object.values(customValidity).every((valid) => valid);
@@ -51,13 +52,23 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
   const handleChangeProfileName = (e) => {
     handleInputField(e);
     setProfileName(e.target.value);
-    setCustomValidity({ ...customValidity, name: e.target.validity.valid });
+    if (e.target.value !== currentUser?.name) {
+      setCustomValidity({ ...customValidity, name: e.target.validity.valid });
+      return;
+    }
+    setCustomValidity({ ...customValidity, name: false });
+    setProfileNameErrorText(VALIDATION_EQUAL_MESSAGES.get(INPUT_TYPES.Name));
   };
 
   const handleChangeEmail = (e) => {
     handleInputField(e);
     setEmail(e.target.value);
-    setCustomValidity({ ...customValidity, email: e.target.validity.valid });
+    if (e.target.value !== currentUser?.email) {
+      setCustomValidity({ ...customValidity, email: e.target.validity.valid });
+      return;
+    }
+    setCustomValidity({ ...customValidity, email: false });
+    setEmailErrorText(VALIDATION_EQUAL_MESSAGES.get(INPUT_TYPES.Email));
   };
 
   const handleSubmit = (e) => {
@@ -78,6 +89,7 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
     e.preventDefault();
     setIsReadOnly(true);
     handleChangeProfile({ name: profileName, email });
+    setCustomValidity({ email: false, name: false });
   };
 
   const handleLogOut = () => {
@@ -132,7 +144,7 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
                   ref={emailInput}
                   required
                   pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$"
-                  />
+                />
               </li>
               {emailErrorText && <p className="field__valid-text">{emailErrorText}</p>}
             </ul>
@@ -144,12 +156,7 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
                 </Link>
               </div>
             ) : (
-              <UISubmit
-                label="Сохранить"
-                name="save"
-                handleClick={handleSaveProfileClick}
-                disabled={!isValid}
-              />
+              <UISubmit label="Сохранить" name="save" handleClick={handleSaveProfileClick} disabled={!isValid} />
             )}
           </form>
         </div>

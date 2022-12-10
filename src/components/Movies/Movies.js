@@ -16,7 +16,7 @@ export function Movies() {
 
   const storageMovies = CardHelper.getMoviesFromLocalStorage();
 
-  const handleSubmitSearch = async (searchQuery, checkboxQuery) => {
+  const handleSubmitSearch = (searchQuery, checkboxQuery) => {
     if (movieCards) {
       const movies = CardHelper.filterMoviesCards(storageMovies, searchQuery, checkboxQuery);
       CardHelper.setLocalStorageSearchQuery(searchQuery);

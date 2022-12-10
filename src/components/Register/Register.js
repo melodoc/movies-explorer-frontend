@@ -24,7 +24,7 @@ export function Register({ onSubmit, isLoading }) {
   });
 
   const isValid = Object.values(customValidity).every((valid) => valid);
-console.info(customValidity)
+
   const handleChangeName = (e) => {
     setName(e.target.value);
     setCustomValidity({ ...customValidity, name: e.target.validity.valid });

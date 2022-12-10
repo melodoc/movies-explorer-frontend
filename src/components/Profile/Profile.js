@@ -39,15 +39,12 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
         return;
       }
       setEmailErrorText(VALIDATION_MESSAGE.get(INPUT_TYPES.Email));
-    } else if (e.target?.type === 'text') {
+    } else {
       if (e.target.validity.valid) {
         setProfileNameErrorText(undefined);
         return;
       }
       setProfileNameErrorText(VALIDATION_MESSAGE.get(INPUT_TYPES.Name));
-    } else {
-      setEmailErrorText(undefined);
-      setProfileNameErrorText(undefined);
     }
   };
 

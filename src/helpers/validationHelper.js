@@ -13,7 +13,7 @@ export class ValidationHelper {
   }
 
   static get namePattern() {
-    return "[A-Za-z А-Яа-яёЁ]{2,30}";
+    return "[A-Za-z А-Яа-яёЁ\-]{2,30}";
   }
 
   static get passwordPattern() {

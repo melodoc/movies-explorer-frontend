@@ -123,4 +123,8 @@ export class CardHelper {
   static getSavedState(savedCards, card) {
     return savedCards.map((savedCard) => savedCard?.movieId).some((id) => id === card?.id)
   }
+
+  static getCardByMovieId(cards, id) {
+    return cards.find((card) => card?.movieId === id);
+  }
 }

@@ -13,7 +13,7 @@ import './MoviesCardList.css';
 
 const MIN_CARDS_TO_SHOW = 3;
 
-export function MoviesCardList({ cards, cardsLabel, deleteMovieById, savedCards }) {
+export function MoviesCardList({ cards, cardsLabel, savedCards }) {
   const baseUrl = beatfilmMoviesRequestParams.baseUrl;
   const location = useLocation();
   const isSavedMoviesPage = location?.pathname === ROUTES.SavedMovies;
@@ -43,6 +43,16 @@ export function MoviesCardList({ cards, cardsLabel, deleteMovieById, savedCards 
     }
   };
 
+  const deleteMovieById = async (card) => {
+    try {
+      setToastLabel(`Карточка «${card.nameRU}» удалена из сохраненных фильмов`);
+      return await mainApiClient.deleteMovieById(card?._id);
+    } catch {
+      console.error(TOAST_LABELS.Form.connection);
+      setToastLabel(TOAST_LABELS.Form.connection);
+    }
+  };
+
   useEffect(() => {
     setShownCards(CardHelper.getShownCards(moviesCards, CardHelper.getMaxCardAmount()));
   }, [moviesCards, cards]);
@@ -59,14 +69,15 @@ export function MoviesCardList({ cards, cardsLabel, deleteMovieById, savedCards 
     savedCards && setUpdatedSavedCards(savedCards);
   }, [savedCards]);
 
-  const handleClick = async (card) => {
+  const handleAddCard = async (card) => {
     const addedCard = await addNewMovie(card);
-    console.info(addedCard);
     setUpdatedSavedCards([...updatedSavedCards, addedCard]);
-    // Клик по иконке без заливки должен отправлять запрос к /movies нашего API на сохранение фильма.
-    // Клик по иконке с заливкой — запрос на удаление.
-    // обновить массив сохраненных тут  на deleteMovieById
-    // deleteMovieById && deleteMovieById(card);
+  };
+
+  const handleDeleteCard = async (card) => {
+    const deletingCard = CardHelper.getCardByMovieId(updatedSavedCards, card?.id);
+    const deletedCardRes = deletingCard && (await deleteMovieById(deletingCard));
+    setUpdatedSavedCards(updatedSavedCards.filter((card) => card._id !== deletedCardRes._id));
   };
 
   return (
@@ -84,7 +95,8 @@ export function MoviesCardList({ cards, cardsLabel, deleteMovieById, savedCards 
                   duration={card?.duration}
                   trailerLink={card?.trailerLink}
                   hasDeleteBtn={isSavedMoviesPage}
-                  handleClick={handleClick}
+                  handleAddCard={handleAddCard}
+                  handleDeleteCard={handleDeleteCard}
                   card={card}
                   savedCards={updatedSavedCards}
                 />

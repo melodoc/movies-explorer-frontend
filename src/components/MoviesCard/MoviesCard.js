@@ -10,7 +10,8 @@ export function MoviesCard({
   trailerLink,
   hasDeleteBtn,
   disabled,
-  handleClick,
+  handleAddCard,
+  handleDeleteCard,
   card,
   savedCards
 }) {
@@ -19,7 +20,11 @@ export function MoviesCard({
   const [buttonStyle, setButtonStyle] = useState(CardHelper.getButtonStyle(hasSaved, hasDeleteBtn));
 
   const onClickHandler = (e) => {
-    !hasSaved && handleClick(card);
+    if (!hasSaved) {
+      handleAddCard(card);
+    } else {
+      handleDeleteCard(card);
+    }
     savedCards && setHasSaved(CardHelper.getSavedState(savedCards, card));
     setButtonStyle(CardHelper.getButtonStyle(hasSaved, hasDeleteBtn));
   };

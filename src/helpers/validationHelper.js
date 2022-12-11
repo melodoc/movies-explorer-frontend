@@ -15,7 +15,7 @@ export class ValidationHelper {
   }
 
   static get namePattern() {
-    return '[A-Za-z А-Яа-яёЁ\-]{2,30}';
+    return '[A-Za-z А-Яа-яёЁ-]{2,30}';
   }
 
   static get passwordPattern() {
@@ -35,5 +35,16 @@ export class ValidationHelper {
       [INPUT_TYPES.Email, 'Введите email (или имя) отличные от текущего'],
       [INPUT_TYPES.Name, 'Введите имя (или email) отличные от текущего']
     ]);
+  }
+
+  static get uid() {
+    let a = new Uint32Array(3);
+    window.crypto.getRandomValues(a);
+    return (
+      performance.now().toString(36) +
+      Array.from(a)
+        .map((A) => A.toString(36))
+        .join('')
+    ).replace(/\./g, '');
   }
 }

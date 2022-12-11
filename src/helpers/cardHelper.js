@@ -1,15 +1,18 @@
 import { DocumentBreakpoints } from './documentBreakpoints';
 import { LOCAL_STORAGE_KEYS } from '../constants/localStorageKeys';
-
-const SHORT_DURATION = 40;
+import { MOVIE_PROPS } from '../constants/movieProps';
 
 export class CardHelper {
-  // на главной
-  // !isSaved -- не добавлено в избранное
-  // isSaved -- добавлено в избранное
-
-  // на странице избранного
-  // delete --  удалить на странице избранных
+  /**
+   * Получить стили кнопки
+   * 
+   * на главной
+   * !isSaved -- не добавлено в избранное
+   * isSaved -- добавлено в избранное
+   * 
+   * на странице избранного
+   * delete --  удалить на странице избранных
+   */
   static getButtonStyle(isSaved, hasDeleteBtn) {
     return {
       style: [
@@ -42,11 +45,15 @@ export class CardHelper {
   }
 
   static getMaxCardAmount() {
-    return !DocumentBreakpoints.getIsDesktop() ? (DocumentBreakpoints.getIsTablet() ? 8 : 5) : 12;
+    return !DocumentBreakpoints.getIsDesktop()
+      ? DocumentBreakpoints.getIsTablet()
+        ? MOVIE_PROPS.CardAmount.tablet
+        : MOVIE_PROPS.CardAmount.mobile
+      : MOVIE_PROPS.CardAmount.desktop;
   }
 
   static getMoreCardAmount() {
-    return !DocumentBreakpoints.getIsDesktop() ? 2 : 3;
+    return !DocumentBreakpoints.getIsDesktop() ? MOVIE_PROPS.MoreBtn.tablet : MOVIE_PROPS.MoreBtn.desktop;
   }
 
   static getShownCards(cards, amount) {
@@ -60,7 +67,7 @@ export class CardHelper {
         movie?.nameRU?.includes(searchQuery.toLowerCase()) ||
         movie?.nameRU?.includes(searchQuery) ||
         movie?.nameRU?.includes(searchQuery[0].toUpperCase() + searchQuery.slice(1));
-      return !isShort ? isSearchQueryIncluded : isSearchQueryIncluded && movie?.duration <= SHORT_DURATION;
+      return !isShort ? isSearchQueryIncluded : isSearchQueryIncluded && movie?.duration <= MOVIE_PROPS.ShortDuration;
     });
   }
 

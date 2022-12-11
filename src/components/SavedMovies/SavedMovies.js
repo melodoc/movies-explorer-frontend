@@ -17,8 +17,7 @@ export function SavedMovies({loadSavedCards, savedCards, savedCardsLabel, isLoad
   };
 
   useEffect(() => {
-    const initialFilteredCards = CardHelper.filterMoviesCardsByDuration(savedCards, false);
-    setFilteredSavedCards(initialFilteredCards);
+    setFilteredSavedCards(savedCards);
   }, [savedCards]);
 
   useEffect(() => {

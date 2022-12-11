@@ -60,15 +60,7 @@ export class CardHelper {
         movie?.nameRU?.includes(searchQuery.toLowerCase()) ||
         movie?.nameRU?.includes(searchQuery) ||
         movie?.nameRU?.includes(searchQuery[0].toUpperCase() + searchQuery.slice(1));
-      return !isShort
-        ? isSearchQueryIncluded && movie?.duration > SHORT_DURATION
-        : isSearchQueryIncluded && movie?.duration <= SHORT_DURATION;
-    });
-  }
-
-  static filterMoviesCardsByDuration(movies, isShort) {
-    return (movies || []).filter((movie) => {
-      return !isShort ? movie?.duration > SHORT_DURATION : movie?.duration <= SHORT_DURATION;
+      return !isShort ? isSearchQueryIncluded : isSearchQueryIncluded && movie?.duration <= SHORT_DURATION;
     });
   }
 
@@ -121,7 +113,7 @@ export class CardHelper {
   }
 
   static getSavedState(savedCards, card) {
-    return savedCards.map((savedCard) => savedCard?.movieId).some((id) => id === card?.id)
+    return savedCards.map((savedCard) => savedCard?.movieId).some((id) => id === card?.id);
   }
 
   static getCardByMovieId(cards, id) {

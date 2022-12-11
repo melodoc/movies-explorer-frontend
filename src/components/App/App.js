@@ -35,19 +35,21 @@ function App() {
     loggedIn: false
   });
   const [toastLabel, setToastLabel] = useState();
-  const [cardsLabel, setCardsLabel] = useState("");
+  const [cardsLabel, setCardsLabel] = useState('');
   const [savedCardsLabel, setSavedCardsLabel] = useState(TOAST_LABELS.Movies.notFound);
   const { headerType, hasHeader, hasFooter } = RootPageHelper.getPageProps(location);
 
   const checkValidity = async () => {
     try {
-      const token = localStorage.getItem(LOCAL_STORAGE_KEYS.Token);
-      const res = await authApiClient.checkValidity(token);
-      setUserInformation({ email: res.email, name: res.name, loggedIn: true });
-      setIsTokenValid(true);
-      await loadSavedCards();
+      const token = CardHelper.getToken();
+      if (token) {
+        const res = await authApiClient.checkValidity(token);
+        setUserInformation({ email: res.email, name: res.name, loggedIn: true });
+        setIsTokenValid(true);
+        await loadSavedCards();
+      }
     } catch {
-      setIsTokenValid(false);
+      handleLogOut();
     }
   };
 
@@ -76,6 +78,7 @@ function App() {
       localStorage.setItem(LOCAL_STORAGE_KEYS.Token, res.token);
       await checkValidity();
       setIsTokenValid(true);
+      setToastLabel(undefined);
       history.push(ROUTES.Movies);
     } catch {
       console.error(TOAST_LABELS.Form.connection);
@@ -135,15 +138,22 @@ function App() {
   }, [hasToken]);
 
   const handleLogOut = () => {
-    history.push(ROUTES.Movies);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Token);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Movies);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.Checkbox);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.SearchQuery);
-    localStorage.removeItem(LOCAL_STORAGE_KEYS.SavedMovies);
     setUserInformation({ email: '', name: '', loggedIn: false });
     setToastLabel(undefined);
     setIsTokenValid(false);
+    setSavedCards();
+    setCards();
+    setIsLoading(false);
+    setUserInformation({
+      email: '',
+      name: '',
+      loggedIn: false
+    });
+    history.push(ROUTES.Movies);
   };
 
   useEffect(() => {

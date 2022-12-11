@@ -32,8 +32,8 @@ export class ValidationHelper {
 
   static get validationEqualMessages() {
     return new Map([
-      [INPUT_TYPES.Email, 'Введите email отличный от текущего'],
-      [INPUT_TYPES.Name, 'Введите имя отличное от текущего']
+      [INPUT_TYPES.Email, 'Введите email (или имя) отличные от текущего'],
+      [INPUT_TYPES.Name, 'Введите имя (или email) отличные от текущего']
     ]);
   }
 }

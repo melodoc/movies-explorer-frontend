@@ -22,13 +22,13 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
   const [email, setEmail] = useState(currentUser?.email);
   const [emailErrorText, setEmailErrorText] = useState(undefined);
   const [profileNameErrorText, setProfileNameErrorText] = useState(undefined);
-  const [customValidity, setCustomValidity] = useState({
+  const [customUniqueness, setCustomUniqueness] = useState({
+    name: false,
     email: false,
-    name: false
   });
 
-  const isValid = Object.values(customValidity).every((valid) => valid);
-
+  const isUnique = Object.values(customUniqueness).some((unique) => unique);
+  
   const profileInput = useRef(null);
   const emailInput = useRef(null);
   const { handleChange } = useFormWithValidation();
@@ -53,10 +53,10 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
     handleInputField(e);
     setProfileName(e.target.value);
     if (e.target.value !== currentUser?.name) {
-      setCustomValidity({ ...customValidity, name: e.target.validity.valid });
+      setCustomUniqueness({ ...customUniqueness, name: e.target.validity.valid });
       return;
     }
-    setCustomValidity({ ...customValidity, name: false });
+    setCustomUniqueness({ ...customUniqueness, name: false });
     setProfileNameErrorText(VALIDATION_EQUAL_MESSAGES.get(INPUT_TYPES.Name));
   };
 
@@ -64,10 +64,10 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
     handleInputField(e);
     setEmail(e.target.value);
     if (e.target.value !== currentUser?.email) {
-      setCustomValidity({ ...customValidity, email: e.target.validity.valid });
+      setCustomUniqueness({ ...customUniqueness, email: e.target.validity.valid });
       return;
     }
-    setCustomValidity({ ...customValidity, email: false });
+    setCustomUniqueness({ ...customUniqueness, email: false });
     setEmailErrorText(VALIDATION_EQUAL_MESSAGES.get(INPUT_TYPES.Email));
   };
 
@@ -89,7 +89,9 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
     e.preventDefault();
     setIsReadOnly(true);
     handleChangeProfile({ name: profileName, email });
-    setCustomValidity({ email: false, name: false });
+    setCustomUniqueness({ email: false, name: false });
+    setEmailErrorText(undefined);
+    setProfileNameErrorText(undefined);
   };
 
   const handleLogOut = () => {
@@ -127,7 +129,7 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
                   pattern={ValidationHelper.namePattern}
                 />
               </li>
-              {profileNameErrorText && <p className="field__valid-text">{profileNameErrorText}</p>}
+              {profileNameErrorText && !isUnique && <p className="field__valid-text">{profileNameErrorText}</p>}
               <li className="profile__form-item">
                 <label htmlFor="email" className="profile__form-label">
                   E-mail
@@ -146,7 +148,7 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
                   pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$"
                 />
               </li>
-              {emailErrorText && <p className="field__valid-text">{emailErrorText}</p>}
+              {emailErrorText && !isUnique && <p className="field__valid-text">{emailErrorText}</p>}
             </ul>
             {isReadOnly ? (
               <div className="profile__form-links">
@@ -156,7 +158,7 @@ export function Profile({ handleChangeProfile, handleProfileLogOut, toastLabel }
                 </Link>
               </div>
             ) : (
-              <UISubmit label="Сохранить" name="save" handleClick={handleSaveProfileClick} disabled={!isValid} />
+              <UISubmit label="Сохранить" name="save" handleClick={handleSaveProfileClick} disabled={!isUnique} />
             )}
           </form>
         </div>

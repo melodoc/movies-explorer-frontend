@@ -2,14 +2,14 @@
 
 ## Link
 
-Pull request
-
-[https://github.com/melodoc/movies-explorer-frontend/pull/15](https://github.com/melodoc/movies-explorer-frontend/pull/15)
-
 Frontend
 
-[http://movies.melodoc.nomoredomains.club/](http://movies.melodoc.nomoredomains.club/)
 [https://movies.melodoc.nomoredomains.club/](https://movies.melodoc.nomoredomains.club/)
+
+
+Backend
+
+[https://github.com/melodoc/movies-explorer-api](https://github.com/melodoc/movies-explorer-api)
 
 ## Description
 

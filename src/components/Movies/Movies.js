@@ -22,7 +22,7 @@ export function Movies({ cards, savedCards, cardsLabel, isLoading }) {
       CardHelper.setLocalStorageSearchQuery(searchQuery);
       CardHelper.setLocalStorageCheckboxQuery(checkboxQuery);
       setMovieCards(movies);
-      movieCards && setShownCards(CardHelper.getShownCards(movieCards, CardHelper.getMaxCardAmount()));
+      setShownCards(CardHelper.getShownCards(movieCards, CardHelper.getMaxCardAmount()));
     }
   };
 

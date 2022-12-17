@@ -3,25 +3,19 @@ import { INPUT_TYPES } from '../../constants/inputTypes';
 
 import './UIInput.css';
 
-export function UIInput({
-  label,
-  type,
-  value,
-  required,
-  handleChange
-}) {
+export function UIInput({ label, type, value, required, handleChange, pattern, errorText, minLength }) {
   const input = useRef(null);
-  const [inputState, setInputState] = useState({
-    valid: true,
-    text: ''
-  });
+  const [field, setField] = useState(true);
 
-  const checkValidation = () => {
-    handleChange && handleChange();
-    setInputState({
-      valid: input.current.validity.valid,
-      text: input.current.validationMessage
-    });
+  const handleInputField = (e) => {
+    handleChange(e);
+    if (!e.target.validity.valid) {
+      setField(undefined);
+    } else if (e.target.value.match(pattern) != null) {
+      setField(e.target.value);
+    } else {
+      setField(undefined);
+    }
   };
 
   return (
@@ -30,19 +24,21 @@ export function UIInput({
         {label}
       </label>
       <input
-        className="field__input"
-        onChange={checkValidation}
+        value={value}
+        className={`field__input`}
+        onChange={handleInputField}
         type={type}
         id={label}
         placeholder={label}
         autoComplete="off"
         name={label}
         required={required}
-        minLength={2}
+        minLength={minLength ?? 2}
         maxLength={type === INPUT_TYPES.Email ? 200 : 40}
         ref={input}
+        pattern={pattern}
       />
-      {!inputState.valid && <p className="field__valid-text">{inputState.text}</p>}
+      {!field && <p className="field__valid-text">{errorText}</p>}
     </div>
   );
 }

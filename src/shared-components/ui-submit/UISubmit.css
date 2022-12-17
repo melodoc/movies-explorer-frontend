@@ -13,6 +13,11 @@
   width: 100%;
 }
 
+.form__submit:disabled {
+  background-color: var(--gray);
+  opacity: var(--hover-opacity);
+}
+
 .form__submit:hover {
   cursor: pointer;
   transition: 0.1s ease-in-out;
@@ -40,6 +45,14 @@
 .form__submit_type_secondary:hover {
   cursor: pointer;
   text-shadow: 0 0 3px var(--white), 0 0 9px var(--pink), 0 0 18px var(--pink);
+}
+
+.form__submit:disabled:hover {
+  outline: 0px;
+  outline-offset: 0px;
+  box-shadow: 0 0 0px transparent;
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
 }
 
 @media screen and (max-width: 767px) {

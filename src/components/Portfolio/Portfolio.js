@@ -22,11 +22,7 @@ export function Portfolio() {
             target="_blank"
             rel="noreferrer"
           >
-            <img
-              className="portfolio__link-image"
-              src={arrow}
-              alt="icon"
-            />
+            <img className="portfolio__link-image" src={arrow} alt="icon" />
           </a>
         </li>
         <li className="portfolio__list-item">
@@ -44,11 +40,7 @@ export function Portfolio() {
             target="_blank"
             rel="noreferrer"
           >
-            <img
-              className="portfolio__link-image"
-              src={arrow}
-              alt="icon"
-            />
+            <img className="portfolio__link-image" src={arrow} alt="icon" />
           </a>
         </li>
         <li className="portfolio__list-item">
@@ -66,11 +58,7 @@ export function Portfolio() {
             target="_blank"
             rel="noreferrer"
           >
-            <img
-              className="portfolio__link-image"
-              src={arrow}
-              alt="icon"
-            />
+            <img className="portfolio__link-image" src={arrow} alt="icon" />
           </a>
         </li>
       </ul>

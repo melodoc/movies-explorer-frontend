@@ -1,3 +1,3 @@
 export const ICON_TYPES = {
-  Profile: 'profile',
+  Profile: 'profile'
 };

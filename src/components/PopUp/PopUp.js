@@ -16,25 +16,9 @@ export function PopUp({ onToggleMobileMenu }) {
     <nav className="popup" ref={containerRef}>
       <div className="popup__list">
         <ul className="popup__links">
-          <UILink
-            label="Главная"
-            link={ROUTES.About}
-            font={font}
-            isVertical
-          />
-          {/* FIXME: Добавить определение текуще страницы автоматически  */}
-          <UILink
-            label="Фильмы"
-            link={ROUTES.Movies}
-            font={font}
-            isVertical
-            hasDecoration
-          />
-          <UILink
-            label="Сохранённые фильмы"
-            link={ROUTES.SavedMovies}
-            font={font}
-          />
+          <UILink label="Главная" link={ROUTES.About} font={font} isVertical />
+          <UILink label="Фильмы" link={ROUTES.Movies} font={font} isVertical />
+          <UILink label="Сохранённые фильмы" link={ROUTES.SavedMovies} font={font} />
         </ul>
         <ul className="popup__links">
           <UILink
@@ -45,10 +29,7 @@ export function PopUp({ onToggleMobileMenu }) {
             font={{ weight: 500, size: '13px', lineHeight: '12px' }}
           />
         </ul>
-        <button
-          className="popup__button"
-          onClick={onToggleMobileMenu}
-        >
+        <button className="popup__button" onClick={onToggleMobileMenu}>
           <img src={close} alt="close" />
         </button>
       </div>

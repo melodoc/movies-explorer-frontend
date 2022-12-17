@@ -2,9 +2,14 @@
 
 ## Link
 
-WIP
+Pull request
 
-<!-- [Movies explorer frontend](https://melodoc.github.io/react-mesto-auth/) -->
+[https://github.com/melodoc/movies-explorer-frontend/pull/15](https://github.com/melodoc/movies-explorer-frontend/pull/15)
+
+Frontend
+
+[http://movies.melodoc.nomoredomains.club/](http://movies.melodoc.nomoredomains.club/)
+[https://movies.melodoc.nomoredomains.club/](https://movies.melodoc.nomoredomains.club/)
 
 ## Description
 
@@ -47,4 +52,5 @@ Made by melodoc as part of the course **Web Developer** by Yandex.Practicum
 ## Feature plans
 
 - add localization
+
 

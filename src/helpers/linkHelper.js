@@ -11,7 +11,8 @@ export class LinkHelper {
     const baseFontLinkStyle = {
       fontWeight: font?.weight,
       fontSize: font?.size,
-      lineHeight: font?.lineHeight
+      lineHeight: font?.lineHeight,
+      color: font?.color
     };
 
     if (DocumentBreakpoints.getIsDesktop()) {

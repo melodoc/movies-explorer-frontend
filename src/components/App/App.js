@@ -1,76 +1,225 @@
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import { RootPageHelper } from '../../helpers/rootPageHelper';
+import { ROUTES } from '../../constants/routes';
+import { TOAST_LABELS } from '../../constants/toastLabels';
+import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
+import { authApiClient } from '../../utils/MainApi';
+import { mainApiClient } from '../../utils/MainApi';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
-import { Promo } from '../Promo/Promo';
-import { AboutProject } from '../AboutProject/AboutProject';
-import { Techs } from '../Techs/Techs';
-import { AboutMe } from '../AboutMe/AboutMe';
-import { Portfolio } from '../Portfolio/Portfolio';
+import { Main } from '../Main/Main';
 import { Movies } from '../Movies/Movies';
 import { SavedMovies } from '../SavedMovies/SavedMovies';
 import { Login } from '../Login/Login';
 import { Register } from '../Register/Register';
 import { NotFound } from '../NotFound/NotFound';
 import { Profile } from '../Profile/Profile';
-
-import { HEADER_TYPES } from '../../constants/headerTypes';
-import { ROUTES } from '../../constants/routes';
-import { mockedCards, savedCards } from '../../mocked/mockedCards';
+import { Toast } from '../Toast/Toast';
+import { Preloader } from '../Preloader/Preloader';
+import { CardHelper } from '../../helpers/cardHelper';
+import { moviesApiClient } from '../../utils/MoviesApi';
 
 function App() {
   const location = useLocation();
-  const isAboutPage = location?.pathname === ROUTES.About;
+  const history = useHistory();
+  const [cards, setCards] = useState();
+  const [savedCards, setSavedCards] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(false);
+  const [userInformation, setUserInformation] = useState({
+    email: '',
+    name: '',
+    loggedIn: false
+  });
+  const [toastLabel, setToastLabel] = useState();
+  const [cardsLabel, setCardsLabel] = useState('');
+  const [savedCardsLabel, setSavedCardsLabel] = useState(TOAST_LABELS.Movies.notFound);
+  const { headerType, hasHeader, hasFooter } = RootPageHelper.getPageProps(location);
 
-  /* FIXME: Перенести в утилиты */
+  const checkValidity = async () => {
+    try {
+      const token = CardHelper.getToken();
+      if (token) {
+        const res = await authApiClient.checkValidity(token);
+        setUserInformation({ email: res.email, name: res.name, loggedIn: true });
+        setIsTokenValid(true);
+        await loadSavedCards();
+      }
+    } catch {
+      handleLogOut();
+    }
+  };
 
-  const isHeaderShown = [
-    ROUTES.About,
-    ROUTES.Movies,
-    ROUTES.SavedMovies,
-    ROUTES.Profile
-  ].includes(location?.pathname);
-  const isFooterShown = [
-    ROUTES.About,
-    ROUTES.Movies,
-    ROUTES.SavedMovies
-  ].includes(location?.pathname);
+  const handleRegisterSubmit = async ({ name, email, password }) => {
+    setIsLoading(true);
+    try {
+      await authApiClient.register({ name, email, password });
+      const res = await authApiClient.login({ email, password });
+      localStorage.setItem(LOCAL_STORAGE_KEYS.Token, res.token);
+      setUserInformation({ name, email, loggedIn: true });
+      setIsTokenValid(true);
+      await loadSavedCards();
+      history.push(ROUTES.Movies);
+    } catch {
+      console.error(TOAST_LABELS.Form.connection);
+      setToastLabel(TOAST_LABELS.Form.connection);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLoginSubmit = async ({ email, password }) => {
+    setIsLoading(true);
+    try {
+      const res = await authApiClient.login({ email, password });
+      localStorage.setItem(LOCAL_STORAGE_KEYS.Token, res.token);
+      await checkValidity();
+      setIsTokenValid(true);
+      setToastLabel(undefined);
+      history.push(ROUTES.Movies);
+    } catch {
+      console.error(TOAST_LABELS.Form.connection);
+      setToastLabel(TOAST_LABELS.Form.connection);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChangeProfile = async ({ email, name }) => {
+    try {
+      const userInformation = await mainApiClient.setUserInfo({ email, name });
+      setUserInformation(userInformation ?? {});
+      setIsTokenValid(true);
+      setToastLabel(TOAST_LABELS.Profile.change);
+    } catch {
+      console.error(TOAST_LABELS.Form.connection);
+      setToastLabel(TOAST_LABELS.Form.connection);
+    }
+  };
+
+  const loadInitialCards = async () => {
+    if (!CardHelper.hasSavedFilms()) {
+      setIsLoading(true);
+      try {
+        const movies = await moviesApiClient.getMovies();
+        CardHelper.setLocalStorageMovies(movies);
+        setCards(movies);
+      } catch {
+        setCards([]);
+        setCardsLabel(TOAST_LABELS.Movies.connection);
+        console.error(TOAST_LABELS.Movies.connection);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const loadSavedCards = async () => {
+    setIsLoading(true);
+    try {
+      const movies = await mainApiClient.getMovies();
+      setSavedCards(movies);
+    } catch {
+      setSavedCards([]);
+      setSavedCardsLabel(TOAST_LABELS.Movies.connection);
+      console.error(TOAST_LABELS.Movies.connection);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const hasToken = !!CardHelper.getToken() || isTokenValid;
+
+  useEffect(() => {
+    hasToken && loadInitialCards();
+  }, [hasToken]);
+
+  const handleLogOut = () => {
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.Token);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.Movies);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.Checkbox);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.SearchQuery);
+    setUserInformation({ email: '', name: '', loggedIn: false });
+    setToastLabel(undefined);
+    setIsTokenValid(false);
+    setSavedCards();
+    setCards();
+    setIsLoading(false);
+    setUserInformation({
+      email: '',
+      name: '',
+      loggedIn: false
+    });
+    history.push(ROUTES.Movies);
+  };
+
+  useEffect(() => {
+    checkValidity();
+  }, []);
 
   return (
     <>
-      {isHeaderShown && (
-        <Header
-          type={isAboutPage ? HEADER_TYPES.Banner : HEADER_TYPES.Main}
-          isLoggedIn={isAboutPage ? false : true}
-        />
+      {hasHeader && <Header type={headerType} isLoggedIn={isTokenValid} />}
+      <CurrentUserContext.Provider value={userInformation}>
+        <Switch>
+          <Route path={ROUTES.About} exact>
+            <Main />
+          </Route>
+          <ProtectedRoute
+            path={ROUTES.SignUp}
+            loggedIn={!isTokenValid}
+            component={Register}
+            onSubmit={handleRegisterSubmit}
+            isLoading={isLoading}
+          />
+          <ProtectedRoute
+            path={ROUTES.SignIn}
+            loggedIn={!isTokenValid}
+            component={Login}
+            onSubmit={handleLoginSubmit}
+            isLoading={isLoading}
+          />
+          <ProtectedRoute
+            path={ROUTES.Movies}
+            loggedIn={hasToken}
+            component={Movies}
+            cards={cards}
+            savedCards={savedCards}
+            cardsLabel={cardsLabel}
+            isLoading={isLoading}
+          />
+          <ProtectedRoute
+            path={ROUTES.SavedMovies}
+            loggedIn={hasToken}
+            component={SavedMovies}
+            savedCards={savedCards}
+            savedCardsLabel={savedCardsLabel}
+            isLoading={isLoading}
+            loadSavedCards={loadSavedCards}
+          />
+          <ProtectedRoute
+            path={ROUTES.Profile}
+            loggedIn={hasToken}
+            component={Profile}
+            handleChangeProfile={handleChangeProfile}
+            handleProfileLogOut={handleLogOut}
+            toastLabel={toastLabel}
+          />
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
+      </CurrentUserContext.Provider>
+      {toastLabel && <Toast label={toastLabel} />}
+      {hasFooter && <Footer />}
+      {isLoading && (
+        <div className="entry-form__loader">
+          <Preloader />
+        </div>
       )}
-      <Switch>
-        <Route path={ROUTES.About} exact>
-          <Promo />
-          <AboutProject />
-          <Techs />
-          <AboutMe />
-          <Portfolio />
-        </Route>
-        <Route path={ROUTES.SignUp}>
-          <Register />
-        </Route>
-        <Route path={ROUTES.SignIn}>
-          <Login />
-        </Route>
-        <Route path={ROUTES.Movies}>
-          <Movies cards={mockedCards} />
-        </Route>
-        <Route path={ROUTES.SavedMovies}>
-          <SavedMovies cards={savedCards} />
-        </Route>
-        <Route path={ROUTES.Profile}>
-          <Profile />
-        </Route>
-        <Route path="*">
-          <NotFound />
-        </Route>
-      </Switch>
-      {isFooterShown && <Footer />}
     </>
   );
 }

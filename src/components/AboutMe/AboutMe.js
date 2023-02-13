@@ -12,8 +12,7 @@ export function AboutMe() {
           <p className="about-me__title">Любовь</p>
           <p className="about-me__subtitle">Фронтенд-разработчик, 29 лет</p>
           <p className="about-me__description">
-            Я родилась в городе Казань, закончила Казанский федеральный университет. Я люблю слушать
-            музыку и рисовать. С 2017 года работала техническим писателем. Последние 2,5 года работаю во фронтенд-разработке
+            Я родилась в городе Казань, закончила Казанский федеральный университет. Увлекаюсь фронтенд-разработкой
           </p>
           <a className="about-me__link" href="https://github.com/melodoc/" target="_blank" rel="noreferrer">
             Github
